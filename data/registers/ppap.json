@@ -1,0 +1,117 @@
+{
+  "id": "ppap",
+  "name": "PPAP",
+  "desc": "고객 양산 부품 승인(PPAP) 제출과 승인 진행입니다.",
+  "dateField": "due",
+  "titleField": "name",
+  "asOfField": "",
+  "fields": [
+    {
+      "key": "partno",
+      "label": "품번",
+      "type": "text"
+    },
+    {
+      "key": "name",
+      "label": "품명",
+      "type": "text",
+      "req": true
+    },
+    {
+      "key": "customer",
+      "label": "고객사",
+      "type": "ref",
+      "ref": "customers"
+    },
+    {
+      "key": "level",
+      "label": "제출 레벨",
+      "type": "select",
+      "options": [
+        "Level 1",
+        "Level 2",
+        "Level 3",
+        "Level 4",
+        "Level 5"
+      ]
+    },
+    {
+      "key": "stage",
+      "label": "단계",
+      "type": "select",
+      "options": [
+        "서류준비",
+        "제출",
+        "고객검토",
+        "승인"
+      ]
+    },
+    {
+      "key": "due",
+      "label": "제출 기한",
+      "type": "date",
+      "req": true
+    },
+    {
+      "key": "status",
+      "label": "상태",
+      "type": "select",
+      "options": [
+        "진행중",
+        "지연",
+        "승인"
+      ],
+      "badge": true
+    },
+    {
+      "key": "approved",
+      "label": "승인일",
+      "type": "date",
+      "closes": true
+    }
+  ],
+  "records": [
+    {"id":"r10h38","partno":"BRK-1830-C","name":"브라켓 BRK-1830 (설변)","customer":"G사","level":"Level 3","stage":"승인","due":"2025-05-29","status":"승인","approved":"2025-05-20"},
+    {"id":"r10h39","partno":"CH-0451-A","name":"커넥터 하우징 (2차 협력사 변경)","customer":"S모빌리티","level":"Level 4","stage":"승인","due":"2026-05-22","status":"승인","approved":"2026-05-16"},
+    {"id":"r10h3a","partno":"CH-0451-E","name":"커넥터 하우징 (금형 이관)","customer":"S모빌리티","level":"Level 2","stage":"승인","due":"2026-01-15","status":"승인","approved":"2026-01-15"},
+    {"id":"r10h3b","partno":"HG-0920-D","name":"힌지 ASSY (금형 이관)","customer":"R사","level":"Level 4","stage":"제출","due":"2026-12-13","status":"진행중","approved":""},
+    {"id":"r10h3c","partno":"DT-7710-D","name":"도어 트림 (설변)","customer":"K사","level":"Level 3","stage":"승인","due":"2025-06-06","status":"승인","approved":"2025-06-02"},
+    {"id":"r10h3d","partno":"BT-5100-D","name":"배터리 트레이","customer":"S모빌리티","level":"Level 3","stage":"승인","due":"2026-07-14","status":"승인","approved":"2026-07-04"},
+    {"id":"r10h3e","partno":"BB-3300-C","name":"범퍼 빔 (2차 협력사 변경)","customer":"H사","level":"Level 3","stage":"승인","due":"2025-11-27","status":"승인","approved":"2025-11-24"},
+    {"id":"r10h3f","partno":"TH-0880-D","name":"테일게이트 힌지 (신규)","customer":"R사","level":"Level 3","stage":"승인","due":"2025-11-08","status":"승인","approved":"2025-10-30"},
+    {"id":"r10h3g","partno":"BB-3300-B","name":"범퍼 빔 (신규)","customer":"H사","level":"Level 3","stage":"승인","due":"2026-11-03","status":"승인","approved":"2026-09-28"},
+    {"id":"r10h3h","partno":"BB-3300-D","name":"범퍼 빔 (설변)","customer":"H사","level":"Level 4","stage":"승인","due":"2026-09-05","status":"승인","approved":"2026-09-04"},
+    {"id":"r10h3i","partno":"BRK-2041-A","name":"리어 브라켓 (설변)","customer":"H사","level":"Level 2","stage":"제출","due":"2026-10-18","status":"진행중","approved":""},
+    {"id":"r10h3j","partno":"HG-0920-C","name":"힌지 ASSY (설변)","customer":"R사","level":"Level 2","stage":"승인","due":"2025-05-02","status":"승인","approved":"2025-04-25"},
+    {"id":"r10h3k","partno":"GB-2200-D","name":"글로브박스 (금형 이관)","customer":"G사","level":"Level 2","stage":"승인","due":"2026-07-27","status":"승인","approved":"2026-07-26"},
+    {"id":"r10h3l","partno":"SB-6620-C","name":"스티어링 브라켓 (신규)","customer":"G사","level":"Level 2","stage":"승인","due":"2025-09-22","status":"승인","approved":"2025-09-12"},
+    {"id":"r10h3m","partno":"SB-6620-C","name":"스티어링 브라켓 (2차 협력사 변경)","customer":"G사","level":"Level 4","stage":"승인","due":"2026-06-26","status":"승인","approved":"2026-06-21"},
+    {"id":"r10h3n","partno":"TH-0880-C","name":"테일게이트 힌지","customer":"R사","level":"Level 2","stage":"승인","due":"2026-03-03","status":"승인","approved":"2026-02-23"},
+    {"id":"r10h3o","partno":"LAT-3290-E","name":"도어래치 ASSY","customer":"H사","level":"Level 2","stage":"승인","due":"2026-08-07","status":"승인","approved":"2026-08-04"},
+    {"id":"r10h3p","partno":"GB-2200-A","name":"글로브박스 (설변)","customer":"G사","level":"Level 4","stage":"승인","due":"2026-08-15","status":"승인","approved":"2026-08-13"},
+    {"id":"r10h3q","partno":"CV-4400-C","name":"콘솔 커버 (설변)","customer":"H사","level":"Level 3","stage":"승인","due":"2025-09-08","status":"승인","approved":"2025-09-01"},
+    {"id":"r10h3r","partno":"BT-5100-E","name":"배터리 트레이","customer":"S모빌리티","level":"Level 3","stage":"승인","due":"2026-05-25","status":"승인","approved":"2026-05-25"},
+    {"id":"r10h3s","partno":"BT-5100-B","name":"배터리 트레이 (2차 협력사 변경)","customer":"S모빌리티","level":"Level 2","stage":"승인","due":"2025-12-07","status":"승인","approved":"2025-12-03"},
+    {"id":"r10h3t","partno":"DT-7710-C","name":"도어 트림 (설변)","customer":"K사","level":"Level 3","stage":"승인","due":"2026-03-07","status":"승인","approved":"2026-02-27"},
+    {"id":"r10h3u","partno":"HG-0920-C","name":"힌지 ASSY (설변)","customer":"R사","level":"Level 2","stage":"승인","due":"2026-09-10","status":"승인","approved":"2026-09-01"},
+    {"id":"r10h3v","partno":"BT-5100-C","name":"배터리 트레이","customer":"S모빌리티","level":"Level 3","stage":"승인","due":"2025-09-02","status":"승인","approved":"2025-08-28"},
+    {"id":"r10h3w","partno":"BT-5100-B","name":"배터리 트레이","customer":"S모빌리티","level":"Level 3","stage":"승인","due":"2025-10-10","status":"승인","approved":"2025-09-30"},
+    {"id":"r10h3x","partno":"CV-4400-B","name":"콘솔 커버 (2차 협력사 변경)","customer":"H사","level":"Level 2","stage":"승인","due":"2026-10-03","status":"승인","approved":"2026-09-25"},
+    {"id":"r10h3y","partno":"BRK-2041-A","name":"리어 브라켓 (2차 협력사 변경)","customer":"H사","level":"Level 4","stage":"승인","due":"2025-05-06","status":"승인","approved":"2025-05-04"},
+    {"id":"r10h3z","partno":"SB-6620-A","name":"스티어링 브라켓 (설변)","customer":"G사","level":"Level 4","stage":"승인","due":"2025-11-04","status":"승인","approved":"2025-10-26"},
+    {"id":"r10h40","partno":"SB-6620-C","name":"스티어링 브라켓","customer":"G사","level":"Level 3","stage":"승인","due":"2026-10-01","status":"승인","approved":"2026-09-30"},
+    {"id":"r10h41","partno":"CV-4400-C","name":"콘솔 커버 (설변)","customer":"H사","level":"Level 3","stage":"승인","due":"2026-04-14","status":"승인","approved":"2026-04-07"},
+    {"id":"r10h42","partno":"AR-1100-B","name":"암레스트 (2차 협력사 변경)","customer":"K사","level":"Level 2","stage":"승인","due":"2025-08-10","status":"승인","approved":"2025-08-04"},
+    {"id":"r10h43","partno":"BRK-2041-B","name":"리어 브라켓 (금형 이관)","customer":"H사","level":"Level 3","stage":"고객검토","due":"2026-12-18","status":"진행중","approved":""},
+    {"id":"r10h44","partno":"AR-1100-C","name":"암레스트 (설변)","customer":"K사","level":"Level 2","stage":"승인","due":"2025-05-18","status":"승인","approved":"2025-05-10"},
+    {"id":"r10h45","partno":"GB-2200-E","name":"글로브박스 (금형 이관)","customer":"G사","level":"Level 2","stage":"승인","due":"2026-01-28","status":"승인","approved":"2026-01-20"},
+    {"id":"r10h46","partno":"CH-0451-D","name":"커넥터 하우징","customer":"S모빌리티","level":"Level 3","stage":"승인","due":"2026-05-16","status":"승인","approved":"2026-05-14"},
+    {"id":"r10h47","partno":"GB-2200-E","name":"글로브박스 (신규)","customer":"G사","level":"Level 3","stage":"제출","due":"2026-10-23","status":"진행중","approved":""},
+    {"id":"r10h48","partno":"BRK-2041-A","name":"리어 브라켓 (신규)","customer":"H사","level":"Level 4","stage":"승인","due":"2026-05-05","status":"승인","approved":"2026-04-26"},
+    {"id":"r10h49","partno":"TH-0880-B","name":"테일게이트 힌지","customer":"R사","level":"Level 3","stage":"승인","due":"2026-01-25","status":"승인","approved":"2026-01-23"},
+    {"id":"r10h4a","partno":"SB-6620-B","name":"스티어링 브라켓 (설변)","customer":"G사","level":"Level 4","stage":"승인","due":"2026-01-13","status":"승인","approved":"2026-01-13"},
+    {"id":"r10h4b","partno":"HG-0920-C","name":"힌지 ASSY (2차 협력사 변경)","customer":"R사","level":"Level 3","stage":"승인","due":"2025-10-09","status":"승인","approved":"2025-10-02"},
+    {"id":"r10h4c","partno":"DT-7710-E","name":"도어 트림 (설변)","customer":"K사","level":"Level 3","stage":"승인","due":"2025-12-13","status":"승인","approved":"2025-12-13"},
+    {"id":"r10h4d","partno":"BRK-2041-C","name":"리어 브라켓 (2차 협력사 변경)","customer":"H사","level":"Level 3","stage":"제출","due":"2026-11-10","status":"진행중","approved":""}
+  ]
+}

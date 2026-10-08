@@ -1,0 +1,74 @@
+{
+  "id": "customers",
+  "name": "고객사",
+  "master": true,
+  "desc": "완성차·전기차 고객사 목록입니다. 클레임·PPAP·심사에서 골라 씁니다.",
+  "dateField": "",
+  "titleField": "name",
+  "asOfField": "",
+  "fields": [
+    {
+      "key": "name",
+      "label": "고객사",
+      "type": "text",
+      "req": true
+    },
+    {
+      "key": "kind",
+      "label": "구분",
+      "type": "select",
+      "options": [
+        "완성차",
+        "전기차",
+        "1차 협력사",
+        "기타"
+      ]
+    },
+    {
+      "key": "contact",
+      "label": "고객 품질 담당",
+      "type": "text"
+    },
+    {
+      "key": "note",
+      "label": "비고",
+      "type": "text"
+    },
+    {
+      "key": "n_claim",
+      "label": "클레임 건수",
+      "type": "rollup",
+      "rel": "claims:customer",
+      "agg": "count"
+    },
+    {
+      "key": "n_open",
+      "label": "미결 클레임",
+      "type": "rollup",
+      "rel": "claims:customer",
+      "agg": "count",
+      "where": {
+        "f": "status",
+        "op": "!=",
+        "v": "완료"
+      }
+    },
+    {
+      "key": "cost_sum",
+      "label": "클레임 비용 합계(만원)",
+      "type": "rollup",
+      "rel": "claims:customer",
+      "agg": "sum",
+      "field": "cost"
+    }
+  ],
+  "tpls": [],
+  "records": [
+    {"id":"r10fqh","name":"H사","kind":"완성차","contact":"H사 품질팀 이과장","note":""},
+    {"id":"r10fqi","name":"K사","kind":"완성차","contact":"K사 SQ팀","note":""},
+    {"id":"r10fqj","name":"G사","kind":"완성차","contact":"G사 협력사품질","note":""},
+    {"id":"r10fqk","name":"R사","kind":"완성차","contact":"R사 품질보증","note":""},
+    {"id":"r10fql","name":"S모빌리티","kind":"전기차","contact":"S모빌리티 부품품질","note":""},
+    {"id":"r10fqm","name":"기타","kind":"기타","contact":"","note":""}
+  ]
+}

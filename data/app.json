@@ -1,0 +1,4358 @@
+{
+  "format": "qa-dashboard/1",
+  "appName": "품질보증 업무 현황",
+  "owner": "품질보증팀",
+  "pages": [
+    {
+      "id": "overview",
+      "title": "종합 현황",
+      "group": "현황판",
+      "desc": "고객 클레임, 공정 불량률, 8D, 품질 비용과 이상 알림을 한눈에 봅니다.",
+      "widgets": [
+        {
+          "type": "kpi",
+          "items": [
+            {
+              "label": "이번 달 고객 클레임",
+              "unit": "건",
+              "src": {
+                "agg": "count",
+                "period": "thisMonth",
+                "filter": [],
+                "ds": "claims",
+                "compare": true,
+                "spark": true
+              },
+              "goal": 12,
+              "lowerIsBetter": true,
+              "status": "auto"
+            },
+            {
+              "label": "이번 달 공정 불량률",
+              "unit": "PPM",
+              "src": {
+                "agg": "ratio",
+                "period": "thisMonth",
+                "filter": [],
+                "ds": "inspections",
+                "field": "defects",
+                "field2": "inspected",
+                "scale": 1000000,
+                "spark": true
+              },
+              "goal": 3000,
+              "lowerIsBetter": true,
+              "status": "auto"
+            },
+            {
+              "label": "진행 중 8D",
+              "unit": "건",
+              "src": {
+                "agg": "count",
+                "period": "all",
+                "filter": [
+                  {
+                    "f": "status",
+                    "op": "!=",
+                    "v": "완료"
+                  }
+                ],
+                "ds": "capa"
+              },
+              "goal": 6,
+              "lowerIsBetter": true,
+              "status": "auto"
+            },
+            {
+              "label": "이번 달 품질 비용",
+              "unit": "만원",
+              "src": {
+                "agg": "sum",
+                "period": "thisMonth",
+                "filter": [],
+                "ds": "copq",
+                "field": "amount",
+                "compare": true,
+                "spark": true
+              },
+              "lowerIsBetter": true
+            }
+          ]
+        },
+        {
+          "type": "gauge",
+          "span": 4,
+          "title": "이번 달 고객 클레임 (목표 ≤ 12)",
+          "unit": "건",
+          "goal": 2,
+          "lowerIsBetter": true,
+          "src": {
+            "ds": "claims",
+            "agg": "count",
+            "period": "thisMonth",
+            "filter": []
+          }
+        },
+        {
+          "type": "yoy",
+          "span": 8,
+          "title": "고객 클레임 전년 비교",
+          "unit": "건",
+          "lowerIsBetter": true,
+          "src": {
+            "ds": "claims",
+            "agg": "count",
+            "period": "all",
+            "filter": []
+          }
+        },
+        {
+          "type": "alerts",
+          "span": 6,
+          "title": "이상 알림",
+          "limit": 3,
+          "rules": [
+            {
+              "ds": "cpk",
+              "label": "Cpk 1.33 미만 (최근 측정)",
+              "level": "critical",
+              "filter": [
+                {
+                  "f": "cpk",
+                  "op": "<",
+                  "v": "1.33"
+                },
+                {
+                  "f": "date",
+                  "op": ">=",
+                  "v": "today-40"
+                }
+              ]
+            },
+            {
+              "ds": "capa",
+              "label": "8D 기한 초과",
+              "level": "serious",
+              "filter": [
+                {
+                  "f": "status",
+                  "op": "=",
+                  "v": "지연"
+                }
+              ]
+            },
+            {
+              "ds": "ppap",
+              "label": "PPAP 제출 지연",
+              "level": "serious",
+              "filter": [
+                {
+                  "f": "status",
+                  "op": "=",
+                  "v": "지연"
+                }
+              ]
+            },
+            {
+              "ds": "calib",
+              "label": "측정기 교정 기한 지남",
+              "level": "serious",
+              "filter": [
+                {
+                  "f": "next",
+                  "op": "<",
+                  "v": "today"
+                },
+                {
+                  "f": "status",
+                  "op": "!=",
+                  "v": "폐기"
+                }
+              ]
+            },
+            {
+              "ds": "claims",
+              "label": "30일 넘은 미결 클레임",
+              "level": "warning",
+              "filter": [
+                {
+                  "f": "date",
+                  "op": "<",
+                  "v": "today-30"
+                },
+                {
+                  "f": "status",
+                  "op": "!=",
+                  "v": "완료"
+                }
+              ]
+            },
+            {
+              "ds": "nc",
+              "label": "부적합 조치 기한 초과",
+              "level": "warning",
+              "filter": [
+                {
+                  "f": "due",
+                  "op": "<",
+                  "v": "today"
+                },
+                {
+                  "f": "status",
+                  "op": "!=",
+                  "v": "완료"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "dday",
+          "span": 6,
+          "title": "다가오는 고객 일정 (PPAP)",
+          "src": {
+            "ds": "ppap",
+            "title": "name",
+            "date": "due",
+            "sub": "customer",
+            "limit": 4,
+            "period": "all",
+            "filter": [
+              {
+                "f": "status",
+                "op": "!=",
+                "v": "승인"
+              }
+            ]
+          }
+        },
+        {
+          "type": "line",
+          "span": 8,
+          "title": "검사 구분별 불량률 추이",
+          "unit": "PPM",
+          "target": 3000,
+          "src": {
+            "ds": "inspections",
+            "agg": "ratio",
+            "field": "defects",
+            "field2": "inspected",
+            "scale": 1000000,
+            "x": "month",
+            "months": 12,
+            "series": "kind",
+            "period": "all",
+            "filter": []
+          }
+        },
+        {
+          "type": "donut",
+          "span": 4,
+          "title": "올해 품질 비용 구성",
+          "unit": "만원",
+          "src": {
+            "ds": "copq",
+            "agg": "sum",
+            "field": "amount",
+            "by": "kind",
+            "period": "ytd",
+            "filter": []
+          }
+        },
+        {
+          "type": "history",
+          "span": 6,
+          "title": "최근 변경 내역",
+          "limit": 8
+        },
+        {
+          "type": "links",
+          "span": 6,
+          "title": "바로가기",
+          "items": [
+            {
+              "label": "H사 협력사 포털",
+              "url": "https://partner.example.com/h-motors",
+              "desc": "클레임 접수·8D 회신"
+            },
+            {
+              "label": "K사 SQ 시스템",
+              "url": "https://sq.example.com/k",
+              "desc": "PPAP 제출"
+            },
+            {
+              "label": "품질보증 공유 폴더",
+              "url": "\\\\fileserver\\QA",
+              "desc": "성적서·8D 보고서"
+            },
+            {
+              "label": "사내 MES",
+              "url": "http://mes.local/quality",
+              "desc": "공정 불량·검사 실적"
+            }
+          ]
+        },
+        {
+          "type": "summary",
+          "span": 6,
+          "title": "이번 달 고객 클레임 요약",
+          "unit": "건",
+          "src": {
+            "ds": "claims",
+            "period": "thisMonth",
+            "filter": [],
+            "agg": "count",
+            "by": "customer",
+            "by2": "type"
+          }
+        },
+        {
+          "type": "rankchange",
+          "span": 6,
+          "title": "클레임 부품 순위 변화",
+          "unit": "건",
+          "src": {
+            "ds": "claims",
+            "period": "all",
+            "filter": [],
+            "agg": "count",
+            "by": "part",
+            "cmp": "3m",
+            "top": 7
+          }
+        }
+      ]
+    },
+    {
+      "id": "weekly",
+      "title": "주간 회의",
+      "group": "현황판",
+      "desc": "주간 품질 회의 때 띄워 두는 페이지입니다.",
+      "widgets": [
+        {
+          "type": "alerts",
+          "span": 6,
+          "title": "이번 주 확인할 것",
+          "limit": 3,
+          "rules": [
+            {
+              "ds": "capa",
+              "label": "8D 기한 초과",
+              "level": "serious",
+              "filter": [
+                {
+                  "f": "status",
+                  "op": "=",
+                  "v": "지연"
+                }
+              ]
+            },
+            {
+              "ds": "tasks",
+              "label": "기한 지난 업무",
+              "level": "warning",
+              "filter": [
+                {
+                  "f": "due",
+                  "op": "<",
+                  "v": "today"
+                },
+                {
+                  "f": "status",
+                  "op": "!=",
+                  "v": "완료"
+                }
+              ]
+            },
+            {
+              "ds": "claims",
+              "label": "이번 주 새 클레임",
+              "level": "warning",
+              "filter": [
+                {
+                  "f": "date",
+                  "op": ">=",
+                  "v": "today-7"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "dday",
+          "span": 6,
+          "title": "다가오는 심사 · 초기유동",
+          "items": [
+            {
+              "label": "IATF 16949 사후심사",
+              "date": "2026-11-11",
+              "note": "인증기관 2명"
+            },
+            {
+              "label": "H사 공정 감사",
+              "date": "2026-10-21",
+              "note": "도어래치 라인"
+            },
+            {
+              "label": "테일게이트 힌지 SOP",
+              "date": "2026-10-26",
+              "note": "R사"
+            }
+          ]
+        },
+        {
+          "type": "calendar",
+          "span": 6,
+          "title": "업무 일정",
+          "src": {
+            "ds": "tasks",
+            "date": "due",
+            "title": "title",
+            "color": "category",
+            "period": "all",
+            "filter": []
+          }
+        },
+        {
+          "type": "tasks",
+          "span": 6,
+          "title": "진행 중인 업무",
+          "src": {
+            "ds": "tasks",
+            "period": "all",
+            "filter": [
+              {
+                "f": "status",
+                "op": "!=",
+                "v": "완료"
+              }
+            ],
+            "limit": 7,
+            "map": {
+              "title": "title",
+              "owner": "owner",
+              "due": "due",
+              "status": "status",
+              "progress": "progress"
+            }
+          }
+        },
+        {
+          "type": "note",
+          "span": 6,
+          "title": "최근 회의록 · 이슈",
+          "src": {
+            "ds": "memos",
+            "period": "all",
+            "filter": [],
+            "main": "content",
+            "pre": "date",
+            "post": "owner",
+            "tag": "category",
+            "limit": 7
+          }
+        },
+        {
+          "type": "quickform",
+          "span": 6,
+          "title": "메모 바로 입력",
+          "src": {
+            "ds": "memos",
+            "cols": [
+              "date",
+              "category",
+              "content",
+              "owner"
+            ]
+          }
+        },
+        {
+          "type": "history",
+          "span": 12,
+          "title": "이번 주 변경 내역",
+          "limit": 10
+        },
+        {
+          "type": "summary",
+          "span": 6,
+          "title": "이번 달 공정 불량 요약",
+          "unit": "개",
+          "src": {
+            "ds": "defects",
+            "period": "thisMonth",
+            "filter": [],
+            "agg": "sum",
+            "field": "qty",
+            "by": "line",
+            "by2": "type"
+          }
+        },
+        {
+          "type": "burndown",
+          "span": 6,
+          "title": "8D 미결 추이 (최근 60일)",
+          "src": {
+            "ds": "capa",
+            "period": "all",
+            "filter": [],
+            "start": "issued",
+            "end": "closed",
+            "days": 60
+          }
+        }
+      ]
+    },
+    {
+      "id": "claims-pg",
+      "title": "고객 클레임",
+      "group": "고객 품질",
+      "desc": "고객 클레임 접수·처리 현황과 유형·부품·고객사별 분석입니다.",
+      "widgets": [
+        {
+          "type": "kpi",
+          "items": [
+            {
+              "label": "이번 달 클레임",
+              "unit": "건",
+              "src": {
+                "agg": "count",
+                "period": "thisMonth",
+                "filter": [],
+                "ds": "claims",
+                "compare": true,
+                "spark": true
+              },
+              "goal": 12,
+              "lowerIsBetter": true,
+              "status": "auto"
+            },
+            {
+              "label": "평균 처리 기간 (최근 3개월)",
+              "unit": "일",
+              "src": {
+                "agg": "avg",
+                "period": "last3m",
+                "filter": [
+                  {
+                    "f": "status",
+                    "op": "=",
+                    "v": "완료"
+                  }
+                ],
+                "ds": "claims",
+                "field": "lead"
+              },
+              "goal": 20,
+              "lowerIsBetter": true,
+              "status": "auto"
+            },
+            {
+              "label": "미결 클레임",
+              "unit": "건",
+              "src": {
+                "agg": "count",
+                "period": "all",
+                "filter": [
+                  {
+                    "f": "status",
+                    "op": "!=",
+                    "v": "완료"
+                  }
+                ],
+                "ds": "claims"
+              },
+              "goal": 8,
+              "lowerIsBetter": true,
+              "status": "auto"
+            },
+            {
+              "label": "이번 달 클레임 비용",
+              "unit": "만원",
+              "src": {
+                "agg": "sum",
+                "period": "thisMonth",
+                "filter": [],
+                "ds": "claims",
+                "field": "cost",
+                "compare": true,
+                "spark": true
+              },
+              "lowerIsBetter": true
+            }
+          ]
+        },
+        {
+          "type": "bar",
+          "span": 8,
+          "title": "월별 클레임 (고객사별)",
+          "unit": "건",
+          "stacked": true,
+          "src": {
+            "ds": "claims",
+            "agg": "count",
+            "x": "month",
+            "months": 12,
+            "series": "customer",
+            "period": "all",
+            "filter": []
+          }
+        },
+        {
+          "type": "donut",
+          "span": 4,
+          "title": "고객사 비중 (최근 3개월)",
+          "unit": "건",
+          "src": {
+            "ds": "claims",
+            "agg": "count",
+            "by": "customer",
+            "period": "last3m",
+            "filter": []
+          }
+        },
+        {
+          "type": "pareto",
+          "span": 6,
+          "title": "불량 유형 파레토 (최근 12개월)",
+          "unit": "건",
+          "mark": 80,
+          "src": {
+            "ds": "claims",
+            "agg": "count",
+            "by": "type",
+            "top": 8,
+            "period": "last12m",
+            "filter": []
+          }
+        },
+        {
+          "type": "hbar",
+          "span": 6,
+          "title": "부품별 클레임 비용 (최근 12개월)",
+          "unit": "만원",
+          "src": {
+            "ds": "claims",
+            "agg": "sum",
+            "field": "cost",
+            "by": "part",
+            "top": 7,
+            "period": "last12m",
+            "filter": []
+          }
+        },
+        {
+          "type": "heatmap",
+          "span": 12,
+          "title": "부품 × 불량 유형 (최근 12개월)",
+          "unit": "건",
+          "src": {
+            "ds": "claims",
+            "agg": "count",
+            "by": "part",
+            "by2": "type",
+            "topRows": 9,
+            "topCols": 6,
+            "period": "last12m",
+            "filter": []
+          }
+        },
+        {
+          "type": "table",
+          "span": 12,
+          "title": "최근 클레임",
+          "src": {
+            "ds": "claims",
+            "period": "all",
+            "filter": [],
+            "cols": [
+              "no",
+              "date",
+              "customer",
+              "part",
+              "type",
+              "qty",
+              "owner",
+              "status",
+              "lead"
+            ],
+            "limit": 10
+          }
+        },
+        {
+          "type": "gallery",
+          "span": 12,
+          "title": "클레임 사진",
+          "src": {
+            "ds": "claims",
+            "file": "files",
+            "title": "no",
+            "imagesOnly": true,
+            "limit": 12,
+            "period": "all",
+            "filter": []
+          }
+        },
+        {
+          "type": "goaltable",
+          "span": 6,
+          "title": "2026년 클레임 건수 목표 대비 실적",
+          "unit": "건",
+          "goal": 13,
+          "lowerIsBetter": true,
+          "goals": [
+            15,
+            15,
+            14,
+            14,
+            13,
+            13,
+            13,
+            12,
+            12,
+            12,
+            11,
+            11
+          ],
+          "src": {
+            "ds": "claims",
+            "period": "all",
+            "filter": [],
+            "agg": "count"
+          }
+        },
+        {
+          "type": "summary",
+          "span": 6,
+          "title": "이번 달 클레임 요약",
+          "unit": "건",
+          "src": {
+            "ds": "claims",
+            "period": "thisMonth",
+            "filter": [],
+            "agg": "count",
+            "by": "customer",
+            "by2": "type"
+          }
+        },
+        {
+          "type": "scatter",
+          "span": 6,
+          "title": "클레임 수량 vs 비용",
+          "src": {
+            "ds": "claims",
+            "period": "all",
+            "filter": [],
+            "xf": "qty",
+            "yf": "cost",
+            "color": "customer",
+            "label": "no",
+            "limit": 300
+          }
+        },
+        {
+          "type": "rankchange",
+          "span": 6,
+          "title": "부품별 클레임 순위 변화",
+          "unit": "건",
+          "src": {
+            "ds": "claims",
+            "period": "all",
+            "filter": [],
+            "agg": "count",
+            "by": "part",
+            "cmp": "3m",
+            "top": 8
+          }
+        },
+        {
+          "type": "burndown",
+          "span": 6,
+          "title": "클레임 미결 추이",
+          "src": {
+            "ds": "claims",
+            "period": "all",
+            "filter": [],
+            "start": "date",
+            "end": "closed",
+            "days": 90
+          }
+        },
+        {
+          "type": "annotate",
+          "span": 6,
+          "title": "최근 클레임 불량 위치",
+          "img": "files/claims/261002-r10g08-도어래치 ASSY 용접 스패터.svg",
+          "marks": [
+            {
+              "x": 57,
+              "y": 62,
+              "t": "용접 스패터 부착 (고객 지적 부위)"
+            },
+            {
+              "x": 40,
+              "y": 47,
+              "t": "인접 부위 동일 현상 확인 필요"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "capa-pg",
+      "title": "8D / 시정조치",
+      "group": "고객 품질",
+      "desc": "8D 단계 진행과 기한, 지연 건을 관리합니다.",
+      "widgets": [
+        {
+          "type": "kpi",
+          "items": [
+            {
+              "label": "진행 중 8D",
+              "unit": "건",
+              "src": {
+                "agg": "count",
+                "period": "all",
+                "filter": [
+                  {
+                    "f": "status",
+                    "op": "!=",
+                    "v": "완료"
+                  }
+                ],
+                "ds": "capa"
+              }
+            },
+            {
+              "label": "기한 초과",
+              "unit": "건",
+              "src": {
+                "agg": "count",
+                "period": "all",
+                "filter": [
+                  {
+                    "f": "status",
+                    "op": "=",
+                    "v": "지연"
+                  }
+                ],
+                "ds": "capa"
+              },
+              "goal": 0,
+              "lowerIsBetter": true,
+              "status": "auto"
+            },
+            {
+              "label": "이번 달 종결",
+              "unit": "건",
+              "src": {
+                "agg": "count",
+                "period": "thisMonth",
+                "filter": [
+                  {
+                    "f": "status",
+                    "op": "=",
+                    "v": "완료"
+                  }
+                ],
+                "ds": "capa",
+                "dateField": "closed"
+              }
+            },
+            {
+              "label": "평균 처리 기간 (최근 6개월)",
+              "unit": "일",
+              "src": {
+                "agg": "avg",
+                "period": "last6m",
+                "filter": [
+                  {
+                    "f": "status",
+                    "op": "=",
+                    "v": "완료"
+                  }
+                ],
+                "ds": "capa",
+                "field": "lead"
+              },
+              "goal": 40,
+              "lowerIsBetter": true,
+              "status": "auto"
+            }
+          ]
+        },
+        {
+          "type": "kanban",
+          "span": 12,
+          "title": "8D 단계 보드",
+          "src": {
+            "ds": "capa",
+            "col": "step",
+            "title": "subject",
+            "owner": "owner",
+            "due": "due",
+            "hideEmpty": false,
+            "limit": 6,
+            "period": "all",
+            "filter": [
+              {
+                "f": "issued",
+                "op": ">=",
+                "v": "today-120"
+              }
+            ]
+          }
+        },
+        {
+          "type": "gantt",
+          "span": 12,
+          "title": "진행 중 8D 일정",
+          "src": {
+            "ds": "capa",
+            "title": "subject",
+            "sub": "owner",
+            "start": "issued",
+            "end": "due",
+            "status": "status",
+            "done": "closed",
+            "range": "auto",
+            "limit": 14,
+            "period": "all",
+            "filter": [
+              {
+                "f": "status",
+                "op": "!=",
+                "v": "완료"
+              }
+            ]
+          }
+        },
+        {
+          "type": "donut",
+          "span": 6,
+          "title": "발생 출처 (최근 12개월)",
+          "unit": "건",
+          "src": {
+            "ds": "capa",
+            "agg": "count",
+            "by": "source",
+            "period": "last12m",
+            "filter": []
+          }
+        },
+        {
+          "type": "line",
+          "span": 6,
+          "title": "월별 8D 발행",
+          "unit": "건",
+          "src": {
+            "ds": "capa",
+            "agg": "count",
+            "x": "month",
+            "months": 12,
+            "period": "all",
+            "filter": []
+          }
+        },
+        {
+          "type": "timeline",
+          "span": 12,
+          "title": "진행 중인 8D 타임라인",
+          "src": {
+            "ds": "capa",
+            "period": "all",
+            "filter": [],
+            "rid": "r10g2x"
+          }
+        },
+        {
+          "type": "burndown",
+          "span": 6,
+          "title": "8D 미결 추이",
+          "src": {
+            "ds": "capa",
+            "period": "all",
+            "filter": [],
+            "start": "issued",
+            "end": "closed",
+            "days": 180
+          }
+        },
+        {
+          "type": "rankchange",
+          "span": 6,
+          "title": "발생 출처별 8D 순위 (올해 vs 작년)",
+          "unit": "건",
+          "src": {
+            "ds": "capa",
+            "period": "all",
+            "filter": [],
+            "agg": "count",
+            "by": "source",
+            "cmp": "year",
+            "top": 6
+          }
+        }
+      ]
+    },
+    {
+      "id": "ppap-pg",
+      "title": "PPAP / 양산 승인",
+      "group": "고객 품질",
+      "desc": "PPAP 제출 단계와 기한, 승인 현황입니다.",
+      "widgets": [
+        {
+          "type": "kpi",
+          "items": [
+            {
+              "label": "진행 중 PPAP",
+              "unit": "건",
+              "src": {
+                "agg": "count",
+                "period": "all",
+                "filter": [
+                  {
+                    "f": "status",
+                    "op": "=",
+                    "v": "진행중"
+                  }
+                ],
+                "ds": "ppap"
+              }
+            },
+            {
+              "label": "제출 지연",
+              "unit": "건",
+              "src": {
+                "agg": "count",
+                "period": "all",
+                "filter": [
+                  {
+                    "f": "status",
+                    "op": "=",
+                    "v": "지연"
+                  }
+                ],
+                "ds": "ppap"
+              },
+              "goal": 0,
+              "lowerIsBetter": true,
+              "status": "auto"
+            },
+            {
+              "label": "올해 승인",
+              "unit": "건",
+              "src": {
+                "agg": "count",
+                "period": "ytd",
+                "filter": [
+                  {
+                    "f": "status",
+                    "op": "=",
+                    "v": "승인"
+                  }
+                ],
+                "ds": "ppap",
+                "dateField": "approved"
+              }
+            }
+          ]
+        },
+        {
+          "type": "kanban",
+          "span": 12,
+          "title": "PPAP 단계",
+          "src": {
+            "ds": "ppap",
+            "col": "stage",
+            "title": "name",
+            "owner": "customer",
+            "due": "due",
+            "hideEmpty": false,
+            "limit": 6,
+            "period": "all",
+            "filter": [
+              {
+                "f": "due",
+                "op": ">=",
+                "v": "today-60"
+              }
+            ]
+          }
+        },
+        {
+          "type": "calendar",
+          "span": 6,
+          "title": "제출 기한 달력",
+          "src": {
+            "ds": "ppap",
+            "date": "due",
+            "title": "name",
+            "color": "status",
+            "period": "all",
+            "filter": []
+          }
+        },
+        {
+          "type": "dday",
+          "span": 6,
+          "title": "다가오는 제출 기한",
+          "src": {
+            "ds": "ppap",
+            "title": "name",
+            "date": "due",
+            "sub": "customer",
+            "limit": 6,
+            "period": "all",
+            "filter": [
+              {
+                "f": "status",
+                "op": "!=",
+                "v": "승인"
+              }
+            ]
+          }
+        },
+        {
+          "type": "table",
+          "span": 12,
+          "title": "PPAP 목록",
+          "src": {
+            "ds": "ppap",
+            "period": "all",
+            "filter": [
+              {
+                "f": "due",
+                "op": ">=",
+                "v": "today-90"
+              }
+            ],
+            "cols": [
+              "partno",
+              "name",
+              "customer",
+              "level",
+              "stage",
+              "due",
+              "status"
+            ],
+            "sort": "due",
+            "asc": true,
+            "limit": 15
+          }
+        }
+      ]
+    },
+    {
+      "id": "launch-pg",
+      "title": "초기유동관리",
+      "group": "고객 품질",
+      "desc": "신규 양산 부품의 SOP 후 90일 관리 현황입니다.",
+      "widgets": [
+        {
+          "type": "gantt",
+          "span": 12,
+          "title": "초기유동 관리 기간",
+          "src": {
+            "ds": "launch",
+            "title": "part",
+            "sub": "customer",
+            "start": "sop",
+            "end": "end",
+            "status": "status",
+            "range": "auto",
+            "limit": 10,
+            "period": "all",
+            "filter": []
+          }
+        },
+        {
+          "type": "bar",
+          "span": 6,
+          "title": "부품별 누적 불량",
+          "unit": "개",
+          "src": {
+            "ds": "launch",
+            "agg": "sum",
+            "field": "defects",
+            "x": "part",
+            "top": 8,
+            "period": "all",
+            "filter": []
+          }
+        },
+        {
+          "type": "dday",
+          "span": 6,
+          "title": "다가오는 SOP",
+          "src": {
+            "ds": "launch",
+            "title": "part",
+            "date": "sop",
+            "sub": "customer",
+            "limit": 4,
+            "period": "all",
+            "filter": []
+          }
+        },
+        {
+          "type": "table",
+          "span": 12,
+          "title": "초기유동 목록",
+          "src": {
+            "ds": "launch",
+            "period": "all",
+            "filter": [],
+            "cols": [
+              "part",
+              "customer",
+              "sop",
+              "end",
+              "defects",
+              "elapsed",
+              "status"
+            ],
+            "sort": "sop",
+            "limit": 10
+          }
+        }
+      ]
+    },
+    {
+      "id": "defects-pg",
+      "title": "공정 불량",
+      "group": "공정 품질",
+      "desc": "공정·입고·출하 불량의 추이, 유형, 라인별 분석입니다.",
+      "widgets": [
+        {
+          "type": "kpi",
+          "items": [
+            {
+              "label": "이번 달 불량 수량",
+              "unit": "개",
+              "src": {
+                "agg": "sum",
+                "period": "thisMonth",
+                "filter": [],
+                "ds": "defects",
+                "field": "qty",
+                "compare": true,
+                "spark": true
+              },
+              "lowerIsBetter": true
+            },
+            {
+              "label": "이번 달 불량 건수",
+              "unit": "건",
+              "src": {
+                "agg": "count",
+                "period": "thisMonth",
+                "filter": [],
+                "ds": "defects",
+                "compare": true
+              },
+              "lowerIsBetter": true
+            },
+            {
+              "label": "조치 중",
+              "unit": "건",
+              "src": {
+                "agg": "count",
+                "period": "all",
+                "filter": [
+                  {
+                    "f": "status",
+                    "op": "!=",
+                    "v": "완료"
+                  }
+                ],
+                "ds": "defects"
+              },
+              "goal": 10,
+              "lowerIsBetter": true,
+              "status": "auto"
+            }
+          ]
+        },
+        {
+          "type": "bar",
+          "span": 8,
+          "title": "월별 불량 수량 (구분별)",
+          "unit": "개",
+          "stacked": true,
+          "src": {
+            "ds": "defects",
+            "agg": "sum",
+            "field": "qty",
+            "x": "month",
+            "months": 12,
+            "series": "kind",
+            "period": "all",
+            "filter": []
+          }
+        },
+        {
+          "type": "donut",
+          "span": 4,
+          "title": "구분 비중 (최근 3개월)",
+          "unit": "개",
+          "src": {
+            "ds": "defects",
+            "agg": "sum",
+            "field": "qty",
+            "by": "kind",
+            "period": "last3m",
+            "filter": []
+          }
+        },
+        {
+          "type": "pareto",
+          "span": 6,
+          "title": "불량 유형 파레토 (수량, 최근 3개월)",
+          "unit": "개",
+          "mark": 80,
+          "src": {
+            "ds": "defects",
+            "agg": "sum",
+            "field": "qty",
+            "by": "type",
+            "top": 8,
+            "period": "last3m",
+            "filter": []
+          }
+        },
+        {
+          "type": "hbar",
+          "span": 6,
+          "title": "부품별 불량 수량 (최근 3개월)",
+          "unit": "개",
+          "src": {
+            "ds": "defects",
+            "agg": "sum",
+            "field": "qty",
+            "by": "part",
+            "top": 7,
+            "period": "last3m",
+            "filter": []
+          }
+        },
+        {
+          "type": "heatmap",
+          "span": 12,
+          "title": "라인 × 불량 유형 (최근 6개월)",
+          "unit": "개",
+          "src": {
+            "ds": "defects",
+            "agg": "sum",
+            "field": "qty",
+            "by": "line",
+            "by2": "type",
+            "topRows": 8,
+            "topCols": 6,
+            "period": "last6m",
+            "filter": [
+              {
+                "f": "kind",
+                "op": "=",
+                "v": "공정"
+              }
+            ]
+          }
+        },
+        {
+          "type": "gallery",
+          "span": 6,
+          "title": "불량 사진",
+          "src": {
+            "ds": "defects",
+            "file": "files",
+            "title": "part",
+            "imagesOnly": true,
+            "limit": 9,
+            "period": "all",
+            "filter": []
+          }
+        },
+        {
+          "type": "quickform",
+          "span": 6,
+          "title": "불량 바로 입력",
+          "src": {
+            "ds": "defects",
+            "cols": [
+              "date",
+              "kind",
+              "line",
+              "part",
+              "type",
+              "qty"
+            ]
+          }
+        },
+        {
+          "type": "floormap",
+          "span": 12,
+          "title": "라인별 불량 배치도 (최근 3개월)",
+          "unit": "개",
+          "img": "files/layout/공장 배치도.svg",
+          "pos": {
+            "프레스 1": {
+              "x": 19,
+              "y": 31.8
+            },
+            "프레스 2": {
+              "x": 19,
+              "y": 63.9
+            },
+            "용접 1": {
+              "x": 40,
+              "y": 31.8
+            },
+            "용접 2": {
+              "x": 40,
+              "y": 63.9
+            },
+            "사출 1": {
+              "x": 61,
+              "y": 31.8
+            },
+            "도장": {
+              "x": 61,
+              "y": 63.9
+            },
+            "조립 1": {
+              "x": 82,
+              "y": 31.8
+            },
+            "조립 2": {
+              "x": 82,
+              "y": 63.9
+            }
+          },
+          "src": {
+            "ds": "defects",
+            "period": "last3m",
+            "filter": [
+              {
+                "f": "kind",
+                "op": "=",
+                "v": "공정"
+              }
+            ],
+            "by": "line",
+            "agg": "sum",
+            "field": "qty"
+          }
+        },
+        {
+          "type": "goaltable",
+          "span": 6,
+          "title": "2026년 불량 수량 목표 대비 실적",
+          "unit": "개",
+          "goal": 450,
+          "lowerIsBetter": true,
+          "src": {
+            "ds": "defects",
+            "period": "all",
+            "filter": [],
+            "agg": "sum",
+            "field": "qty"
+          }
+        },
+        {
+          "type": "rankchange",
+          "span": 6,
+          "title": "불량 유형 순위 변화",
+          "unit": "개",
+          "src": {
+            "ds": "defects",
+            "period": "all",
+            "filter": [],
+            "agg": "sum",
+            "field": "qty",
+            "by": "type",
+            "cmp": "3m",
+            "top": 8
+          }
+        },
+        {
+          "type": "annotate",
+          "span": 6,
+          "title": "글로브박스 불량 발생 위치",
+          "img": "files/parts/261008-r10fqs-글로브박스 도면.svg",
+          "marks": [
+            {
+              "x": 33,
+              "y": 41,
+              "t": "힌지 체결부 찍힘 (조립 1)"
+            },
+            {
+              "x": 66,
+              "y": 36,
+              "t": "래치 홀 버 발생 (사출 1)"
+            },
+            {
+              "x": 51,
+              "y": 56,
+              "t": "손잡이 홈 수축 · 미성형"
+            }
+          ]
+        },
+        {
+          "type": "summary",
+          "span": 6,
+          "title": "이번 달 불량 요약",
+          "unit": "개",
+          "src": {
+            "ds": "defects",
+            "period": "thisMonth",
+            "filter": [],
+            "agg": "sum",
+            "field": "qty",
+            "by": "line",
+            "by2": "type"
+          }
+        }
+      ]
+    },
+    {
+      "id": "spc-pg",
+      "title": "검사 · 관리도",
+      "group": "공정 품질",
+      "desc": "검사 로트 불량률 p 관리도와 월별 불량률 추이입니다.",
+      "widgets": [
+        {
+          "type": "kpi",
+          "items": [
+            {
+              "label": "이번 달 검사 수량",
+              "unit": "개",
+              "src": {
+                "agg": "sum",
+                "period": "thisMonth",
+                "filter": [],
+                "ds": "inspections",
+                "field": "inspected",
+                "compare": true
+              }
+            },
+            {
+              "label": "이번 달 불량률",
+              "unit": "PPM",
+              "src": {
+                "agg": "ratio",
+                "period": "thisMonth",
+                "filter": [],
+                "ds": "inspections",
+                "field": "defects",
+                "field2": "inspected",
+                "scale": 1000000,
+                "spark": true
+              },
+              "goal": 3000,
+              "lowerIsBetter": true,
+              "status": "auto"
+            },
+            {
+              "label": "이번 달 검사 로트",
+              "unit": "로트",
+              "src": {
+                "agg": "count",
+                "period": "thisMonth",
+                "filter": [],
+                "ds": "inspections"
+              }
+            }
+          ]
+        },
+        {
+          "type": "control",
+          "span": 12,
+          "title": "공정검사 불량률 p 관리도 (로트별)",
+          "src": {
+            "ds": "inspections",
+            "mode": "p",
+            "num": "defects",
+            "den": "inspected",
+            "group": "record",
+            "scale": 100,
+            "limit": 30,
+            "period": "all",
+            "filter": [
+              {
+                "f": "kind",
+                "op": "=",
+                "v": "공정검사"
+              }
+            ]
+          }
+        },
+        {
+          "type": "control",
+          "span": 6,
+          "title": "월별 불량률 p 관리도 (전체, PPM)",
+          "src": {
+            "ds": "inspections",
+            "mode": "p",
+            "num": "defects",
+            "den": "inspected",
+            "group": "month",
+            "scale": 1000000,
+            "period": "all",
+            "filter": []
+          }
+        },
+        {
+          "type": "gauge",
+          "span": 6,
+          "title": "이번 달 공정 불량률",
+          "unit": "PPM",
+          "goal": 3000,
+          "lowerIsBetter": true,
+          "src": {
+            "ds": "inspections",
+            "agg": "ratio",
+            "field": "defects",
+            "field2": "inspected",
+            "scale": 1000000,
+            "period": "thisMonth",
+            "filter": [
+              {
+                "f": "kind",
+                "op": "=",
+                "v": "공정검사"
+              }
+            ]
+          }
+        },
+        {
+          "type": "line",
+          "span": 12,
+          "title": "검사 구분별 월 불량률",
+          "unit": "PPM",
+          "src": {
+            "ds": "inspections",
+            "agg": "ratio",
+            "field": "defects",
+            "field2": "inspected",
+            "scale": 1000000,
+            "x": "month",
+            "months": 12,
+            "series": "kind",
+            "period": "all",
+            "filter": []
+          }
+        },
+        {
+          "type": "histogram",
+          "span": 6,
+          "title": "브라켓 홀 위치 분포",
+          "unit": "mm",
+          "lsl": 9.85,
+          "usl": 10.15,
+          "src": {
+            "ds": "measure",
+            "period": "last3m",
+            "filter": [
+              {
+                "f": "char",
+                "op": "=",
+                "v": "브라켓 홀 위치 (mm)"
+              }
+            ],
+            "value": "value",
+            "bins": 0
+          }
+        },
+        {
+          "type": "histogram",
+          "span": 6,
+          "title": "용접 너깃 지름 분포",
+          "unit": "mm",
+          "lsl": 5,
+          "src": {
+            "ds": "measure",
+            "period": "last3m",
+            "filter": [
+              {
+                "f": "char",
+                "op": "=",
+                "v": "용접 너깃 지름 (mm)"
+              }
+            ],
+            "value": "value",
+            "bins": 0
+          }
+        },
+        {
+          "type": "scatter",
+          "span": 12,
+          "title": "검사 수량 vs 불량 수량",
+          "subtitle": "최근 6개월 · 검사 구분별",
+          "src": {
+            "ds": "inspections",
+            "period": "last6m",
+            "filter": [],
+            "xf": "inspected",
+            "yf": "defects",
+            "color": "kind",
+            "label": "part",
+            "limit": 300
+          }
+        }
+      ]
+    },
+    {
+      "id": "cpk-pg",
+      "title": "공정능력 (Cpk)",
+      "group": "공정 품질",
+      "desc": "관리 특성별 Cpk와 개선 대상입니다. 기준 1.33.",
+      "widgets": [
+        {
+          "type": "scorecard",
+          "span": 6,
+          "title": "관리 특성 Cpk (최신)",
+          "src": {
+            "ds": "cpk",
+            "name": "char",
+            "score": "cpk",
+            "grade": "judge",
+            "max": 2.2,
+            "pass": 1.33,
+            "latest": true,
+            "order": "asc",
+            "limit": 8,
+            "cols": [
+              "line"
+            ],
+            "period": "all",
+            "filter": []
+          }
+        },
+        {
+          "type": "control",
+          "span": 6,
+          "title": "도장 막두께 Cpk 추이 (I 관리도)",
+          "lsl": 1.33,
+          "src": {
+            "ds": "cpk",
+            "mode": "i",
+            "value": "cpk",
+            "labelField": "char",
+            "limit": 21,
+            "period": "all",
+            "filter": [
+              {
+                "f": "char",
+                "op": "=",
+                "v": "도장 막두께"
+              }
+            ]
+          }
+        },
+        {
+          "type": "line",
+          "span": 8,
+          "title": "평균 Cpk 추이 (전체 특성)",
+          "unit": "",
+          "target": 1.33,
+          "src": {
+            "ds": "cpk",
+            "agg": "avg",
+            "field": "cpk",
+            "x": "month",
+            "months": 12,
+            "period": "all",
+            "filter": []
+          }
+        },
+        {
+          "type": "donut",
+          "span": 4,
+          "title": "판정 비중 (최근 3개월)",
+          "unit": "건",
+          "src": {
+            "ds": "cpk",
+            "agg": "count",
+            "by": "judge",
+            "period": "last3m",
+            "filter": []
+          }
+        },
+        {
+          "type": "alerts",
+          "span": 12,
+          "title": "공정능력 알림",
+          "limit": 8,
+          "rules": [
+            {
+              "ds": "cpk",
+              "label": "Cpk 1.0 미만",
+              "level": "critical",
+              "filter": [
+                {
+                  "f": "cpk",
+                  "op": "<",
+                  "v": "1.0"
+                },
+                {
+                  "f": "date",
+                  "op": ">=",
+                  "v": "today-90"
+                }
+              ]
+            },
+            {
+              "ds": "cpk",
+              "label": "Cpk 1.33 미만",
+              "level": "warning",
+              "filter": [
+                {
+                  "f": "cpk",
+                  "op": "<",
+                  "v": "1.33"
+                },
+                {
+                  "f": "cpk",
+                  "op": ">=",
+                  "v": "1.0"
+                },
+                {
+                  "f": "date",
+                  "op": ">=",
+                  "v": "today-40"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "histogram",
+          "span": 6,
+          "title": "도장 막두께 분포",
+          "unit": "µm",
+          "lsl": 20,
+          "usl": 40,
+          "src": {
+            "ds": "measure",
+            "period": "last3m",
+            "filter": [
+              {
+                "f": "char",
+                "op": "=",
+                "v": "도장 막두께 (µm)"
+              }
+            ],
+            "value": "value",
+            "bins": 0
+          }
+        },
+        {
+          "type": "histogram",
+          "span": 6,
+          "title": "Cpk 값 분포",
+          "subtitle": "기준 1.33 미만은 빨간 막대",
+          "lsl": 1.33,
+          "src": {
+            "ds": "cpk",
+            "period": "all",
+            "filter": [],
+            "value": "cpk",
+            "bins": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "calib-pg",
+      "title": "측정기 교정",
+      "group": "공정 품질",
+      "desc": "측정기 교정 기한과 상태를 관리합니다.",
+      "widgets": [
+        {
+          "type": "kpi",
+          "items": [
+            {
+              "label": "관리 측정기",
+              "unit": "대",
+              "src": {
+                "agg": "count",
+                "period": "all",
+                "filter": [
+                  {
+                    "f": "status",
+                    "op": "!=",
+                    "v": "폐기"
+                  }
+                ],
+                "ds": "calib"
+              }
+            },
+            {
+              "label": "30일 안에 교정",
+              "unit": "대",
+              "src": {
+                "agg": "count",
+                "period": "all",
+                "filter": [
+                  {
+                    "f": "next",
+                    "op": ">=",
+                    "v": "today"
+                  },
+                  {
+                    "f": "next",
+                    "op": "<=",
+                    "v": "today+30"
+                  },
+                  {
+                    "f": "status",
+                    "op": "!=",
+                    "v": "폐기"
+                  }
+                ],
+                "ds": "calib"
+              }
+            },
+            {
+              "label": "교정 기한 지남",
+              "unit": "대",
+              "src": {
+                "agg": "count",
+                "period": "all",
+                "filter": [
+                  {
+                    "f": "next",
+                    "op": "<",
+                    "v": "today"
+                  },
+                  {
+                    "f": "status",
+                    "op": "!=",
+                    "v": "폐기"
+                  }
+                ],
+                "ds": "calib"
+              },
+              "goal": 0,
+              "lowerIsBetter": true,
+              "status": "auto"
+            }
+          ]
+        },
+        {
+          "type": "alerts",
+          "span": 6,
+          "title": "교정 알림",
+          "limit": 6,
+          "rules": [
+            {
+              "ds": "calib",
+              "label": "교정 기한 지남",
+              "level": "critical",
+              "filter": [
+                {
+                  "f": "next",
+                  "op": "<",
+                  "v": "today"
+                },
+                {
+                  "f": "status",
+                  "op": "!=",
+                  "v": "폐기"
+                }
+              ]
+            },
+            {
+              "ds": "calib",
+              "label": "30일 안에 교정",
+              "level": "warning",
+              "filter": [
+                {
+                  "f": "next",
+                  "op": ">=",
+                  "v": "today"
+                },
+                {
+                  "f": "next",
+                  "op": "<=",
+                  "v": "today+30"
+                },
+                {
+                  "f": "status",
+                  "op": "!=",
+                  "v": "폐기"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "calendar",
+          "span": 6,
+          "title": "교정 일정",
+          "src": {
+            "ds": "calib",
+            "date": "next",
+            "title": "name",
+            "color": "kind",
+            "period": "all",
+            "filter": [
+              {
+                "f": "status",
+                "op": "!=",
+                "v": "폐기"
+              }
+            ]
+          }
+        },
+        {
+          "type": "donut",
+          "span": 4,
+          "title": "구분별 측정기",
+          "unit": "대",
+          "src": {
+            "ds": "calib",
+            "agg": "count",
+            "by": "kind",
+            "period": "all",
+            "filter": [
+              {
+                "f": "status",
+                "op": "!=",
+                "v": "폐기"
+              }
+            ]
+          }
+        },
+        {
+          "type": "table",
+          "span": 8,
+          "title": "측정기 목록 (차기 교정일 순)",
+          "src": {
+            "ds": "calib",
+            "period": "all",
+            "filter": [
+              {
+                "f": "status",
+                "op": "!=",
+                "v": "폐기"
+              }
+            ],
+            "cols": [
+              "no",
+              "name",
+              "kind",
+              "line",
+              "last",
+              "next",
+              "status"
+            ],
+            "sort": "next",
+            "asc": true,
+            "limit": 12
+          }
+        },
+        {
+          "type": "floormap",
+          "span": 12,
+          "title": "라인별 측정기 배치",
+          "unit": "대",
+          "img": "files/layout/공장 배치도.svg",
+          "pos": {
+            "프레스 1": {
+              "x": 19,
+              "y": 31.8
+            },
+            "프레스 2": {
+              "x": 19,
+              "y": 63.9
+            },
+            "용접 1": {
+              "x": 40.4,
+              "y": 31.8
+            },
+            "용접 2": {
+              "x": 39.9,
+              "y": 63.1
+            },
+            "사출 1": {
+              "x": 61,
+              "y": 31.8
+            },
+            "도장": {
+              "x": 61.4,
+              "y": 63.5
+            },
+            "조립 1": {
+              "x": 82,
+              "y": 31.8
+            },
+            "조립 2": {
+              "x": 82,
+              "y": 63.9
+            }
+          },
+          "src": {
+            "ds": "calib",
+            "period": "all",
+            "filter": [],
+            "by": "line",
+            "agg": "count"
+          }
+        }
+      ]
+    },
+    {
+      "id": "supplier-pg",
+      "title": "협력사 평가",
+      "group": "협력사 품질",
+      "desc": "협력사 분기 평가 점수·등급과 개선 요구 현황입니다.",
+      "widgets": [
+        {
+          "type": "scorecard",
+          "span": 6,
+          "title": "협력사 성적표 (최신 분기)",
+          "src": {
+            "ds": "suppliers",
+            "name": "name",
+            "score": "score",
+            "grade": "grade",
+            "max": 100,
+            "pass": 80,
+            "latest": true,
+            "order": "asc",
+            "limit": 10,
+            "cols": [
+              "process"
+            ],
+            "period": "all",
+            "filter": []
+          }
+        },
+        {
+          "type": "donut",
+          "span": 6,
+          "title": "등급 분포 (2026년 3분기)",
+          "unit": "곳",
+          "src": {
+            "ds": "suppliers",
+            "agg": "count",
+            "by": "grade",
+            "period": "all",
+            "filter": [
+              {
+                "f": "date",
+                "op": "=",
+                "v": "2026-09-30"
+              }
+            ]
+          }
+        },
+        {
+          "type": "line",
+          "span": 6,
+          "title": "평균 종합 점수 추이",
+          "unit": "점",
+          "target": 80,
+          "src": {
+            "ds": "suppliers",
+            "agg": "avg",
+            "field": "score",
+            "x": "month",
+            "months": 12,
+            "period": "all",
+            "filter": []
+          }
+        },
+        {
+          "type": "hbar",
+          "span": 6,
+          "title": "공정별 평균 점수 (최근 12개월)",
+          "unit": "점",
+          "src": {
+            "ds": "suppliers",
+            "agg": "avg",
+            "field": "score",
+            "by": "process",
+            "top": 9,
+            "period": "last12m",
+            "filter": []
+          }
+        },
+        {
+          "type": "kanban",
+          "span": 12,
+          "title": "개선 요구 진행 (최근 2분기)",
+          "src": {
+            "ds": "suppliers",
+            "col": "status",
+            "title": "name",
+            "owner": "action",
+            "due": "",
+            "hideEmpty": false,
+            "limit": 8,
+            "period": "all",
+            "filter": [
+              {
+                "f": "date",
+                "op": ">=",
+                "v": "2026-06-30"
+              }
+            ]
+          }
+        },
+        {
+          "type": "scatter",
+          "span": 6,
+          "title": "품질 점수 vs 납기 점수",
+          "src": {
+            "ds": "suppliers",
+            "period": "all",
+            "filter": [],
+            "xf": "quality",
+            "yf": "delivery",
+            "color": "grade",
+            "label": "name",
+            "limit": 300
+          }
+        },
+        {
+          "type": "goaltable",
+          "span": 6,
+          "title": "2026년 협력사 종합 점수 (평균)",
+          "unit": "점",
+          "goal": 85,
+          "src": {
+            "ds": "suppliers",
+            "period": "all",
+            "filter": [],
+            "agg": "avg",
+            "field": "score"
+          }
+        },
+        {
+          "type": "rankchange",
+          "span": 6,
+          "title": "입고 불량 협력사 순위 (올해 vs 작년)",
+          "unit": "개",
+          "src": {
+            "ds": "defects",
+            "period": "all",
+            "filter": [
+              {
+                "f": "kind",
+                "op": "=",
+                "v": "입고"
+              }
+            ],
+            "agg": "sum",
+            "field": "qty",
+            "by": "vendor",
+            "cmp": "year",
+            "top": 8
+          }
+        },
+        {
+          "type": "histogram",
+          "span": 6,
+          "title": "협력사 종합 점수 분포",
+          "unit": "점",
+          "lsl": 70,
+          "src": {
+            "ds": "suppliers",
+            "period": "all",
+            "filter": [],
+            "value": "score",
+            "bins": 10
+          }
+        }
+      ]
+    },
+    {
+      "id": "incoming-pg",
+      "title": "수입검사",
+      "group": "협력사 품질",
+      "desc": "협력사 입고 부품의 수입검사 불량률과 입고 불량입니다.",
+      "widgets": [
+        {
+          "type": "kpi",
+          "items": [
+            {
+              "label": "이번 달 수입검사 불량률",
+              "unit": "PPM",
+              "src": {
+                "agg": "ratio",
+                "period": "thisMonth",
+                "filter": [
+                  {
+                    "f": "kind",
+                    "op": "=",
+                    "v": "수입검사"
+                  }
+                ],
+                "ds": "inspections",
+                "field": "defects",
+                "field2": "inspected",
+                "scale": 1000000,
+                "spark": true
+              },
+              "goal": 4000,
+              "lowerIsBetter": true,
+              "status": "auto"
+            },
+            {
+              "label": "이번 달 입고 불량",
+              "unit": "개",
+              "src": {
+                "agg": "sum",
+                "period": "thisMonth",
+                "filter": [
+                  {
+                    "f": "kind",
+                    "op": "=",
+                    "v": "입고"
+                  }
+                ],
+                "ds": "defects",
+                "field": "qty",
+                "compare": true
+              },
+              "lowerIsBetter": true
+            }
+          ]
+        },
+        {
+          "type": "control",
+          "span": 12,
+          "title": "수입검사 p 관리도 (로트별)",
+          "src": {
+            "ds": "inspections",
+            "mode": "p",
+            "num": "defects",
+            "den": "inspected",
+            "group": "record",
+            "scale": 100,
+            "limit": 30,
+            "period": "all",
+            "filter": [
+              {
+                "f": "kind",
+                "op": "=",
+                "v": "수입검사"
+              }
+            ]
+          }
+        },
+        {
+          "type": "pareto",
+          "span": 6,
+          "title": "협력사별 입고 불량 (최근 6개월)",
+          "unit": "개",
+          "mark": 80,
+          "src": {
+            "ds": "defects",
+            "agg": "sum",
+            "field": "qty",
+            "by": "vendor",
+            "top": 8,
+            "period": "last6m",
+            "filter": [
+              {
+                "f": "kind",
+                "op": "=",
+                "v": "입고"
+              }
+            ]
+          }
+        },
+        {
+          "type": "heatmap",
+          "span": 6,
+          "title": "협력사 × 불량 유형 (최근 12개월)",
+          "unit": "개",
+          "src": {
+            "ds": "defects",
+            "agg": "sum",
+            "field": "qty",
+            "by": "vendor",
+            "by2": "type",
+            "topRows": 7,
+            "topCols": 5,
+            "period": "last12m",
+            "filter": [
+              {
+                "f": "kind",
+                "op": "=",
+                "v": "입고"
+              }
+            ]
+          }
+        },
+        {
+          "type": "scatter",
+          "span": 6,
+          "title": "수입검사 수량 vs 불량",
+          "src": {
+            "ds": "inspections",
+            "period": "all",
+            "filter": [
+              {
+                "f": "kind",
+                "op": "=",
+                "v": "수입검사"
+              }
+            ],
+            "xf": "inspected",
+            "yf": "defects",
+            "color": "vendor",
+            "label": "part",
+            "limit": 300
+          }
+        },
+        {
+          "type": "rankchange",
+          "span": 6,
+          "title": "입고 불량 협력사 순위 (올해 vs 작년)",
+          "unit": "개",
+          "src": {
+            "ds": "defects",
+            "period": "all",
+            "filter": [
+              {
+                "f": "kind",
+                "op": "=",
+                "v": "입고"
+              }
+            ],
+            "agg": "sum",
+            "field": "qty",
+            "by": "vendor",
+            "cmp": "year",
+            "top": 8
+          }
+        }
+      ]
+    },
+    {
+      "id": "change-pg",
+      "title": "변경점 (4M)",
+      "group": "협력사 품질",
+      "desc": "4M 변경 접수·고객 승인·적용 현황입니다.",
+      "widgets": [
+        {
+          "type": "kpi",
+          "items": [
+            {
+              "label": "진행 중 변경",
+              "unit": "건",
+              "src": {
+                "agg": "count",
+                "period": "all",
+                "filter": [
+                  {
+                    "f": "status",
+                    "op": "!=",
+                    "v": "완료"
+                  }
+                ],
+                "ds": "change4m"
+              }
+            },
+            {
+              "label": "고객 승인 대기",
+              "unit": "건",
+              "src": {
+                "agg": "count",
+                "period": "all",
+                "filter": [
+                  {
+                    "f": "approval",
+                    "op": "=",
+                    "v": "신청"
+                  }
+                ],
+                "ds": "change4m"
+              },
+              "goal": 2,
+              "lowerIsBetter": true,
+              "status": "auto"
+            },
+            {
+              "label": "올해 변경",
+              "unit": "건",
+              "src": {
+                "agg": "count",
+                "period": "ytd",
+                "filter": [],
+                "ds": "change4m"
+              }
+            }
+          ]
+        },
+        {
+          "type": "donut",
+          "span": 4,
+          "title": "4M 구분 비중 (최근 12개월)",
+          "unit": "건",
+          "src": {
+            "ds": "change4m",
+            "agg": "count",
+            "by": "kind",
+            "period": "last12m",
+            "filter": []
+          }
+        },
+        {
+          "type": "kanban",
+          "span": 8,
+          "title": "변경 진행 보드",
+          "src": {
+            "ds": "change4m",
+            "col": "status",
+            "title": "content",
+            "owner": "approval",
+            "due": "apply",
+            "hideEmpty": false,
+            "limit": 6,
+            "period": "all",
+            "filter": [
+              {
+                "f": "date",
+                "op": ">=",
+                "v": "today-180"
+              }
+            ]
+          }
+        },
+        {
+          "type": "calendar",
+          "span": 6,
+          "title": "적용 일정",
+          "src": {
+            "ds": "change4m",
+            "date": "apply",
+            "title": "content",
+            "color": "kind",
+            "period": "all",
+            "filter": []
+          }
+        },
+        {
+          "type": "table",
+          "span": 6,
+          "title": "최근 변경점",
+          "src": {
+            "ds": "change4m",
+            "period": "all",
+            "filter": [],
+            "cols": [
+              "no",
+              "date",
+              "kind",
+              "part",
+              "approval",
+              "status"
+            ],
+            "limit": 8
+          }
+        },
+        {
+          "type": "burndown",
+          "span": 6,
+          "title": "미적용 변경점 추이",
+          "src": {
+            "ds": "change4m",
+            "period": "all",
+            "filter": [],
+            "start": "date",
+            "end": "apply",
+            "days": 180
+          }
+        },
+        {
+          "type": "rankchange",
+          "span": 6,
+          "title": "부품별 변경점 순위 (올해 vs 작년)",
+          "unit": "건",
+          "src": {
+            "ds": "change4m",
+            "period": "all",
+            "filter": [],
+            "agg": "count",
+            "by": "part",
+            "cmp": "year",
+            "top": 6
+          }
+        }
+      ]
+    },
+    {
+      "id": "audit-pg",
+      "title": "감사 / 인증",
+      "group": "시스템 · 심사",
+      "desc": "내부심사 계획 진행과 심사 부적합 조치 현황입니다.",
+      "widgets": [
+        {
+          "type": "kpi",
+          "items": [
+            {
+              "label": "미결 부적합",
+              "unit": "건",
+              "src": {
+                "agg": "count",
+                "period": "all",
+                "filter": [
+                  {
+                    "f": "status",
+                    "op": "!=",
+                    "v": "완료"
+                  }
+                ],
+                "ds": "nc"
+              },
+              "goal": 3,
+              "lowerIsBetter": true,
+              "status": "auto"
+            },
+            {
+              "label": "조치 기한 초과",
+              "unit": "건",
+              "src": {
+                "agg": "count",
+                "period": "all",
+                "filter": [
+                  {
+                    "f": "due",
+                    "op": "<",
+                    "v": "today"
+                  },
+                  {
+                    "f": "status",
+                    "op": "!=",
+                    "v": "완료"
+                  }
+                ],
+                "ds": "nc"
+              },
+              "goal": 0,
+              "lowerIsBetter": true,
+              "status": "auto"
+            },
+            {
+              "label": "올해 심사 진행률",
+              "unit": "%",
+              "src": {
+                "agg": "avg",
+                "period": "all",
+                "filter": [],
+                "ds": "auditplan",
+                "field": "progress"
+              }
+            }
+          ]
+        },
+        {
+          "type": "progress",
+          "span": 6,
+          "title": "2026 내부심사 진행",
+          "src": {
+            "ds": "auditplan",
+            "mode": "rows",
+            "label": "dept",
+            "value": "progress",
+            "max": 100,
+            "noteField": "date",
+            "sort": "date",
+            "asc": true,
+            "limit": 12,
+            "period": "all",
+            "filter": []
+          }
+        },
+        {
+          "type": "calendar",
+          "span": 6,
+          "title": "심사 일정",
+          "src": {
+            "ds": "auditplan",
+            "date": "date",
+            "title": "dept",
+            "color": "status",
+            "period": "all",
+            "filter": []
+          }
+        },
+        {
+          "type": "kanban",
+          "span": 12,
+          "title": "부적합 조치 보드",
+          "src": {
+            "ds": "nc",
+            "col": "status",
+            "title": "clause",
+            "owner": "dept",
+            "due": "due",
+            "hideEmpty": false,
+            "limit": 6,
+            "period": "all",
+            "filter": [
+              {
+                "f": "issued",
+                "op": ">=",
+                "v": "today-200"
+              }
+            ]
+          }
+        },
+        {
+          "type": "pareto",
+          "span": 6,
+          "title": "요구사항 조항별 부적합",
+          "unit": "건",
+          "mark": 80,
+          "src": {
+            "ds": "nc",
+            "agg": "count",
+            "by": "clause",
+            "top": 7,
+            "period": "all",
+            "filter": []
+          }
+        },
+        {
+          "type": "alerts",
+          "span": 6,
+          "title": "심사 조치 알림",
+          "limit": 5,
+          "rules": [
+            {
+              "ds": "nc",
+              "label": "부적합 조치 기한 초과",
+              "level": "serious",
+              "filter": [
+                {
+                  "f": "due",
+                  "op": "<",
+                  "v": "today"
+                },
+                {
+                  "f": "status",
+                  "op": "!=",
+                  "v": "완료"
+                }
+              ]
+            },
+            {
+              "ds": "auditfind",
+              "label": "고객 지적 조치 기한 초과",
+              "level": "serious",
+              "filter": [
+                {
+                  "f": "due",
+                  "op": "<",
+                  "v": "today"
+                },
+                {
+                  "f": "status",
+                  "op": "!=",
+                  "v": "완료"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "burndown",
+          "span": 6,
+          "title": "부적합 미결 추이",
+          "src": {
+            "ds": "nc",
+            "period": "all",
+            "filter": [],
+            "start": "issued",
+            "end": "closed",
+            "days": 365
+          }
+        },
+        {
+          "type": "summary",
+          "span": 6,
+          "title": "올해 부적합 요약",
+          "unit": "건",
+          "src": {
+            "ds": "nc",
+            "period": "ytd",
+            "filter": [],
+            "agg": "count",
+            "by": "dept",
+            "by2": "level"
+          }
+        }
+      ]
+    },
+    {
+      "id": "auditfind-pg",
+      "title": "고객 심사 지적사항",
+      "group": "시스템 · 심사",
+      "desc": "고객·인증 심사 지적의 등급과 조치 진행입니다.",
+      "widgets": [
+        {
+          "type": "kpi",
+          "items": [
+            {
+              "label": "미결 지적",
+              "unit": "건",
+              "src": {
+                "agg": "count",
+                "period": "all",
+                "filter": [
+                  {
+                    "f": "status",
+                    "op": "!=",
+                    "v": "완료"
+                  }
+                ],
+                "ds": "auditfind"
+              },
+              "lowerIsBetter": true
+            },
+            {
+              "label": "중결함",
+              "unit": "건",
+              "src": {
+                "agg": "count",
+                "period": "all",
+                "filter": [
+                  {
+                    "f": "level",
+                    "op": "=",
+                    "v": "중결함"
+                  },
+                  {
+                    "f": "status",
+                    "op": "!=",
+                    "v": "완료"
+                  }
+                ],
+                "ds": "auditfind"
+              },
+              "goal": 0,
+              "lowerIsBetter": true,
+              "status": "auto"
+            },
+            {
+              "label": "평균 처리 기간",
+              "unit": "일",
+              "src": {
+                "agg": "avg",
+                "period": "all",
+                "filter": [
+                  {
+                    "f": "status",
+                    "op": "=",
+                    "v": "완료"
+                  }
+                ],
+                "ds": "auditfind",
+                "field": "lead"
+              }
+            }
+          ]
+        },
+        {
+          "type": "kanban",
+          "span": 12,
+          "title": "조치 단계 보드",
+          "src": {
+            "ds": "auditfind",
+            "col": "status",
+            "title": "content",
+            "owner": "customer",
+            "due": "due",
+            "hideEmpty": false,
+            "limit": 6,
+            "period": "all",
+            "filter": [
+              {
+                "f": "date",
+                "op": ">=",
+                "v": "today-150"
+              }
+            ]
+          }
+        },
+        {
+          "type": "gantt",
+          "span": 12,
+          "title": "조치 일정",
+          "src": {
+            "ds": "auditfind",
+            "title": "content",
+            "sub": "customer",
+            "start": "date",
+            "end": "due",
+            "status": "status",
+            "done": "closed",
+            "range": "auto",
+            "limit": 12,
+            "period": "all",
+            "filter": [
+              {
+                "f": "status",
+                "op": "!=",
+                "v": "완료"
+              }
+            ]
+          }
+        },
+        {
+          "type": "donut",
+          "span": 6,
+          "title": "고객사별 지적",
+          "unit": "건",
+          "src": {
+            "ds": "auditfind",
+            "agg": "count",
+            "by": "customer",
+            "period": "all",
+            "filter": []
+          }
+        },
+        {
+          "type": "hbar",
+          "span": 6,
+          "title": "지적 내용 순위",
+          "unit": "건",
+          "src": {
+            "ds": "auditfind",
+            "agg": "count",
+            "by": "content",
+            "top": 6,
+            "period": "all",
+            "filter": []
+          }
+        },
+        {
+          "type": "timeline",
+          "span": 12,
+          "title": "조치 중인 지적사항 타임라인",
+          "src": {
+            "ds": "auditfind",
+            "period": "all",
+            "filter": [],
+            "rid": "r10h70"
+          }
+        },
+        {
+          "type": "burndown",
+          "span": 6,
+          "title": "지적사항 미결 추이",
+          "src": {
+            "ds": "auditfind",
+            "period": "all",
+            "filter": [],
+            "start": "date",
+            "end": "closed",
+            "days": 365
+          }
+        },
+        {
+          "type": "rankchange",
+          "span": 6,
+          "title": "고객사별 지적 순위 (올해 vs 작년)",
+          "unit": "건",
+          "src": {
+            "ds": "auditfind",
+            "period": "all",
+            "filter": [],
+            "agg": "count",
+            "by": "customer",
+            "cmp": "year",
+            "top": 6
+          }
+        }
+      ]
+    },
+    {
+      "id": "training-pg",
+      "title": "교육 · 자격",
+      "group": "시스템 · 심사",
+      "desc": "교육 시간과 자격 만료를 관리합니다.",
+      "widgets": [
+        {
+          "type": "kpi",
+          "items": [
+            {
+              "label": "올해 교육 시간",
+              "unit": "시간",
+              "src": {
+                "agg": "sum",
+                "period": "ytd",
+                "filter": [],
+                "ds": "training",
+                "field": "hours"
+              }
+            },
+            {
+              "label": "이번 달 교육",
+              "unit": "건",
+              "src": {
+                "agg": "count",
+                "period": "thisMonth",
+                "filter": [],
+                "ds": "training",
+                "compare": true
+              }
+            },
+            {
+              "label": "60일 안에 만료",
+              "unit": "건",
+              "src": {
+                "agg": "count",
+                "period": "all",
+                "filter": [
+                  {
+                    "f": "expire",
+                    "op": ">=",
+                    "v": "today"
+                  },
+                  {
+                    "f": "expire",
+                    "op": "<=",
+                    "v": "today+60"
+                  }
+                ],
+                "ds": "training"
+              },
+              "goal": 0,
+              "lowerIsBetter": true,
+              "status": "auto"
+            }
+          ]
+        },
+        {
+          "type": "alerts",
+          "span": 6,
+          "title": "자격 만료 알림",
+          "limit": 6,
+          "rules": [
+            {
+              "ds": "training",
+              "label": "60일 안에 만료",
+              "level": "warning",
+              "filter": [
+                {
+                  "f": "expire",
+                  "op": ">=",
+                  "v": "today"
+                },
+                {
+                  "f": "expire",
+                  "op": "<=",
+                  "v": "today+60"
+                }
+              ]
+            },
+            {
+              "ds": "training",
+              "label": "만료됨 (재취득 필요)",
+              "level": "serious",
+              "filter": [
+                {
+                  "f": "expire",
+                  "op": "<",
+                  "v": "today"
+                },
+                {
+                  "f": "expire",
+                  "op": ">=",
+                  "v": "today-365"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "donut",
+          "span": 6,
+          "title": "교육 구분 (올해)",
+          "unit": "건",
+          "src": {
+            "ds": "training",
+            "agg": "count",
+            "by": "kind",
+            "period": "ytd",
+            "filter": []
+          }
+        },
+        {
+          "type": "bar",
+          "span": 8,
+          "title": "월별 교육 시간",
+          "unit": "시간",
+          "src": {
+            "ds": "training",
+            "agg": "sum",
+            "field": "hours",
+            "x": "month",
+            "months": 12,
+            "period": "all",
+            "filter": []
+          }
+        },
+        {
+          "type": "hbar",
+          "span": 4,
+          "title": "담당자별 교육 시간 (올해)",
+          "unit": "시간",
+          "src": {
+            "ds": "training",
+            "agg": "sum",
+            "field": "hours",
+            "by": "person",
+            "top": 8,
+            "period": "ytd",
+            "filter": []
+          }
+        },
+        {
+          "type": "goaltable",
+          "span": 6,
+          "title": "2026년 교육 시간 목표 대비 실적",
+          "unit": "시간",
+          "goal": 30,
+          "src": {
+            "ds": "training",
+            "period": "all",
+            "filter": [],
+            "agg": "sum",
+            "field": "hours"
+          }
+        },
+        {
+          "type": "rankchange",
+          "span": 6,
+          "title": "교육 시간 순위 (올해 vs 작년)",
+          "unit": "시간",
+          "src": {
+            "ds": "training",
+            "period": "all",
+            "filter": [],
+            "agg": "sum",
+            "field": "hours",
+            "by": "person",
+            "cmp": "year",
+            "top": 8
+          }
+        }
+      ]
+    },
+    {
+      "id": "copq-pg",
+      "title": "품질 비용 (COPQ)",
+      "group": "시스템 · 심사",
+      "desc": "외부·내부 실패, 평가, 예방 품질 비용입니다. 단위: 만원",
+      "widgets": [
+        {
+          "type": "kpi",
+          "items": [
+            {
+              "label": "이번 달 품질 비용",
+              "unit": "만원",
+              "src": {
+                "agg": "sum",
+                "period": "thisMonth",
+                "filter": [],
+                "ds": "copq",
+                "field": "amount",
+                "compare": true,
+                "spark": true
+              },
+              "lowerIsBetter": true
+            },
+            {
+              "label": "올해 누적",
+              "unit": "만원",
+              "src": {
+                "agg": "sum",
+                "period": "ytd",
+                "filter": [],
+                "ds": "copq",
+                "field": "amount"
+              }
+            },
+            {
+              "label": "이번 달 외부 실패 비용",
+              "unit": "만원",
+              "src": {
+                "agg": "sum",
+                "period": "thisMonth",
+                "filter": [
+                  {
+                    "f": "kind",
+                    "op": "=",
+                    "v": "외부 실패 (클레임·반품)"
+                  }
+                ],
+                "ds": "copq",
+                "field": "amount",
+                "spark": true
+              },
+              "lowerIsBetter": true
+            }
+          ]
+        },
+        {
+          "type": "bar",
+          "span": 8,
+          "title": "월별 품질 비용 (구분별)",
+          "unit": "만원",
+          "stacked": true,
+          "src": {
+            "ds": "copq",
+            "agg": "sum",
+            "field": "amount",
+            "x": "month",
+            "months": 12,
+            "series": "kind",
+            "period": "all",
+            "filter": []
+          }
+        },
+        {
+          "type": "donut",
+          "span": 4,
+          "title": "올해 비용 구성",
+          "unit": "만원",
+          "src": {
+            "ds": "copq",
+            "agg": "sum",
+            "field": "amount",
+            "by": "kind",
+            "period": "ytd",
+            "filter": []
+          }
+        },
+        {
+          "type": "yoy",
+          "span": 12,
+          "title": "품질 비용 전년 비교",
+          "unit": "만원",
+          "lowerIsBetter": true,
+          "src": {
+            "ds": "copq",
+            "agg": "sum",
+            "field": "amount",
+            "period": "all",
+            "filter": []
+          }
+        },
+        {
+          "type": "pareto",
+          "span": 6,
+          "title": "부품별 실패 비용 (최근 12개월)",
+          "unit": "만원",
+          "mark": 80,
+          "src": {
+            "ds": "copq",
+            "agg": "sum",
+            "field": "amount",
+            "by": "part",
+            "top": 8,
+            "period": "last12m",
+            "filter": [
+              {
+                "f": "part",
+                "op": "filled",
+                "v": ""
+              }
+            ]
+          }
+        },
+        {
+          "type": "gauge",
+          "span": 6,
+          "title": "이번 달 품질 비용 (목표 ≤ 3,500만원)",
+          "unit": "만원",
+          "goal": 3500,
+          "lowerIsBetter": true,
+          "src": {
+            "ds": "copq",
+            "agg": "sum",
+            "field": "amount",
+            "period": "thisMonth",
+            "filter": []
+          }
+        },
+        {
+          "type": "goaltable",
+          "span": 6,
+          "title": "2026년 품질 비용 목표 대비 실적",
+          "unit": "만원",
+          "goal": 3000,
+          "lowerIsBetter": true,
+          "src": {
+            "ds": "copq",
+            "period": "all",
+            "filter": [],
+            "agg": "sum",
+            "field": "amount"
+          }
+        },
+        {
+          "type": "summary",
+          "span": 6,
+          "title": "이번 달 품질 비용 요약",
+          "unit": "만원",
+          "src": {
+            "ds": "copq",
+            "period": "thisMonth",
+            "filter": [],
+            "agg": "sum",
+            "field": "amount",
+            "by": "kind",
+            "by2": "part"
+          }
+        },
+        {
+          "type": "rankchange",
+          "span": 12,
+          "title": "부품별 품질 비용 순위 변화",
+          "unit": "만원",
+          "src": {
+            "ds": "copq",
+            "period": "all",
+            "filter": [],
+            "agg": "sum",
+            "field": "amount",
+            "by": "part",
+            "cmp": "3m",
+            "top": 8
+          }
+        }
+      ]
+    },
+    {
+      "id": "tasks-pg",
+      "title": "업무 일정",
+      "group": "내 업무",
+      "desc": "기한이 있는 업무의 진행과 일정입니다.",
+      "widgets": [
+        {
+          "type": "tasks",
+          "span": 6,
+          "title": "할 일",
+          "src": {
+            "ds": "tasks",
+            "period": "all",
+            "filter": [
+              {
+                "f": "status",
+                "op": "!=",
+                "v": "완료"
+              }
+            ],
+            "limit": 8,
+            "map": {
+              "title": "title",
+              "owner": "owner",
+              "due": "due",
+              "status": "status",
+              "progress": "progress"
+            }
+          }
+        },
+        {
+          "type": "progress",
+          "span": 6,
+          "title": "업무 진행률",
+          "src": {
+            "ds": "tasks",
+            "mode": "rows",
+            "label": "title",
+            "value": "progress",
+            "max": 100,
+            "noteField": "owner",
+            "sort": "due",
+            "asc": true,
+            "limit": 8,
+            "period": "all",
+            "filter": [
+              {
+                "f": "status",
+                "op": "!=",
+                "v": "완료"
+              }
+            ]
+          }
+        },
+        {
+          "type": "gantt",
+          "span": 12,
+          "title": "업무 일정",
+          "src": {
+            "ds": "tasks",
+            "title": "title",
+            "sub": "owner",
+            "start": "start",
+            "end": "due",
+            "status": "status",
+            "range": "auto",
+            "limit": 15,
+            "period": "all",
+            "filter": []
+          }
+        },
+        {
+          "type": "calendar",
+          "span": 6,
+          "title": "기한 달력",
+          "src": {
+            "ds": "tasks",
+            "date": "due",
+            "title": "title",
+            "color": "category",
+            "period": "all",
+            "filter": []
+          }
+        },
+        {
+          "type": "kanban",
+          "span": 6,
+          "title": "상태 보드",
+          "src": {
+            "ds": "tasks",
+            "col": "status",
+            "title": "title",
+            "owner": "owner",
+            "due": "due",
+            "hideEmpty": false,
+            "limit": 6,
+            "period": "all",
+            "filter": []
+          }
+        }
+      ]
+    }
+  ],
+  "navOrder": [
+    "g:현황판",
+    "g:내 업무",
+    "g:고객 품질",
+    "g:공정 품질",
+    "g:협력사 품질",
+    "g:시스템 · 심사",
+    "data"
+  ],
+  "migr": {
+    "fileStore1": true,
+    "attachReset1": true,
+    "upg1": true
+  },
+  "fileRefs": {
+    "files/parts/261008-r10fqn-도어래치 ASSY 도면.svg": 1,
+    "files/parts/261008-r10fqo-시트프레임 도면.svg": 1,
+    "files/parts/261008-r10fqp-콘솔 커버 도면.svg": 1,
+    "files/parts/261008-r10fqq-브라켓 BRK-1830 도면.svg": 1,
+    "files/parts/261008-r10fqr-힌지 ASSY 도면.svg": 1,
+    "files/parts/261008-r10fqs-글로브박스 도면.svg": 2,
+    "files/claims/260519-r10fyn-도어래치 ASSY 외관 (스크래치·찍힘).svg": 1,
+    "files/claims/260526-r10fyp-리어 브라켓 용접 스패터.svg": 1,
+    "files/claims/260604-r10fz5-범퍼 빔 치수 불량.svg": 1,
+    "files/claims/260607-r10fz2-도어 트림 작동 불량.svg": 1,
+    "files/claims/260615-r10fyu-콘솔 커버 치수 불량.svg": 1,
+    "files/claims/260702-r10fz8-힌지 ASSY 외관 (스크래치·찍힘).svg": 1,
+    "files/claims/260709-r10fzb-범퍼 빔 치수 불량.svg": 1,
+    "files/claims/260718-r10fzd-도어 트림 체결 불량.svg": 1,
+    "files/claims/260802-r10fzv-시트프레임 소음·진동.svg": 1,
+    "files/claims/260810-r10fzi-시트프레임 소음·진동.svg": 1,
+    "files/claims/260819-r10fzs-배터리 트레이 사출 수축.svg": 1,
+    "files/claims/260831-r10fzr-힌지 ASSY 도장 핀홀·이물.svg": 1,
+    "files/claims/260906-r10g04-도어래치 ASSY 치수 불량.svg": 1,
+    "files/claims/260916-r10fzz-범퍼 빔 작동 불량.svg": 1,
+    "files/claims/261002-r10g08-도어래치 ASSY 용접 스패터.svg": 2,
+    "files/defects/260406-r10gdb-커넥터 하우징 외관 (스크래치·찍힘).svg": 1,
+    "files/defects/260503-r10gdi-커넥터 하우징 외관 (스크래치·찍힘).svg": 1,
+    "files/defects/260512-r10gdp-브라켓 BRK-1830 외관 (스크래치·찍힘).svg": 1,
+    "files/defects/260501-r10gdw-배터리 트레이 외관 (스크래치·찍힘).svg": 1,
+    "files/defects/260628-r10ge3-배터리 트레이 용접 강도 미달.svg": 1,
+    "files/defects/260607-r10gea-글로브박스 외관 (스크래치·찍힘).svg": 1,
+    "files/defects/260630-r10geh-배터리 트레이 용접 스패터.svg": 1,
+    "files/defects/260619-r10geo-콘솔 커버 외관 (스크래치·찍힘).svg": 1,
+    "files/defects/260722-r10gev-힌지 ASSY 외관 (스크래치·찍힘).svg": 1,
+    "files/defects/260714-r10gf2-글로브박스 사출 미성형.svg": 1,
+    "files/defects/260728-r10gf9-도어 트림 사출 수축.svg": 1,
+    "files/defects/260807-r10gfg-브라켓 BRK-1830 오조립·누락.svg": 1,
+    "files/defects/260810-r10gfn-도어 트림 외관 (스크래치·찍힘).svg": 1,
+    "files/defects/260809-r10gfu-브라켓 BRK-1830 외관 (스크래치·찍힘).svg": 1,
+    "files/defects/260926-r10gg1-글로브박스 외관 (스크래치·찍힘).svg": 1,
+    "files/defects/260927-r10gg8-범퍼 빔 용접 스패터.svg": 1,
+    "files/defects/260910-r10ggf-배터리 트레이 용접 강도 미달.svg": 1,
+    "files/defects/261006-r10ggm-도어 트림 사출 수축.svg": 1,
+    "files/layout/공장 배치도.svg": 2
+  },
+  "changelog": [
+    {
+      "at": "2026-10-08T07:34:32.295Z",
+      "who": "품질보증팀",
+      "ds": "change4m",
+      "rid": "r10h8c",
+      "title": "암레스트 검사 방법 변경",
+      "kind": "comment",
+      "text": "ㅔㅔㅔ"
+    },
+    {
+      "at": "2026-10-08T07:09:47.686Z",
+      "who": "품질보증팀",
+      "ds": "nc",
+      "rid": "r10h24",
+      "title": "8.4.2.4 공급자 모니터링",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "상태",
+          "from": "접수",
+          "to": "조치중"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T07:09:44.455Z",
+      "who": "품질보증팀",
+      "ds": "nc",
+      "rid": "r10h24",
+      "title": "8.4.2.4 공급자 모니터링",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "상태",
+          "from": "조치중",
+          "to": "접수"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:41:10.468Z",
+      "who": "품질보증팀",
+      "ds": "defects",
+      "rid": "r10gg9",
+      "title": [
+        "배터리 트레이",
+        "리어 브라켓"
+      ],
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "부품",
+          "from": "배터리 트레이",
+          "to": "배터리 트레이, 리어 브라켓"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:40:29.771Z",
+      "who": "품질보증팀",
+      "ds": "defects",
+      "rid": "r10ggi",
+      "title": [
+        "배터리 트레이",
+        "도어래치 ASSY"
+      ],
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "부품",
+          "from": "배터리 트레이",
+          "to": "배터리 트레이, 도어래치 ASSY"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:40:18.987Z",
+      "who": "품질보증팀",
+      "ds": "inspections",
+      "rid": "r10gtm",
+      "title": "커넥터 하우징",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "협력사",
+          "from": "삼진프레스",
+          "to": "삼진프레스, 세화테크"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:37:20.514Z",
+      "who": "품질보증팀",
+      "ds": "cpk",
+      "rid": "r10gyd",
+      "title": "용접 너겟 직경",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "라인",
+          "from": "용접 1, 프레스 1",
+          "to": "용접 1"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:37:14.473Z",
+      "who": "품질보증팀",
+      "ds": "cpk",
+      "rid": "r10gyd",
+      "title": "용접 너겟 직경",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "라인",
+          "from": "용접 1",
+          "to": "용접 1, 프레스 1"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:36:09.633Z",
+      "who": "품질보증팀",
+      "ds": "cpk",
+      "rid": "r10gvw",
+      "title": "도장 막두께",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "부품",
+          "from": "콘솔 커버",
+          "to": "콘솔 커버, 도어래치 ASSY"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:35:54.545Z",
+      "who": "품질보증팀",
+      "ds": "cpk",
+      "rid": "r10gyc",
+      "title": "도장 막두께",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "라인",
+          "from": "도장, 프레스 1, 프레스 2",
+          "to": "도장"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:35:46.721Z",
+      "who": "품질보증팀",
+      "ds": "cpk",
+      "rid": "r10gyc",
+      "title": "도장 막두께",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "라인",
+          "from": "도장",
+          "to": "도장, 프레스 1, 프레스 2"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:33:10.575Z",
+      "who": "품질보증팀",
+      "ds": "tasks",
+      "rid": "r10h4k",
+      "title": "G사 PPAP Level 3 제출",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "담당",
+          "from": "윤재호, 김민수",
+          "to": "윤재호"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:33:06.855Z",
+      "who": "품질보증팀",
+      "ds": "tasks",
+      "rid": "r10h4k",
+      "title": "G사 PPAP Level 3 제출",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "담당",
+          "from": "윤재호",
+          "to": "윤재호, 김민수"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:32:13.127Z",
+      "who": "품질보증팀",
+      "ds": "inspections",
+      "rid": "r10gtj",
+      "title": "암레스트",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "협력사",
+          "from": "미래사출",
+          "to": "비어 있음"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:32:10.831Z",
+      "who": "품질보증팀",
+      "ds": "inspections",
+      "rid": "r10gtj",
+      "title": "암레스트",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "협력사",
+          "from": "비어 있음",
+          "to": "미래사출"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:30:36.430Z",
+      "who": "품질보증팀",
+      "ds": "inspections",
+      "rid": "r10gtj",
+      "title": "암레스트",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "협력사",
+          "from": "미래사출",
+          "to": "비어 있음"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:30:34.158Z",
+      "who": "품질보증팀",
+      "ds": "inspections",
+      "rid": "r10gtj",
+      "title": "암레스트",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "협력사",
+          "from": "비어 있음",
+          "to": "미래사출"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:27:38.356Z",
+      "who": "품질보증팀",
+      "ds": "ppap",
+      "rid": "r10h43",
+      "title": "리어 브라켓 (금형 이관)",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "고객사",
+          "from": "H사, K사",
+          "to": "H사"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:27:36.013Z",
+      "who": "품질보증팀",
+      "ds": "ppap",
+      "rid": "r10h43",
+      "title": "리어 브라켓 (금형 이관)",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "고객사",
+          "from": "H사",
+          "to": "H사, K사"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:27:34.637Z",
+      "who": "품질보증팀",
+      "ds": "ppap",
+      "rid": "r10h43",
+      "title": "리어 브라켓 (금형 이관)",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "제출 레벨",
+          "from": "Level 1",
+          "to": "Level 3"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:27:32.076Z",
+      "who": "품질보증팀",
+      "ds": "ppap",
+      "rid": "r10h43",
+      "title": "리어 브라켓 (금형 이관)",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "제출 레벨",
+          "from": "Level 3",
+          "to": "Level 1"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:26:16.684Z",
+      "who": "품질보증팀",
+      "ds": "ppap",
+      "rid": "r10h43",
+      "title": "리어 브라켓 (금형 이관)",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "고객사",
+          "from": "H사, K사",
+          "to": "H사"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:26:02.219Z",
+      "who": "품질보증팀",
+      "ds": "ppap",
+      "rid": "r10h43",
+      "title": "리어 브라켓 (금형 이관)",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "고객사",
+          "from": "H사",
+          "to": "H사, K사"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:25:58.011Z",
+      "who": "품질보증팀",
+      "ds": "ppap",
+      "rid": "r10h43",
+      "title": "리어 브라켓 (금형 이관)",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "고객사",
+          "from": "H사, K사",
+          "to": "H사"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:25:55.211Z",
+      "who": "품질보증팀",
+      "ds": "ppap",
+      "rid": "r10h43",
+      "title": "리어 브라켓 (금형 이관)",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "고객사",
+          "from": "H사",
+          "to": "H사, K사"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:25:05.323Z",
+      "who": "품질보증팀",
+      "ds": "cpk",
+      "rid": "r10gyc",
+      "title": "도장 막두께",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "부품",
+          "from": "콘솔 커버, 도어래치 ASSY",
+          "to": "콘솔 커버"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:25:02.915Z",
+      "who": "품질보증팀",
+      "ds": "cpk",
+      "rid": "r10gyc",
+      "title": "도장 막두께",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "부품",
+          "from": "콘솔 커버",
+          "to": "콘솔 커버, 도어래치 ASSY"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:24:14.491Z",
+      "who": "품질보증팀",
+      "ds": "cpk",
+      "rid": "r10gyc",
+      "title": "도장 막두께",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "부품",
+          "from": "콘솔 커버, 도어래치 ASSY",
+          "to": "콘솔 커버"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:24:11.882Z",
+      "who": "품질보증팀",
+      "ds": "cpk",
+      "rid": "r10gyc",
+      "title": "도장 막두께",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "부품",
+          "from": "콘솔 커버",
+          "to": "콘솔 커버, 도어래치 ASSY"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:23:42.522Z",
+      "who": "품질보증팀",
+      "ds": "people",
+      "rid": "r10fq9",
+      "title": "김민수",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "소속",
+          "from": "협력사품질",
+          "to": "고객품질"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:23:40.042Z",
+      "who": "품질보증팀",
+      "ds": "people",
+      "rid": "r10fq9",
+      "title": "김민수",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "소속",
+          "from": "고객품질",
+          "to": "협력사품질"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:22:42.938Z",
+      "who": "품질보증팀",
+      "ds": "tasks",
+      "rid": "r10h4k",
+      "title": "G사 PPAP Level 3 제출",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "담당",
+          "from": "윤재호, 김민수",
+          "to": "윤재호"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:22:39.674Z",
+      "who": "품질보증팀",
+      "ds": "tasks",
+      "rid": "r10h4k",
+      "title": "G사 PPAP Level 3 제출",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "담당",
+          "from": "윤재호, 김민수, 이서연",
+          "to": "윤재호, 김민수"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:22:34.706Z",
+      "who": "품질보증팀",
+      "ds": "tasks",
+      "rid": "r10h4k",
+      "title": "G사 PPAP Level 3 제출",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "담당",
+          "from": "윤재호, 김민수",
+          "to": "윤재호, 김민수, 이서연"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:22:29.809Z",
+      "who": "품질보증팀",
+      "ds": "tasks",
+      "rid": "r10h4k",
+      "title": "G사 PPAP Level 3 제출",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "담당",
+          "from": "윤재호",
+          "to": "윤재호, 김민수"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:19:37.777Z",
+      "who": "품질보증팀",
+      "ds": "defects",
+      "rid": "r10ggi",
+      "title": "배터리 트레이",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "라인",
+          "from": "용접 2, 용접 1",
+          "to": "용접 2"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:19:35.322Z",
+      "who": "품질보증팀",
+      "ds": "defects",
+      "rid": "r10ggi",
+      "title": "배터리 트레이",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "라인",
+          "from": "용접 2",
+          "to": "용접 2, 용접 1"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:19:30.496Z",
+      "who": "품질보증팀",
+      "ds": "defects",
+      "rid": "r10ggi",
+      "title": "배터리 트레이",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "불량 유형",
+          "from": "용접 스패터, 도장 핀홀·이물",
+          "to": "용접 스패터"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:19:27.264Z",
+      "who": "품질보증팀",
+      "ds": "defects",
+      "rid": "r10ggi",
+      "title": "배터리 트레이",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "불량 유형",
+          "from": "용접 스패터",
+          "to": "용접 스패터, 도장 핀홀·이물"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:17:55.383Z",
+      "who": "품질보증팀",
+      "ds": "ppap",
+      "rid": "r10h43",
+      "title": "리어 브라켓 (금형 이관)",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "고객사",
+          "from": "K사",
+          "to": "H사"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:17:53.336Z",
+      "who": "품질보증팀",
+      "ds": "ppap",
+      "rid": "r10h43",
+      "title": "리어 브라켓 (금형 이관)",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "고객사",
+          "from": "H사",
+          "to": "K사"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:16:35.790Z",
+      "who": "품질보증팀",
+      "ds": "capa",
+      "rid": "r10g2y",
+      "title": "도어래치 ASSY 외관 (스크래치·찍힘)",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "관련 협력사",
+          "from": "대성정밀",
+          "to": "삼진프레스"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T06:16:33.822Z",
+      "who": "품질보증팀",
+      "ds": "capa",
+      "rid": "r10g2y",
+      "title": "도어래치 ASSY 외관 (스크래치·찍힘)",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "관련 협력사",
+          "from": "비어 있음",
+          "to": "대성정밀"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T05:24:37.940Z",
+      "who": "품질보증팀",
+      "ds": "suppliers",
+      "rid": "r10gyq",
+      "title": "대성정밀",
+      "kind": "del"
+    },
+    {
+      "at": "2026-10-08T05:24:34.255Z",
+      "who": "품질보증팀",
+      "ds": "suppliers",
+      "rid": "r10gyp",
+      "title": "대성정밀",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "상태",
+          "from": "개선요구",
+          "to": "평가완료"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T05:24:26.999Z",
+      "who": "품질보증팀",
+      "ds": "suppliers",
+      "rid": "r10gyp",
+      "title": "대성정밀",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "상태",
+          "from": "평가완료",
+          "to": "개선요구"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-08T00:12:00.000Z",
+      "who": "김민수",
+      "ds": "claims",
+      "rid": "r10g07",
+      "title": "CL-26-127",
+      "kind": "add"
+    },
+    {
+      "at": "2026-10-07T23:40:00.000Z",
+      "who": "최유진",
+      "ds": "capa",
+      "rid": "r10g32",
+      "title": "배터리 트레이 도장 핀홀·이물",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "진행 단계",
+          "from": "D3",
+          "to": "D1~D2"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-07T08:05:00.000Z",
+      "who": "이서연",
+      "ds": "claims",
+      "rid": "r10g09",
+      "title": "CL-26-126",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "상태",
+          "from": "접수",
+          "to": "접수"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-07T06:22:00.000Z",
+      "who": "오세린",
+      "ds": "calib",
+      "rid": "r10h65",
+      "title": "버니어 캘리퍼스 D",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "최근 교정일",
+          "from": "2025-10-02",
+          "to": "2026-05-19"
+        },
+        {
+          "l": "차기 교정일",
+          "from": "2026-10-02",
+          "to": "2027-05-19"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-07T02:03:00.000Z",
+      "who": "박지훈",
+      "ds": "suppliers",
+      "rid": "r10h1n",
+      "title": "한라부품",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "상태",
+          "from": "평가완료",
+          "to": "평가완료"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "at": "2026-10-06T07:48:00.000Z",
+      "who": "정하늘",
+      "ds": "nc",
+      "rid": "r10h24",
+      "title": "8.4.2.4 공급자 모니터링",
+      "kind": "add"
+    },
+    {
+      "at": "2026-10-06T01:30:00.000Z",
+      "who": "윤재호",
+      "ds": "copq",
+      "rid": "r10hf4",
+      "title": "예방 (교육·개선)",
+      "kind": "add"
+    },
+    {
+      "at": "2026-10-05T05:15:00.000Z",
+      "who": "한도윤",
+      "ds": "launch",
+      "rid": "r10h34",
+      "title": "스티어링 브라켓",
+      "kind": "edit",
+      "fields": [
+        {
+          "l": "누적 불량",
+          "from": "3",
+          "to": "11"
+        }
+      ],
+      "more": 0
+    }
+  ],
+  "registers": [
+    "people",
+    "customers",
+    "parts",
+    "defecttypes",
+    "vendors",
+    "lines",
+    "claims",
+    "capa",
+    "defects",
+    "inspections",
+    "cpk",
+    "measure",
+    "suppliers",
+    "nc",
+    "auditplan",
+    "launch",
+    "ppap",
+    "tasks",
+    "memos",
+    "calib",
+    "auditfind",
+    "change4m",
+    "training",
+    "copq"
+  ]
+}

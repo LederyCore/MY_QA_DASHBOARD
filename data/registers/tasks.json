@@ -1,0 +1,123 @@
+{
+  "id": "tasks",
+  "name": "업무 일정",
+  "desc": "심사, PPAP, 회의 등 기한이 있는 업무를 기록합니다.",
+  "dateField": "due",
+  "titleField": "title",
+  "asOfField": "",
+  "fields": [
+    {
+      "key": "title",
+      "label": "업무",
+      "type": "text",
+      "req": true
+    },
+    {
+      "key": "category",
+      "label": "분류",
+      "type": "select",
+      "options": [
+        "고객 대응",
+        "내부 개선",
+        "심사",
+        "보고",
+        "교육"
+      ]
+    },
+    {
+      "key": "repeat",
+      "label": "반복",
+      "type": "select",
+      "options": [
+        "매주",
+        "매월",
+        "분기",
+        "반기",
+        "매년"
+      ],
+      "colors": {
+        "매주": "blue",
+        "매월": "green",
+        "분기": "orange",
+        "반기": "purple",
+        "매년": "pink"
+      }
+    },
+    {
+      "key": "owner",
+      "label": "담당",
+      "type": "ref",
+      "ref": "people"
+    },
+    {
+      "key": "start",
+      "label": "시작일",
+      "type": "date"
+    },
+    {
+      "key": "due",
+      "label": "기한",
+      "type": "date",
+      "req": true
+    },
+    {
+      "key": "left",
+      "label": "남은 일수",
+      "type": "days",
+      "from": "@today",
+      "to": "due"
+    },
+    {
+      "key": "status",
+      "label": "상태",
+      "type": "select",
+      "options": [
+        "예정",
+        "진행중",
+        "완료"
+      ],
+      "badge": true
+    },
+    {
+      "key": "progress",
+      "label": "진행률",
+      "type": "number"
+    },
+    {
+      "key": "memo",
+      "label": "메모",
+      "type": "longtext"
+    }
+  ],
+  "repeat": {
+    "field": "repeat"
+  },
+  "records": [
+    {"id":"r10h4e","title":"H사 분기 품질 회의 자료 준비","category":"보고","owner":"김민수","start":"2026-07-26","due":"2026-08-25","status":"완료","progress":100,"memo":"","_rep":1},
+    {"id":"r10h4f","title":"K사 클레임 8D 회신","category":"고객 대응","owner":"최유진","start":"2026-10-16","due":"2026-11-04","status":"예정","progress":0,"memo":""},
+    {"id":"r10h4g","title":"IATF 사후심사 대응 준비","category":"심사","owner":"정하늘","start":"2026-09-19","due":"2026-10-04","status":"완료","progress":100,"memo":"","_rep":1},
+    {"id":"r10h4h","title":"신입 품질 교육 (SPC 기초)","category":"교육","owner":"최유진","start":"2026-10-03","due":"2026-11-07","status":"진행중","progress":37,"memo":""},
+    {"id":"r10h4i","title":"도장 막두께 Cpk 개선 과제","category":"내부 개선","owner":"최유진","start":"2026-08-28","due":"2026-09-08","status":"진행중","progress":21,"memo":""},
+    {"id":"r10h4j","title":"협력사 3분기 평가 결과 통보","category":"고객 대응","owner":"이서연","start":"2026-10-23","due":"2026-11-07","status":"예정","progress":0,"memo":""},
+    {"id":"r10h4k","title":"G사 PPAP Level 3 제출","category":"고객 대응","owner":"윤재호","start":"2026-11-24","due":"2026-12-07","status":"예정","progress":0,"memo":""},
+    {"id":"r10h4l","title":"관리계획서 개정 (도어래치)","category":"내부 개선","owner":"윤재호","start":"2026-09-13","due":"2026-10-06","status":"완료","progress":100,"memo":"","_rep":1},
+    {"id":"r10h4m","title":"측정기 연간 교정 계획 수립","category":"내부 개선","owner":"오세린","start":"2026-10-15","due":"2026-10-26","status":"예정","progress":0,"memo":""},
+    {"id":"r10h4n","title":"품질 비용 월간 보고","category":"보고","owner":"이서연","start":"2026-09-17","due":"2026-10-02","status":"완료","progress":100,"memo":"","_rep":1},
+    {"id":"r10h4o","title":"S모빌리티 신규 부품 초기유동 점검","category":"고객 대응","owner":"윤재호","start":"2026-09-06","due":"2026-10-09","status":"진행중","progress":57,"memo":""},
+    {"id":"r10h4p","title":"내부심사원 보수 교육","category":"교육","owner":"김민수","start":"2026-08-17","due":"2026-09-14","status":"완료","progress":100,"memo":"","_rep":1},
+    {"id":"r10h4q","title":"출하검사 기준서 개정","category":"내부 개선","owner":"박지훈","start":"2026-08-09","due":"2026-09-10","status":"완료","progress":100,"memo":"","_rep":1},
+    {"id":"r10h4r","title":"R사 공정 감사 대응","category":"심사","owner":"윤재호","start":"2026-10-19","due":"2026-11-14","status":"예정","progress":0,"memo":""},
+    {"id":"r10h4s","title":"고객 반품 분석 보고","category":"보고","owner":"최유진","start":"2026-10-15","due":"2026-11-06","status":"예정","progress":0,"memo":""},
+    {"id":"r10h4t","title":"용접 강도 시험 설비 점검","category":"내부 개선","owner":"한도윤","start":"2026-11-01","due":"2026-11-13","status":"예정","progress":0,"memo":""},
+    {"id":"r10h4u","title":"협력사 4M 변경 승인 검토","category":"고객 대응","owner":"윤재호","start":"2026-08-08","due":"2026-08-29","status":"완료","progress":100,"memo":"","_rep":1},
+    {"id":"r10h4v","title":"연간 품질 목표 실적 정리","category":"보고","owner":"김민수","start":"2026-08-31","due":"2026-09-29","status":"완료","progress":100,"memo":"","_rep":1},
+    {"id":"r10h4w","title":"불량 유형 판정 기준 정비","category":"내부 개선","owner":"이서연","start":"2026-10-06","due":"2026-10-16","status":"진행중","progress":23,"memo":""},
+    {"id":"r10h4x","title":"H사 공정 심사 시정조치 완료 보고","category":"심사","owner":"최유진","start":"2026-10-13","due":"2026-11-06","status":"예정","progress":0,"memo":""},
+    {"id":"rtl03s","title":"주간 품질 회의 자료 준비","category":"보고","repeat":"매주","owner":"김민수","start":"2026-10-12","due":"2026-10-13","status":"진행중","progress":30,"memo":""},
+    {"id":"rtmf9y","title":"월간 품질 실적 보고 (10월)","category":"보고","repeat":"매월","owner":"최유진","start":"2026-10-25","due":"2026-11-03","status":"예정","progress":0,"memo":""},
+    {"id":"rtnh3f","title":"측정기 정기 점검 (일상 점검표 확인)","category":"내부 개선","repeat":"매월","owner":"오세린","start":"2026-10-01","due":"2026-10-31","status":"진행중","progress":40,"memo":""},
+    {"id":"rtovcj","title":"분기 협력사 품질 평가 (4분기)","category":"심사","repeat":"분기","owner":"박지훈","start":"2026-12-01","due":"2026-12-20","status":"예정","progress":0,"memo":""},
+    {"id":"rtpvyf","title":"반기 내부 품질 심사 계획 수립","category":"심사","repeat":"반기","owner":"정하늘","start":"2026-11-15","due":"2026-12-15","status":"예정","progress":0,"memo":""},
+    {"id":"rtqu7k","title":"연간 IATF 16949 교육 계획 수립","category":"교육","repeat":"매년","owner":"한도윤","start":"2026-11-20","due":"2026-12-31","status":"예정","progress":0,"memo":""}
+  ]
+}

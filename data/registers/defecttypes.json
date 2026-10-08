@@ -1,0 +1,52 @@
+{
+  "id": "defecttypes",
+  "name": "불량 유형",
+  "master": true,
+  "desc": "클레임·불량 발생에서 고르는 불량 유형입니다.",
+  "dateField": "",
+  "titleField": "name",
+  "asOfField": "",
+  "fields": [
+    {
+      "key": "name",
+      "label": "불량 유형",
+      "type": "text",
+      "req": true
+    },
+    {
+      "key": "group",
+      "label": "분류",
+      "type": "select",
+      "options": [
+        "기능",
+        "외관",
+        "치수",
+        "조립",
+        "공정",
+        "재질",
+        "기타"
+      ]
+    },
+    {
+      "key": "note",
+      "label": "판정 기준 · 비고",
+      "type": "text"
+    }
+  ],
+  "records": [
+    {"id":"r10fr1","name":"작동 불량","group":"기능","note":""},
+    {"id":"r10fr2","name":"외관 (스크래치·찍힘)","group":"외관","note":""},
+    {"id":"r10fr3","name":"치수 불량","group":"치수","note":""},
+    {"id":"r10fr4","name":"소음·진동","group":"기능","note":""},
+    {"id":"r10fr5","name":"오조립·누락","group":"조립","note":""},
+    {"id":"r10fr6","name":"도장 핀홀·이물","group":"외관","note":""},
+    {"id":"r10fr7","name":"용접 스패터","group":"공정","note":""},
+    {"id":"r10fr8","name":"용접 강도 미달","group":"공정","note":""},
+    {"id":"r10fr9","name":"사출 수축","group":"재질","note":""},
+    {"id":"r10fra","name":"사출 미성형","group":"재질","note":""},
+    {"id":"r10frb","name":"도금 박리","group":"재질","note":""},
+    {"id":"r10frc","name":"체결 불량","group":"조립","note":""},
+    {"id":"r10frd","name":"이종 부품 혼입","group":"조립","note":""},
+    {"id":"r10fre","name":"기타","group":"기타","note":""}
+  ]
+}

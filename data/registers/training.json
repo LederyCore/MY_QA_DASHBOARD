@@ -1,0 +1,112 @@
+{
+  "id": "training",
+  "name": "교육 · 자격 이력",
+  "desc": "담당자별 교육·자격 이력과 만료일입니다.",
+  "dateField": "date",
+  "titleField": "course",
+  "fields": [
+    {
+      "key": "date",
+      "label": "교육일",
+      "type": "date",
+      "req": true
+    },
+    {
+      "key": "person",
+      "label": "이름",
+      "type": "ref",
+      "ref": "people"
+    },
+    {
+      "key": "course",
+      "label": "교육·자격명",
+      "type": "text",
+      "req": true
+    },
+    {
+      "key": "kind",
+      "label": "구분",
+      "type": "select",
+      "options": [
+        "사내 교육",
+        "사외 교육",
+        "자격"
+      ]
+    },
+    {
+      "key": "hours",
+      "label": "시간",
+      "type": "number"
+    },
+    {
+      "key": "expire",
+      "label": "만료일",
+      "type": "date"
+    },
+    {
+      "key": "note",
+      "label": "비고",
+      "type": "text"
+    }
+  ],
+  "records": [
+    {"id":"r10h8g","date":"2026-05-28","person":"김민수","course":"CQE (품질기술사 준비)","kind":"사외 교육","hours":20,"expire":"","note":""},
+    {"id":"r10h8h","date":"2025-12-17","person":"김민수","course":"CQE (품질기술사 준비)","kind":"사외 교육","hours":20,"expire":"","note":""},
+    {"id":"r10h8i","date":"2025-07-18","person":"김민수","course":"품질 비용 관리","kind":"사외 교육","hours":7,"expire":"","note":""},
+    {"id":"r10h8j","date":"2025-05-12","person":"김민수","course":"VDA 6.3 공정심사원","kind":"자격","hours":24,"expire":"2026-06-11","note":""},
+    {"id":"r10h8k","date":"2025-10-05","person":"김민수","course":"용접 검사원","kind":"자격","hours":12,"expire":"2027-10-05","note":""},
+    {"id":"r10h8l","date":"2026-06-22","person":"김민수","course":"SPC 기초","kind":"사내 교육","hours":4,"expire":"","note":""},
+    {"id":"r10h8m","date":"2026-05-13","person":"김민수","course":"MSA 실무","kind":"사내 교육","hours":6,"expire":"","note":""},
+    {"id":"r10h8n","date":"2025-06-05","person":"김민수","course":"FMEA (AIAG-VDA)","kind":"사외 교육","hours":14,"expire":"","note":""},
+    {"id":"r10h8o","date":"2025-10-20","person":"김민수","course":"품질 비용 관리","kind":"사외 교육","hours":7,"expire":"","note":""},
+    {"id":"r10h8p","date":"2025-09-11","person":"이서연","course":"FMEA (AIAG-VDA)","kind":"사외 교육","hours":14,"expire":"","note":""},
+    {"id":"r10h8q","date":"2026-01-19","person":"이서연","course":"MSA 실무","kind":"사내 교육","hours":6,"expire":"","note":""},
+    {"id":"r10h8r","date":"2026-10-05","person":"이서연","course":"IATF 16949 내부심사원","kind":"자격","hours":16,"expire":"2027-11-04","note":""},
+    {"id":"r10h8s","date":"2026-05-26","person":"이서연","course":"IATF 16949 내부심사원","kind":"자격","hours":16,"expire":"2029-05-25","note":""},
+    {"id":"r10h8t","date":"2026-03-22","person":"이서연","course":"8D 문제해결","kind":"사내 교육","hours":4,"expire":"","note":""},
+    {"id":"r10h8u","date":"2025-08-06","person":"박지훈","course":"SPC 기초","kind":"사내 교육","hours":4,"expire":"","note":""},
+    {"id":"r10h8v","date":"2025-10-31","person":"박지훈","course":"IATF 16949 내부심사원","kind":"자격","hours":16,"expire":"2028-10-30","note":""},
+    {"id":"r10h8w","date":"2025-05-18","person":"박지훈","course":"8D 문제해결","kind":"사내 교육","hours":4,"expire":"","note":""},
+    {"id":"r10h8x","date":"2025-07-06","person":"박지훈","course":"CQE (품질기술사 준비)","kind":"사외 교육","hours":20,"expire":"","note":""},
+    {"id":"r10h8y","date":"2026-01-29","person":"박지훈","course":"8D 문제해결","kind":"사내 교육","hours":4,"expire":"","note":""},
+    {"id":"r10h8z","date":"2026-04-16","person":"박지훈","course":"품질 비용 관리","kind":"사외 교육","hours":7,"expire":"","note":""},
+    {"id":"r10h90","date":"2026-08-04","person":"박지훈","course":"용접 검사원","kind":"자격","hours":12,"expire":"2028-08-03","note":""},
+    {"id":"r10h91","date":"2026-02-25","person":"박지훈","course":"품질 비용 관리","kind":"사외 교육","hours":7,"expire":"","note":""},
+    {"id":"r10h92","date":"2026-08-22","person":"박지훈","course":"8D 문제해결","kind":"사내 교육","hours":4,"expire":"","note":""},
+    {"id":"r10h93","date":"2026-02-10","person":"최유진","course":"용접 검사원","kind":"자격","hours":12,"expire":"2028-02-10","note":""},
+    {"id":"r10h94","date":"2026-01-31","person":"최유진","course":"품질 비용 관리","kind":"사외 교육","hours":7,"expire":"","note":""},
+    {"id":"r10h95","date":"2026-07-12","person":"최유진","course":"MSA 실무","kind":"사내 교육","hours":6,"expire":"","note":""},
+    {"id":"r10h96","date":"2026-08-19","person":"최유진","course":"FMEA (AIAG-VDA)","kind":"사외 교육","hours":14,"expire":"","note":""},
+    {"id":"r10h97","date":"2025-02-10","person":"최유진","course":"용접 검사원","kind":"자격","hours":12,"expire":"2027-02-10","note":""},
+    {"id":"r10h98","date":"2025-06-30","person":"최유진","course":"품질 비용 관리","kind":"사외 교육","hours":7,"expire":"","note":""},
+    {"id":"r10h99","date":"2025-03-10","person":"최유진","course":"품질 비용 관리","kind":"사외 교육","hours":7,"expire":"","note":""},
+    {"id":"r10h9a","date":"2026-04-30","person":"정하늘","course":"MSA 실무","kind":"사내 교육","hours":6,"expire":"","note":""},
+    {"id":"r10h9b","date":"2025-12-18","person":"정하늘","course":"측정기 교정 담당자","kind":"자격","hours":8,"expire":"2026-01-17","note":""},
+    {"id":"r10h9c","date":"2026-09-24","person":"정하늘","course":"CQE (품질기술사 준비)","kind":"사외 교육","hours":20,"expire":"","note":""},
+    {"id":"r10h9d","date":"2026-03-06","person":"정하늘","course":"용접 검사원","kind":"자격","hours":12,"expire":"2028-03-05","note":""},
+    {"id":"r10h9e","date":"2026-07-19","person":"정하늘","course":"측정기 교정 담당자","kind":"자격","hours":8,"expire":"2028-07-18","note":""},
+    {"id":"r10h9f","date":"2025-02-09","person":"한도윤","course":"품질 비용 관리","kind":"사외 교육","hours":7,"expire":"","note":""},
+    {"id":"r10h9g","date":"2025-04-10","person":"한도윤","course":"용접 검사원","kind":"자격","hours":12,"expire":"2027-04-10","note":""},
+    {"id":"r10h9h","date":"2025-01-06","person":"한도윤","course":"SPC 기초","kind":"사내 교육","hours":4,"expire":"","note":""},
+    {"id":"r10h9i","date":"2025-06-15","person":"한도윤","course":"CQE (품질기술사 준비)","kind":"사외 교육","hours":20,"expire":"","note":""},
+    {"id":"r10h9j","date":"2025-12-02","person":"한도윤","course":"8D 문제해결","kind":"사내 교육","hours":4,"expire":"","note":""},
+    {"id":"r10h9k","date":"2025-09-04","person":"한도윤","course":"VDA 6.3 공정심사원","kind":"자격","hours":24,"expire":"2028-09-03","note":""},
+    {"id":"r10h9l","date":"2026-09-17","person":"한도윤","course":"SPC 기초","kind":"사내 교육","hours":4,"expire":"","note":""},
+    {"id":"r10h9m","date":"2026-06-24","person":"오세린","course":"FMEA (AIAG-VDA)","kind":"사외 교육","hours":14,"expire":"","note":""},
+    {"id":"r10h9n","date":"2025-11-04","person":"오세린","course":"용접 검사원","kind":"자격","hours":12,"expire":"2027-11-04","note":""},
+    {"id":"r10h9o","date":"2025-01-16","person":"오세린","course":"CQE (품질기술사 준비)","kind":"사외 교육","hours":20,"expire":"","note":""},
+    {"id":"r10h9p","date":"2026-10-07","person":"오세린","course":"측정기 교정 담당자","kind":"자격","hours":8,"expire":"2028-10-06","note":""},
+    {"id":"r10h9q","date":"2025-06-25","person":"오세린","course":"FMEA (AIAG-VDA)","kind":"사외 교육","hours":14,"expire":"","note":""},
+    {"id":"r10h9r","date":"2026-01-31","person":"오세린","course":"SPC 기초","kind":"사내 교육","hours":4,"expire":"","note":""},
+    {"id":"r10h9s","date":"2026-06-02","person":"오세린","course":"용접 검사원","kind":"자격","hours":12,"expire":"2028-06-01","note":""},
+    {"id":"r10h9t","date":"2026-08-13","person":"윤재호","course":"CQE (품질기술사 준비)","kind":"사외 교육","hours":20,"expire":"","note":""},
+    {"id":"r10h9u","date":"2026-10-05","person":"윤재호","course":"8D 문제해결","kind":"사내 교육","hours":4,"expire":"","note":""},
+    {"id":"r10h9v","date":"2025-10-26","person":"윤재호","course":"IATF 16949 내부심사원","kind":"자격","hours":16,"expire":"2026-11-25","note":""},
+    {"id":"r10h9w","date":"2026-10-07","person":"윤재호","course":"SPC 기초","kind":"사내 교육","hours":4,"expire":"","note":""},
+    {"id":"r10h9x","date":"2025-09-26","person":"윤재호","course":"측정기 교정 담당자","kind":"자격","hours":8,"expire":"2027-09-26","note":""},
+    {"id":"r10h9y","date":"2026-09-05","person":"윤재호","course":"MSA 실무","kind":"사내 교육","hours":6,"expire":"","note":""},
+    {"id":"r10h9z","date":"2026-03-24","person":"윤재호","course":"IATF 16949 내부심사원","kind":"자격","hours":16,"expire":"2027-04-23","note":""},
+    {"id":"r10ha0","date":"2026-01-01","person":"윤재호","course":"IATF 16949 내부심사원","kind":"자격","hours":16,"expire":"2028-12-31","note":""},
+    {"id":"r10ha1","date":"2025-10-30","person":"윤재호","course":"VDA 6.3 공정심사원","kind":"자격","hours":24,"expire":"2026-11-29","note":""}
+  ]
+}

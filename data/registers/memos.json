@@ -1,0 +1,98 @@
+{
+  "id": "memos",
+  "name": "메모 · 회의록",
+  "desc": "회의 결과, 공지, 이슈 등 짧은 메모를 기록합니다.",
+  "dateField": "date",
+  "titleField": "content",
+  "fields": [
+    {
+      "key": "date",
+      "label": "작성일",
+      "type": "date",
+      "req": true
+    },
+    {
+      "key": "category",
+      "label": "구분",
+      "type": "select",
+      "options": [
+        "회의",
+        "공지",
+        "이슈",
+        "기타"
+      ],
+      "colors": {
+        "회의": "blue",
+        "공지": "green",
+        "이슈": "red",
+        "기타": "gray"
+      }
+    },
+    {
+      "key": "content",
+      "label": "내용",
+      "type": "text",
+      "req": true
+    },
+    {
+      "key": "owner",
+      "label": "작성자",
+      "type": "ref",
+      "ref": "people"
+    },
+    {
+      "key": "detail",
+      "label": "상세 내용",
+      "type": "longtext"
+    }
+  ],
+  "colW": {
+    "date": 174,
+    "category": 111,
+    "content": 529,
+    "owner": 131,
+    "detail": 146
+  },
+  "records": [
+    {"id":"r10h4y","date":"2026-10-08","category":"회의","content":"주간 품질 회의: H사 클레임 감소 대책 공유","owner":"한도윤","detail":""},
+    {"id":"r10h4z","date":"2026-09-23","category":"공지","content":"IATF 사후심사 일정 확정 (11월 둘째 주)","owner":"박지훈","detail":""},
+    {"id":"r10h50","date":"2026-09-08","category":"이슈","content":"도장 라인 막두께 산포 증가 — 건 교체 검토","owner":"김민수","detail":""},
+    {"id":"r10h51","date":"2026-08-23","category":"회의","content":"협력사 품질 협의회: 수입검사 불량률 공유","owner":"오세린","detail":""},
+    {"id":"r10h52","date":"2026-08-10","category":"공지","content":"측정기 교정 기한 도래 목록 배포","owner":"최유진","detail":""},
+    {"id":"r10h53","date":"2026-07-27","category":"이슈","content":"S모빌리티 배터리 트레이 용접 스패터 재발","owner":"박지훈","detail":""},
+    {"id":"r10h54","date":"2026-07-12","category":"회의","content":"8D 진행 점검: 지연 건 담당자별 일정 재수립","owner":"김민수","detail":""},
+    {"id":"r10h55","date":"2026-06-25","category":"기타","content":"품질 교육 자료 공유 폴더 정리","owner":"이서연","detail":""},
+    {"id":"r10h56","date":"2026-06-11","category":"이슈","content":"K사 소음 클레임 — 체결 토크 재검증 필요","owner":"한도윤","detail":""},
+    {"id":"r10h57","date":"2026-05-30","category":"회의","content":"월간 품질 비용 리뷰: 외부 실패 비용 전월 대비 감소","owner":"한도윤","detail":""},
+    {"id":"r10h58","date":"2026-05-13","category":"공지","content":"관리계획서 개정본 배포 (도어래치 ASSY)","owner":"한도윤","detail":""},
+    {"id":"r10h59","date":"2026-04-29","category":"이슈","content":"수입검사 도금 박리 3건 — 동양도금 현장 점검","owner":"윤재호","detail":""},
+    {"id":"r10h5a","date":"2026-04-17","category":"회의","content":" 품질 회의: H사 클레임 감소 대책 공유","owner":"한도윤","detail":""},
+    {"id":"r10h5b","date":"2026-03-31","category":"공지","content":"IATF 사후심사 일정 확정 (11월 둘째 주)","owner":"이서연","detail":""},
+    {"id":"r10h5c","date":"2026-03-16","category":"이슈","content":"도장 라인 막두께 산포 증가 — 건 교체 검토","owner":"박지훈","detail":""},
+    {"id":"r10h5d","date":"2026-03-04","category":"회의","content":"협력사 품질 협의회: 수입검사 불량률 공유","owner":"정하늘","detail":""},
+    {"id":"r10h5e","date":"2026-02-15","category":"공지","content":"측정기 교정 기한 도래 목록 배포","owner":"한도윤","detail":""},
+    {"id":"r10h5f","date":"2026-02-01","category":"이슈","content":"S모빌리티 배터리 트레이 용접 스패터 재발","owner":"최유진","detail":""},
+    {"id":"r10h5g","date":"2026-01-20","category":"회의","content":"8D 진행 점검: 지연 건 담당자별 일정 재수립","owner":"이서연","detail":""},
+    {"id":"r10h5h","date":"2026-01-02","category":"기타","content":"품질 교육 자료 공유 폴더 정리","owner":"최유진","detail":""},
+    {"id":"r10h5i","date":"2025-12-20","category":"이슈","content":"K사 소음 클레임 — 체결 토크 재검증 필요","owner":"이서연","detail":""},
+    {"id":"r10h5j","date":"2025-12-07","category":"회의","content":" 품질 비용 리뷰: 외부 실패 비용 전월 대비 감소","owner":"오세린","detail":""},
+    {"id":"r10h5k","date":"2025-11-23","category":"공지","content":"관리계획서 개정본 배포 (도어래치 ASSY)","owner":"이서연","detail":""},
+    {"id":"r10h5l","date":"2025-11-08","category":"이슈","content":"수입검사 도금 박리 3건 — 동양도금 현장 점검","owner":"김민수","detail":""},
+    {"id":"r10h5m","date":"2025-10-23","category":"회의","content":" 품질 회의: H사 클레임 감소 대책 공유","owner":"오세린","detail":""},
+    {"id":"r10h5n","date":"2025-10-09","category":"공지","content":"IATF 사후심사 일정 확정 (11월 둘째 주)","owner":"박지훈","detail":""},
+    {"id":"r10h5o","date":"2025-09-23","category":"이슈","content":"도장 라인 막두께 산포 증가 — 건 교체 검토","owner":"이서연","detail":""},
+    {"id":"r10h5p","date":"2025-09-10","category":"회의","content":"협력사 품질 협의회: 수입검사 불량률 공유","owner":"이서연","detail":""},
+    {"id":"r10h5q","date":"2025-08-26","category":"공지","content":"측정기 교정 기한 도래 목록 배포","owner":"김민수","detail":""},
+    {"id":"r10h5r","date":"2025-08-12","category":"이슈","content":"S모빌리티 배터리 트레이 용접 스패터 재발","owner":"김민수","detail":""},
+    {"id":"r10h5s","date":"2025-07-30","category":"회의","content":"8D 진행 점검: 지연 건 담당자별 일정 재수립","owner":"한도윤","detail":""},
+    {"id":"r10h5t","date":"2025-07-15","category":"기타","content":"품질 교육 자료 공유 폴더 정리","owner":"윤재호","detail":""},
+    {"id":"r10h5u","date":"2025-06-30","category":"이슈","content":"K사 소음 클레임 — 체결 토크 재검증 필요","owner":"윤재호","detail":""},
+    {"id":"r10h5v","date":"2025-06-16","category":"회의","content":" 품질 비용 리뷰: 외부 실패 비용 전월 대비 감소","owner":"오세린","detail":""},
+    {"id":"r10h5w","date":"2025-06-01","category":"공지","content":"관리계획서 개정본 배포 (도어래치 ASSY)","owner":"정하늘","detail":""},
+    {"id":"r10h5x","date":"2025-05-17","category":"이슈","content":"수입검사 도금 박리 3건 — 동양도금 현장 점검","owner":"김민수","detail":""},
+    {"id":"r10h5y","date":"2025-05-02","category":"회의","content":" 품질 회의: H사 클레임 감소 대책 공유","owner":"김민수","detail":""},
+    {"id":"r10h5z","date":"2025-04-16","category":"공지","content":"IATF 사후심사 일정 확정 (11월 둘째 주)","owner":"이서연","detail":""},
+    {"id":"r10h60","date":"2025-04-03","category":"이슈","content":"도장 라인 막두께 산포 증가 — 건 교체 검토","owner":"김민수","detail":""},
+    {"id":"r10h61","date":"2025-03-20","category":"회의","content":"협력사 품질 협의회: 수입검사 불량률 공유","owner":"박지훈","detail":""}
+  ]
+}

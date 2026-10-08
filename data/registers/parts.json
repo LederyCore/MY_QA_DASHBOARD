@@ -1,0 +1,76 @@
+{
+  "id": "parts",
+  "name": "부품",
+  "master": true,
+  "desc": "관리 대상 부품(품번·품명)과 도면입니다.",
+  "dateField": "",
+  "titleField": "name",
+  "asOfField": "",
+  "fields": [
+    {
+      "key": "name",
+      "label": "품명",
+      "type": "text",
+      "req": true
+    },
+    {
+      "key": "partno",
+      "label": "품번",
+      "type": "text"
+    },
+    {
+      "key": "customer",
+      "label": "고객사",
+      "type": "ref",
+      "ref": "customers"
+    },
+    {
+      "key": "process",
+      "label": "주 공정",
+      "type": "select",
+      "options": [
+        "프레스",
+        "용접",
+        "사출",
+        "도장",
+        "조립"
+      ]
+    },
+    {
+      "key": "files",
+      "label": "사진 · 도면",
+      "type": "file"
+    },
+    {
+      "key": "n_claim",
+      "label": "클레임 건수",
+      "type": "rollup",
+      "rel": "claims:part",
+      "agg": "count"
+    },
+    {
+      "key": "def_qty",
+      "label": "공정 불량 수량",
+      "type": "rollup",
+      "rel": "defects:part",
+      "agg": "sum",
+      "field": "qty"
+    }
+  ],
+  "records": [
+    {"id":"r10fqn","name":"도어래치 ASSY","partno":"LAT-3290","customer":"H사","process":"조립","files":[{"name":"도어래치 ASSY 도면.svg","path":"files/parts/261008-r10fqn-도어래치 ASSY 도면.svg","type":"image/svg+xml","size":1607,"at":"2026-10-08"}]},
+    {"id":"r10fqo","name":"시트프레임","partno":"SF-1150","customer":"K사","process":"용접","files":[{"name":"시트프레임 도면.svg","path":"files/parts/261008-r10fqo-시트프레임 도면.svg","type":"image/svg+xml","size":1604,"at":"2026-10-08"}]},
+    {"id":"r10fqp","name":"콘솔 커버","partno":"CV-4400","customer":"H사","process":"사출","files":[{"name":"콘솔 커버 도면.svg","path":"files/parts/261008-r10fqp-콘솔 커버 도면.svg","type":"image/svg+xml","size":1602,"at":"2026-10-08"}]},
+    {"id":"r10fqq","name":"브라켓 BRK-1830","partno":"BRK-1830","customer":"G사","process":"프레스","files":[{"name":"브라켓 BRK-1830 도면.svg","path":"files/parts/261008-r10fqq-브라켓 BRK-1830 도면.svg","type":"image/svg+xml","size":1608,"at":"2026-10-08"}]},
+    {"id":"r10fqr","name":"힌지 ASSY","partno":"HG-0920","customer":"R사","process":"조립","files":[{"name":"힌지 ASSY 도면.svg","path":"files/parts/261008-r10fqr-힌지 ASSY 도면.svg","type":"image/svg+xml","size":1600,"at":"2026-10-08"}]},
+    {"id":"r10fqs","name":"글로브박스","partno":"GB-2200","customer":"G사","process":"사출","files":[{"name":"글로브박스 도면.svg","path":"files/parts/261008-r10fqs-글로브박스 도면.svg","type":"image/svg+xml","size":1604,"at":"2026-10-08"}]},
+    {"id":"r10fqt","name":"리어 브라켓","partno":"BRK-2041","customer":"H사","process":"프레스","files":[]},
+    {"id":"r10fqu","name":"암레스트","partno":"AR-1100","customer":"K사","process":"사출","files":[]},
+    {"id":"r10fqv","name":"배터리 트레이","partno":"BT-5100","customer":"S모빌리티","process":"용접","files":[]},
+    {"id":"r10fqw","name":"범퍼 빔","partno":"BB-3300","customer":"H사","process":"용접","files":[]},
+    {"id":"r10fqx","name":"도어 트림","partno":"DT-7710","customer":"K사","process":"사출","files":[]},
+    {"id":"r10fqy","name":"커넥터 하우징","partno":"CH-0451","customer":"S모빌리티","process":"사출","files":[]},
+    {"id":"r10fqz","name":"스티어링 브라켓","partno":"SB-6620","customer":"G사","process":"프레스","files":[]},
+    {"id":"r10fr0","name":"테일게이트 힌지","partno":"TH-0880","customer":"R사","process":"프레스","files":[]}
+  ]
+}

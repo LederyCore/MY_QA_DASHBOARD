@@ -1,0 +1,63 @@
+{
+  "id": "auditplan",
+  "name": "내부심사 계획",
+  "desc": "2026년 부서별 내부심사 일정과 진행률입니다.",
+  "dateField": "date",
+  "titleField": "dept",
+  "asOfField": "",
+  "fields": [
+    {
+      "key": "dept",
+      "label": "피심사 부서",
+      "type": "text",
+      "req": true
+    },
+    {
+      "key": "date",
+      "label": "심사일",
+      "type": "date",
+      "req": true
+    },
+    {
+      "key": "auditor",
+      "label": "심사원",
+      "type": "ref",
+      "ref": "people"
+    },
+    {
+      "key": "scope",
+      "label": "심사 범위",
+      "type": "text"
+    },
+    {
+      "key": "progress",
+      "label": "진행률",
+      "type": "number"
+    },
+    {
+      "key": "status",
+      "label": "상태",
+      "type": "select",
+      "options": [
+        "예정",
+        "진행중",
+        "완료"
+      ],
+      "badge": true
+    }
+  ],
+  "records": [
+    {"id":"r10h2o","dept":"품질보증","date":"2026-01-20","auditor":"최유진","scope":"프로세스 심사 (IATF 16949)","progress":100,"status":"완료"},
+    {"id":"r10h2p","dept":"생산 1팀","date":"2026-02-17","auditor":"정하늘","scope":"공정 심사 (VDA 6.3)","progress":100,"status":"완료"},
+    {"id":"r10h2q","dept":"생산 2팀","date":"2026-03-12","auditor":"윤재호","scope":"프로세스 심사 (IATF 16949)","progress":100,"status":"완료"},
+    {"id":"r10h2r","dept":"구매","date":"2026-04-20","auditor":"정하늘","scope":"프로세스 심사 (IATF 16949)","progress":100,"status":"완료"},
+    {"id":"r10h2s","dept":"개발","date":"2026-05-15","auditor":"정하늘","scope":"프로세스 심사 (IATF 16949)","progress":100,"status":"완료"},
+    {"id":"r10h2t","dept":"설비","date":"2026-06-23","auditor":"정하늘","scope":"제품 심사","progress":100,"status":"완료"},
+    {"id":"r10h2u","dept":"물류","date":"2026-07-15","auditor":"정하늘","scope":"공정 심사 (VDA 6.3)","progress":100,"status":"완료"},
+    {"id":"r10h2v","dept":"영업","date":"2026-08-23","auditor":"정하늘","scope":"프로세스 심사 (IATF 16949)","progress":100,"status":"완료"},
+    {"id":"r10h2w","dept":"인사·교육","date":"2026-09-20","auditor":"최유진","scope":"공정 심사 (VDA 6.3)","progress":100,"status":"완료"},
+    {"id":"r10h2x","dept":"경영기획","date":"2026-10-09","auditor":"최유진","scope":"프로세스 심사 (IATF 16949)","progress":40,"status":"진행중"},
+    {"id":"r10h2y","dept":"금형","date":"2026-11-10","auditor":"최유진","scope":"공정 심사 (VDA 6.3)","progress":0,"status":"예정"},
+    {"id":"r10h2z","dept":"IT","date":"2026-12-22","auditor":"정하늘","scope":"프로세스 심사 (IATF 16949)","progress":0,"status":"예정"}
+  ]
+}

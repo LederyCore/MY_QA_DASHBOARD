@@ -1,0 +1,44 @@
+{
+  "id": "lines",
+  "name": "생산 라인",
+  "master": true,
+  "desc": "공정 불량·Cpk·측정기에서 고르는 생산 라인입니다.",
+  "dateField": "",
+  "titleField": "name",
+  "asOfField": "",
+  "fields": [
+    {
+      "key": "name",
+      "label": "라인",
+      "type": "text",
+      "req": true
+    },
+    {
+      "key": "process",
+      "label": "공정",
+      "type": "select",
+      "options": [
+        "프레스",
+        "용접",
+        "사출",
+        "도장",
+        "조립"
+      ]
+    },
+    {
+      "key": "note",
+      "label": "비고",
+      "type": "text"
+    }
+  ],
+  "records": [
+    {"id":"r10frv","name":"프레스 1","process":"프레스","note":""},
+    {"id":"r10frw","name":"프레스 2","process":"프레스","note":""},
+    {"id":"r10frx","name":"용접 1","process":"용접","note":""},
+    {"id":"r10fry","name":"용접 2","process":"용접","note":""},
+    {"id":"r10frz","name":"사출 1","process":"사출","note":""},
+    {"id":"r10fs0","name":"도장","process":"도장","note":""},
+    {"id":"r10fs1","name":"조립 1","process":"조립","note":""},
+    {"id":"r10fs2","name":"조립 2","process":"조립","note":""}
+  ]
+}

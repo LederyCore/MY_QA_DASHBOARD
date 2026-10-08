@@ -1,0 +1,83 @@
+{
+  "id": "vendors",
+  "name": "협력사",
+  "master": true,
+  "desc": "부품 협력사 목록입니다. 협력사 평가·수입검사에서 골라 씁니다.",
+  "dateField": "",
+  "titleField": "name",
+  "asOfField": "",
+  "fields": [
+    {
+      "key": "name",
+      "label": "협력사",
+      "type": "text",
+      "req": true
+    },
+    {
+      "key": "process",
+      "label": "공정",
+      "type": "select",
+      "options": [
+        "프레스",
+        "사출",
+        "용접",
+        "도금",
+        "도장",
+        "고무",
+        "전장",
+        "가공",
+        "조립"
+      ]
+    },
+    {
+      "key": "owner",
+      "label": "관리 담당",
+      "type": "ref",
+      "ref": "people"
+    },
+    {
+      "key": "note",
+      "label": "비고",
+      "type": "text"
+    },
+    {
+      "key": "in_def",
+      "label": "입고 불량 수량",
+      "type": "rollup",
+      "rel": "defects:vendor",
+      "agg": "sum",
+      "field": "qty",
+      "where": {
+        "f": "kind",
+        "op": "=",
+        "v": "입고"
+      }
+    },
+    {
+      "key": "avg_score",
+      "label": "평균 평가 점수",
+      "type": "rollup",
+      "rel": "suppliers:name",
+      "agg": "avg",
+      "field": "score"
+    }
+  ],
+  "records": [
+    {"id":"r10frf","name":"대성정밀","process":"프레스","owner":"윤재호","note":""},
+    {"id":"r10frg","name":"삼진프레스","process":"프레스","owner":"박지훈","note":""},
+    {"id":"r10frh","name":"세화테크","process":"사출","owner":"박지훈","note":""},
+    {"id":"r10fri","name":"성원전자","process":"전장","owner":"윤재호","note":""},
+    {"id":"r10frj","name":"동양도금","process":"도금","owner":"박지훈","note":""},
+    {"id":"r10frk","name":"한빛고무","process":"고무","owner":"박지훈","note":""},
+    {"id":"r10frl","name":"미래사출","process":"사출","owner":"윤재호","note":""},
+    {"id":"r10frm","name":"우진금속","process":"프레스","owner":"박지훈","note":""},
+    {"id":"r10frn","name":"태광산업","process":"용접","owner":"박지훈","note":""},
+    {"id":"r10fro","name":"신흥정공","process":"가공","owner":"윤재호","note":""},
+    {"id":"r10frp","name":"해성화학","process":"사출","owner":"박지훈","note":""},
+    {"id":"r10frq","name":"진영테크","process":"조립","owner":"박지훈","note":""},
+    {"id":"r10frr","name":"대명오토","process":"조립","owner":"윤재호","note":""},
+    {"id":"r10frs","name":"경일산업","process":"도장","owner":"박지훈","note":""},
+    {"id":"r10frt","name":"유성정밀","process":"가공","owner":"박지훈","note":""},
+    {"id":"r10fru","name":"한라부품","process":"용접","owner":"윤재호","note":""}
+  ]
+}

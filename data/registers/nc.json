@@ -1,0 +1,131 @@
+{
+  "id": "nc",
+  "name": "부적합 (심사 지적)",
+  "desc": "내부·인증·고객 심사에서 나온 부적합 사항과 시정 조치입니다.",
+  "dateField": "issued",
+  "titleField": "clause",
+  "fields": [
+    {
+      "key": "no",
+      "label": "부적합 번호",
+      "type": "text",
+      "auto": "NC-{YY}-"
+    },
+    {
+      "key": "issued",
+      "label": "발행일",
+      "type": "date",
+      "req": true
+    },
+    {
+      "key": "audit",
+      "label": "심사 구분",
+      "type": "select",
+      "options": [
+        "내부심사",
+        "IATF 사후심사",
+        "고객 심사"
+      ]
+    },
+    {
+      "key": "clause",
+      "label": "요구사항 조항",
+      "type": "text",
+      "req": true
+    },
+    {
+      "key": "level",
+      "label": "등급",
+      "type": "select",
+      "options": [
+        "중결함",
+        "경결함",
+        "관찰"
+      ],
+      "colors": {
+        "중결함": "red",
+        "경결함": "orange",
+        "관찰": "gray"
+      }
+    },
+    {
+      "key": "dept",
+      "label": "부서",
+      "type": "select",
+      "options": [
+        "품질보증",
+        "생산",
+        "구매",
+        "개발",
+        "설비"
+      ]
+    },
+    {
+      "key": "due",
+      "label": "조치 기한",
+      "type": "date"
+    },
+    {
+      "key": "status",
+      "label": "상태",
+      "type": "select",
+      "options": [
+        "접수",
+        "조치중",
+        "완료"
+      ],
+      "badge": true
+    },
+    {
+      "key": "closed",
+      "label": "완료일",
+      "type": "date",
+      "closes": true
+    },
+    {
+      "key": "lead",
+      "label": "처리 기간(일)",
+      "type": "days",
+      "from": "issued",
+      "to": "closed"
+    }
+  ],
+  "records": [
+    {"id":"r10h23","no":"NC-25-001","issued":"2025-01-26","audit":"고객 심사","clause":"8.5.6.1 변경 관리","level":"경결함","dept":"생산","due":"2025-02-25","status":"완료","closed":"2025-03-08"},
+    {"id":"r10h2d","no":"NC-25-002","issued":"2025-02-09","audit":"내부심사","clause":"7.2.3 내부심사원 역량","level":"경결함","dept":"설비","due":"2025-03-11","status":"완료","closed":"2025-03-20"},
+    {"id":"r10h1t","no":"NC-25-003","issued":"2025-03-02","audit":"IATF 사후심사","clause":"8.3.4.4 제품 승인 프로세스","level":"경결함","dept":"설비","due":"2025-04-01","status":"완료","closed":"2025-04-01"},
+    {"id":"r10h26","no":"NC-25-004","issued":"2025-03-04","audit":"IATF 사후심사","clause":"8.7.1.4 재작업 관리","level":"중결함","dept":"구매","due":"2025-04-03","status":"완료","closed":"2025-03-26"},
+    {"id":"r10h27","no":"NC-25-005","issued":"2025-03-09","audit":"내부심사","clause":"8.3.4.4 제품 승인 프로세스","level":"중결함","dept":"구매","due":"2025-04-08","status":"완료","closed":"2025-04-17"},
+    {"id":"r10h1p","no":"NC-25-006","issued":"2025-03-16","audit":"내부심사","clause":"9.1.1.1 공정 모니터링","level":"관찰","dept":"설비","due":"2025-04-15","status":"완료","closed":"2025-04-24"},
+    {"id":"r10h20","no":"NC-25-007","issued":"2025-04-21","audit":"내부심사","clause":"7.1.5 측정 자원 관리","level":"경결함","dept":"품질보증","due":"2025-05-21","status":"완료","closed":"2025-05-05"},
+    {"id":"r10h2n","no":"NC-25-008","issued":"2025-04-23","audit":"고객 심사","clause":"7.2.3 내부심사원 역량","level":"경결함","dept":"설비","due":"2025-05-23","status":"완료","closed":"2025-05-19"},
+    {"id":"r10h1u","no":"NC-25-009","issued":"2025-06-05","audit":"내부심사","clause":"8.5.1.1 관리계획서","level":"경결함","dept":"설비","due":"2025-07-05","status":"완료","closed":"2025-07-04"},
+    {"id":"r10h2h","no":"NC-25-010","issued":"2025-06-07","audit":"고객 심사","clause":"8.7.1.4 재작업 관리","level":"관찰","dept":"생산","due":"2025-07-07","status":"완료","closed":"2025-06-28"},
+    {"id":"r10h25","no":"NC-25-011","issued":"2025-06-27","audit":"고객 심사","clause":"10.2.3 문제 해결","level":"관찰","dept":"생산","due":"2025-07-27","status":"완료","closed":"2025-08-09"},
+    {"id":"r10h2a","no":"NC-25-012","issued":"2025-08-02","audit":"내부심사","clause":"8.3.4.4 제품 승인 프로세스","level":"관찰","dept":"생산","due":"2025-09-01","status":"완료","closed":"2025-08-20"},
+    {"id":"r10h1r","no":"NC-25-013","issued":"2025-08-11","audit":"내부심사","clause":"7.5.3.2 기록 보관","level":"관찰","dept":"구매","due":"2025-09-10","status":"완료","closed":"2025-09-02"},
+    {"id":"r10h22","no":"NC-25-014","issued":"2025-08-20","audit":"IATF 사후심사","clause":"8.4.2.4 공급자 모니터링","level":"관찰","dept":"설비","due":"2025-09-19","status":"완료","closed":"2025-09-20"},
+    {"id":"r10h21","no":"NC-25-015","issued":"2025-08-21","audit":"IATF 사후심사","clause":"9.1.1.1 공정 모니터링","level":"경결함","dept":"설비","due":"2025-09-20","status":"완료","closed":"2025-09-04"},
+    {"id":"r10h1y","no":"NC-25-016","issued":"2025-09-28","audit":"고객 심사","clause":"7.1.5 측정 자원 관리","level":"관찰","dept":"생산","due":"2025-10-28","status":"완료","closed":"2025-10-22"},
+    {"id":"r10h29","no":"NC-25-017","issued":"2025-10-05","audit":"고객 심사","clause":"8.5.6.1 변경 관리","level":"관찰","dept":"품질보증","due":"2025-11-04","status":"완료","closed":"2025-10-30"},
+    {"id":"r10h2b","no":"NC-25-018","issued":"2025-12-05","audit":"고객 심사","clause":"8.5.6.1 변경 관리","level":"경결함","dept":"구매","due":"2026-01-04","status":"완료","closed":"2025-12-28"},
+    {"id":"r10h2f","no":"NC-25-019","issued":"2025-12-27","audit":"IATF 사후심사","clause":"8.3.4.4 제품 승인 프로세스","level":"경결함","dept":"구매","due":"2026-01-26","status":"완료","closed":"2026-01-29"},
+    {"id":"r10h2e","no":"NC-26-001","issued":"2026-01-11","audit":"내부심사","clause":"8.5.6.1 변경 관리","level":"경결함","dept":"개발","due":"2026-02-10","status":"완료","closed":"2026-01-30"},
+    {"id":"r10h2g","no":"NC-26-002","issued":"2026-01-21","audit":"내부심사","clause":"10.2.3 문제 해결","level":"경결함","dept":"개발","due":"2026-02-20","status":"완료","closed":"2026-01-31"},
+    {"id":"r10h1q","no":"NC-26-003","issued":"2026-02-15","audit":"내부심사","clause":"7.5.3.2 기록 보관","level":"관찰","dept":"설비","due":"2026-03-17","status":"완료","closed":"2026-03-02"},
+    {"id":"r10h2k","no":"NC-26-004","issued":"2026-02-19","audit":"내부심사","clause":"10.2.3 문제 해결","level":"관찰","dept":"생산","due":"2026-03-21","status":"완료","closed":"2026-03-17"},
+    {"id":"r10h2c","no":"NC-26-005","issued":"2026-02-25","audit":"내부심사","clause":"7.1.5 측정 자원 관리","level":"관찰","dept":"설비","due":"2026-03-27","status":"완료","closed":"2026-03-31"},
+    {"id":"r10h2j","no":"NC-26-006","issued":"2026-02-27","audit":"IATF 사후심사","clause":"8.5.1.1 관리계획서","level":"경결함","dept":"품질보증","due":"2026-03-29","status":"완료","closed":"2026-03-29"},
+    {"id":"r10h1w","no":"NC-26-007","issued":"2026-03-06","audit":"내부심사","clause":"7.5.3.2 기록 보관","level":"경결함","dept":"생산","due":"2026-04-05","status":"완료","closed":"2026-03-28"},
+    {"id":"r10h1x","no":"NC-26-008","issued":"2026-03-23","audit":"내부심사","clause":"8.4.2.4 공급자 모니터링","level":"경결함","dept":"구매","due":"2026-04-22","status":"완료","closed":"2026-04-06"},
+    {"id":"r10h1s","no":"NC-26-009","issued":"2026-04-14","audit":"고객 심사","clause":"7.2.3 내부심사원 역량","level":"관찰","dept":"구매","due":"2026-05-14","status":"완료","closed":"2026-04-27"},
+    {"id":"r10h2l","no":"NC-26-010","issued":"2026-04-29","audit":"내부심사","clause":"8.5.1.1 관리계획서","level":"관찰","dept":"품질보증","due":"2026-05-29","status":"완료","closed":"2026-06-11"},
+    {"id":"r10h1o","no":"NC-26-011","issued":"2026-05-24","audit":"내부심사","clause":"10.2.3 문제 해결","level":"경결함","dept":"개발","due":"2026-06-23","status":"완료","closed":"2026-06-23"},
+    {"id":"r10h2m","no":"NC-26-012","issued":"2026-06-02","audit":"고객 심사","clause":"7.1.5 측정 자원 관리","level":"관찰","dept":"품질보증","due":"2026-07-02","status":"완료","closed":"2026-06-21"},
+    {"id":"r10h28","no":"NC-26-013","issued":"2026-08-04","audit":"내부심사","clause":"7.2.3 내부심사원 역량","level":"관찰","dept":"품질보증","due":"2026-09-03","status":"완료","closed":"2026-09-06"},
+    {"id":"r10h1v","no":"NC-26-014","issued":"2026-09-06","audit":"내부심사","clause":"10.2.3 문제 해결","level":"경결함","dept":"품질보증","due":"2026-10-06","status":"완료","closed":"2026-09-28"},
+    {"id":"r10h1z","no":"NC-26-015","issued":"2026-09-14","audit":"고객 심사","clause":"7.1.5 측정 자원 관리","level":"관찰","dept":"설비","due":"2026-10-14","status":"조치중","closed":""},
+    {"id":"r10h2i","no":"NC-26-016","issued":"2026-09-17","audit":"내부심사","clause":"8.4.2.4 공급자 모니터링","level":"경결함","dept":"설비","due":"2026-10-17","status":"조치중","closed":""},
+    {"id":"r10h24","no":"NC-26-017","issued":"2026-09-23","audit":"내부심사","clause":"8.4.2.4 공급자 모니터링","level":"경결함","dept":"품질보증","due":"2026-10-23","status":"조치중","closed":""}
+  ]
+}

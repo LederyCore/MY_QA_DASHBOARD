@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480" viewBox="0 0 640 480"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="hsl(218,12%,86%)"/><stop offset="1" stop-color="hsl(218,10%,74%)"/></linearGradient>
+<linearGradient id="m" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="hsl(218,6%,78%)"/><stop offset="1" stop-color="hsl(218,8%,62%)"/></linearGradient></defs>
+<rect width="640" height="480" fill="url(#g)"/><rect x="0" y="380" width="640" height="100" fill="hsl(218,10%,70%)"/>
+<path d="M120 300 L160 140 L470 120 L540 260 L500 340 L170 360 Z" fill="url(#m)" stroke="hsl(218,10%,38%)" stroke-width="3"/>
+<circle cx="230" cy="200" r="18" fill="hsl(218,10%,38%)" opacity=".55"/><circle cx="430" cy="190" r="18" fill="hsl(218,10%,38%)" opacity=".55"/><rect x="260" y="250" width="150" height="22" rx="6" fill="hsl(218,10%,38%)" opacity=".35"/>
+<circle cx="330" cy="230" r="60" fill="none" stroke="#e5383b" stroke-width="5"/><path d="M380 270 L450 330" stroke="#e5383b" stroke-width="5"/>
+<rect x="18" y="18" width="250" height="58" rx="8" fill="rgba(0,0,0,.55)"/><text x="32" y="44" font-family="sans-serif" font-size="20" fill="#fff" font-weight="700">배터리 트레이 용접 강도 미달</text><text x="32" y="66" font-family="sans-serif" font-size="14" fill="#ddd">2026-09-10 · 공정</text>
+<rect x="470" y="430" width="150" height="30" rx="6" fill="rgba(0,0,0,.55)"/><text x="482" y="451" font-family="monospace" font-size="14" fill="#fff">QA 2026-09-10</text></svg>

@@ -1,0 +1,70 @@
+{
+  "id": "people",
+  "name": "담당자",
+  "master": true,
+  "desc": "담당자·작성자로 고르는 품질보증팀 사람 목록입니다.",
+  "dateField": "",
+  "titleField": "name",
+  "asOfField": "",
+  "fields": [
+    {
+      "key": "name",
+      "label": "이름",
+      "type": "text",
+      "req": true
+    },
+    {
+      "key": "team",
+      "label": "소속",
+      "type": "select",
+      "options": [
+        "고객품질",
+        "협력사품질",
+        "공정품질",
+        "품질시스템",
+        "신규양산",
+        "검사",
+        "품질기획"
+      ]
+    },
+    {
+      "key": "role",
+      "label": "담당 업무",
+      "type": "text"
+    },
+    {
+      "key": "open_capa",
+      "label": "담당 미결 8D",
+      "type": "rollup",
+      "rel": "capa:owner",
+      "agg": "count",
+      "where": {
+        "f": "status",
+        "op": "!=",
+        "v": "완료"
+      }
+    },
+    {
+      "key": "open_claim",
+      "label": "담당 미결 클레임",
+      "type": "rollup",
+      "rel": "claims:owner",
+      "agg": "count",
+      "where": {
+        "f": "status",
+        "op": "!=",
+        "v": "완료"
+      }
+    }
+  ],
+  "records": [
+    {"id":"r10fq9","name":"김민수","team":"고객품질","role":"고객 클레임 · 8D"},
+    {"id":"r10fqa","name":"이서연","team":"고객품질","role":"고객 대응 · PPAP"},
+    {"id":"r10fqb","name":"박지훈","team":"협력사품질","role":"협력사 평가 · 수입검사"},
+    {"id":"r10fqc","name":"최유진","team":"공정품질","role":"공정 불량 · SPC"},
+    {"id":"r10fqd","name":"정하늘","team":"품질시스템","role":"IATF · 내부심사"},
+    {"id":"r10fqe","name":"한도윤","team":"신규양산","role":"초기유동 · PPAP"},
+    {"id":"r10fqf","name":"오세린","team":"검사","role":"측정기 · 검사"},
+    {"id":"r10fqg","name":"윤재호","team":"품질기획","role":"품질 비용 · 교육"}
+  ]
+}
