@@ -2,7 +2,7 @@
   "id": "lines",
   "name": "생산 라인",
   "master": true,
-  "desc": "공정 불량·Cpk·측정기에서 고르는 생산 라인입니다.",
+  "desc": "파워트레인 · 열관리 부품 8대 핵심 제조·조립·시험 라인 (공장 배치도 연동)",
   "dateField": "",
   "titleField": "name",
   "asOfField": "",
@@ -18,27 +18,95 @@
       "label": "공정",
       "type": "select",
       "options": [
-        "프레스",
-        "용접",
-        "사출",
-        "도장",
-        "조립"
+        "다이캐스팅 · 함침 (CQI-27)",
+        "정밀 가공 (CNC·연삭·호닝)",
+        "침탄 열처리 (CQI-9)",
+        "디버링 · 초음파 세척 (청정도)",
+        "오일펌프 조립 · AFT",
+        "워터펌프 조립 · 리크",
+        "밸브바디 클린룸 · VBT",
+        "6속 변속기 조립 · EOL"
       ]
     },
     {
       "key": "note",
-      "label": "비고",
+      "label": "핵심 Poka-Yoke · 설비 · 비고",
       "type": "text"
     }
   ],
-  "records": [
-    {"id":"r10frv","name":"프레스 1","process":"프레스","note":""},
-    {"id":"r10frw","name":"프레스 2","process":"프레스","note":""},
-    {"id":"r10frx","name":"용접 1","process":"용접","note":""},
-    {"id":"r10fry","name":"용접 2","process":"용접","note":""},
-    {"id":"r10frz","name":"사출 1","process":"사출","note":""},
-    {"id":"r10fs0","name":"도장","process":"도장","note":""},
-    {"id":"r10fs1","name":"조립 1","process":"조립","note":""},
-    {"id":"r10fs2","name":"조립 2","process":"조립","note":""}
+  "records": [],
+  "tpls": [
+    {
+      "id": "tpl-ln1",
+      "name": "다이캐스팅 · 함침",
+      "vals": {
+        "name": "다이캐스팅 · 함침",
+        "process": "다이캐스팅 · 함침 (CQI-27)",
+        "note": "알루미늄 HPDC · 진공 함침 · X-Ray 기공 검사 (CQI-27)"
+      }
+    },
+    {
+      "id": "tpl-ln2",
+      "name": "정밀 가공 (CNC·연삭)",
+      "vals": {
+        "name": "정밀 가공 (CNC·연삭)",
+        "process": "정밀 가공 (CNC·연삭·호닝)",
+        "note": "하우징 평면도 · 밸브바디 보어 호닝 · 기어 치면 연삭 (나이탈 에칭)"
+      }
+    },
+    {
+      "id": "tpl-ln3",
+      "name": "침탄 열처리 (CQI-9)",
+      "vals": {
+        "name": "침탄 열처리 (CQI-9)",
+        "process": "침탄 열처리 (CQI-9)",
+        "note": "표면경도 58~62 HRC · 유효경화깊이(CHD) 0.6~1.1mm · SAT/TUS"
+      }
+    },
+    {
+      "id": "tpl-ln4",
+      "name": "디버링 · 초음파 세척",
+      "vals": {
+        "name": "디버링 · 초음파 세척",
+        "process": "디버링 · 초음파 세척 (청정도)",
+        "note": "고압 디버링 · 진공건조 · 탈자(≤3G) · ISO 16232 청정도(Lmax≤200µm)"
+      }
+    },
+    {
+      "id": "tpl-ln5",
+      "name": "오일펌프 조립 · AFT",
+      "vals": {
+        "name": "오일펌프 조립 · AFT",
+        "process": "오일펌프 조립 · AFT",
+        "note": "로터 3대 간극 인라인 측정 · 릴리프 밸브 · 유온보정 AFT 전수검사"
+      }
+    },
+    {
+      "id": "tpl-ln6",
+      "name": "워터펌프 조립 · 리크",
+      "vals": {
+        "name": "워터펌프 조립 · 리크",
+        "process": "워터펌프 조립 · 리크",
+        "note": "메커니컬 씰·베어링 서보 프레스 하중-변위 선도 감시 · 차압 에어리크"
+      }
+    },
+    {
+      "id": "tpl-ln7",
+      "name": "밸브바디 클린룸 · VBT",
+      "vals": {
+        "name": "밸브바디 클린룸 · VBT",
+        "process": "밸브바디 클린룸 · VBT",
+        "note": "양압 클린룸 · 스풀 선택조립(15~35µm) · VBT 유압 히스테리시스 전수"
+      }
+    },
+    {
+      "id": "tpl-ln8",
+      "name": "6속 변속기 조립 · EOL",
+      "vals": {
+        "name": "6속 변속기 조립 · EOL",
+        "process": "6속 변속기 조립 · EOL",
+        "note": "클러치 팩 심 자동 선정 · 너트러너 토크+각도 인터락 · EOL 다이나모 NVH"
+      }
+    }
   ]
 }

@@ -38,7 +38,16 @@ function load() {
   cfg = structuredClone(FILE_CFG);
   try {
     const raw = localStorage.getItem(LS_KEY);
-    if (raw) { cfg = JSON.parse(raw); usingLocal = true; hadCache = true; upgrade(cfg); resetAttachOnce(cfg); }
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (!parsed?.migr?.prodClean1) {
+        cfg = structuredClone(FILE_CFG);
+        (cfg.migr ||= {}).prodClean1 = true;
+        try { localStorage.setItem(LS_KEY, JSON.stringify(cfg)); } catch (e) {}
+      } else {
+        cfg = parsed; usingLocal = true; hadCache = true; upgrade(cfg); resetAttachOnce(cfg);
+      }
+    }
   } catch (e) { usingLocal = false; }
 }
 /* 첨부 파일 초기화(2026-10-08 요청): 브라우저 저장본의 첨부 연결·사용 횟수·삭제 대기 목록을 한 번 비웁니다 */
@@ -607,7 +616,9 @@ const KLAYOUT = {
   returns: [["table", 4, 4, 58, 56], ["pareto", 66, 4, 26, 26], ["donut", 66, 34, 26, 26]],
   csr: [["table", 4, 4, 58, 56], ["kanban", 66, 4, 26, 26], ["calendar", 66, 34, 26, 26]],
   fmea: [["table", 4, 4, 58, 56], ["kpi", 66, 4, 26, 18], ["donut", 66, 26, 26, 16], ["alerts", 66, 46, 26, 14]],
-  controlplan: [["table", 4, 4, 88, 40], ["donut", 4, 48, 42, 12], ["hbar", 50, 48, 42, 12]]
+  controlplan: [["table", 4, 4, 88, 40], ["donut", 4, 48, 42, 12], ["hbar", 50, 48, 42, 12]],
+  cleanliness: [["table", 4, 4, 58, 56], ["control", 66, 4, 26, 26], ["alerts", 66, 34, 26, 26]],
+  cqi: [["table", 4, 4, 58, 56], ["donut", 66, 4, 26, 26], ["alerts", 66, 34, 26, 26]]
 };
 function kimg(k) {
   const L = KLAYOUT[k] || KLAYOUT.data;
@@ -1657,10 +1668,18 @@ function autoAlertRules() {
     const due = (F.find(f => f.type === "date" && /기한|마감|납기|예정/.test(f.label)) || {}).key;
     if (badge && due && rules.length < 4) rules.push({ ds: d.id, label: `${d.name} 기한 초과`, level: "serious", filter: [{ f: due, op: "<", v: "today" }, { f: badge.key, op: "!=", v: doneOf(badge) }] });
     const cpk = F.find(f => f.type === "number" && /cpk/i.test(f.label + f.key));
-    if (cpk) rules.unshift({ ds: d.id, label: "Cpk 1.33 미만", level: "critical", filter: [{ f: cpk.key, op: "<", v: "1.33" }] });
+    if (cpk) {
+      rules.unshift({ ds: d.id, label: "Cpk 1.33 미만 (양산 기준 미달)", level: "critical", filter: [{ f: cpk.key, op: "<", v: "1.33" }] });
+      const sp = F.find(f => f.key === "special");
+      if (sp) rules.push({ ds: d.id, label: "특별특성 Cpk 1.67 미만 (보안/CC/DS·DZ/<S>/KPC)", level: "warning", filter: [{ f: cpk.key, op: "<", v: "1.67" }, { f: "special", op: "=", v: "특별특성 (보안 Ⓢ / CC ▽ / DS·DZ / <S> / KPC)" }] });
+    }
+    const pca = F.find(f => f.key === "pca_type");
+    if (pca && badge) rules.push({ ds: d.id, label: "8D 비공학적 대책 주의 (작업자 교육/육안검사 단독 금지)", level: "critical", filter: [{ f: "pca_type", op: "=", v: "작업자 교육/육안검사 (단독 불가 - 보완 필요)" }, { f: badge.key, op: "!=", v: doneOf(badge) }] });
+    const app4m = F.find(f => f.key === "approval" && d.id === "change4m");
+    if (app4m && badge) rules.push({ ds: d.id, label: "4M 변경 고객 미승인 주의 (양산 선적용 금지)", level: "warning", filter: [{ f: "approval", op: "=", v: "사전 검토중 (양산 선적용 금지)" }, { f: badge.key, op: "!=", v: doneOf(badge) }] });
     if (/클레임/.test(d.name) && badge && d.dateField) rules.push({ ds: d.id, label: "30일 넘은 미결 클레임", level: "warning", filter: [{ f: d.dateField, op: "<", v: "today-30" }, { f: badge.key, op: "!=", v: doneOf(badge) }] });
   });
-  return rules.slice(0, 6);
+  return rules.slice(0, 8);
 }
 function alertRuleHits(rule) {
   const ds = dsById(rule.ds); if (!ds) return null;
@@ -3180,6 +3199,13 @@ function planFiles(dsId, files) {
   });
 }
 async function writeFiles(plan) {
+  if (store.api) {
+    for (const { file, meta } of plan) {
+      const r = await fetch(`/api/file?path=${encodeURIComponent(meta.path)}`, { method: "PUT", body: file });
+      if (!r.ok) throw new Error(`서버 파일 저장 실패 (${r.status})`);
+    }
+    return;
+  }
   const root = await getProjDir();
   for (const { file, meta } of plan) {
     const parts = meta.path.split("/"); let d = root;
@@ -3228,6 +3254,16 @@ async function processDelQ() {
   const live = fileRefCounts(), inDraft = draftRefs();
   [...q].forEach(p => { if (live[p] || inDraft.has(p)) q.delete(p); });    /* 되돌리기 등으로 다시 쓰이면 지우지 않음 */
   saveDelQ(q); if (!q.size) return;
+  if (store.api) {
+    let n = 0;
+    for (const p of [...q]) {
+      try { await fetch(`/api/file?path=${encodeURIComponent(p)}`, { method: "DELETE" }); n++; } catch (e) { continue; }
+      q.delete(p); blobCache.delete(p);
+    }
+    saveDelQ(q);
+    if (n) toast(`어느 기록에도 첨부되지 않은 파일 ${n}개를 서버에서 정리했습니다.`);
+    return;
+  }
   if (!projDir || !(dirReady || await projDir.queryPermission(RW).catch(() => "") === "granted")) return;   /* 폴더 연결 뒤 다시 시도 */
   dirReady = true;
   let n = 0;
@@ -3355,14 +3391,16 @@ async function uploadTo(key, files) {
     msg(`${reuse.length}개는 같은 이름의 파일이 폴더에 이미 있어 새로 복사하지 않고 그 파일을 연결했습니다 (${reuse.map(a => `${a.name} → 첨부 ${refCount(a.path) + (linked ? 0 : 1)}곳`).join(", ")}).${linked ? "" : " ‘저장’을 누르면 기록에 남습니다."}${already.length ? ` 이미 첨부됨: ${already.join(", ")}` : ""}`, true);
     return;
   }
-  if (!fsOK()) { msg("이 브라우저는 폴더에 파일 복사를 지원하지 않습니다. Chrome 또는 Edge로 index.html을 여세요.", false); return; }
-  try {
-    await getProjDir();
-  } catch (e) {
-    fzPending = { ds: dsId, key, files }; renderDrawer();
-    msg("대시보드 폴더 연결이 필요합니다. ‘대시보드 폴더 연결하고 올리기’를 누르세요.", null);
-    $("#drawer [data-fconnect]")?.scrollIntoView({ block: "nearest" }); $("#drawer [data-fconnect]")?.focus({ preventScroll: true });
-    return;
+  if (!store.api) {
+    if (!fsOK()) { msg("이 브라우저는 폴더에 파일 복사를 지원하지 않습니다. Chrome 또는 Edge로 index.html을 여세요.", false); return; }
+    try {
+      await getProjDir();
+    } catch (e) {
+      fzPending = { ds: dsId, key, files }; renderDrawer();
+      msg("대시보드 폴더 연결이 필요합니다. ‘대시보드 폴더 연결하고 올리기’를 누르세요.", null);
+      $("#drawer [data-fconnect]")?.scrollIntoView({ block: "nearest" }); $("#drawer [data-fconnect]")?.focus({ preventScroll: true });
+      return;
+    }
   }
   if (ed.mode !== "record" || ed.ds !== dsId) return;
   const plan = planFiles(dsId, fresh);
@@ -4351,31 +4389,40 @@ const TPL = {
     pick: () => null, needDs: false,
     build: () => [DEFAULTS.alerts(), DEFAULTS.dday(), DEFAULTS.history(), DEFAULTS.note(), DEFAULTS.quickform(), DEFAULTS.links()] },
   /* 데이터베이스 템플릿 */
-  calib: { lv: 2, sec: "db", name: "측정기 교정 관리", tag: "데이터베이스 + 현황 페이지", desc: "측정기마다 최근·차기 교정일을 관리하고, 30일 안에 교정할 측정기와 기한이 지난 측정기를 알림으로 보여 줍니다.",
+  calib: { lv: 2, sec: "db", name: "측정기 · MSA 교정 관리", tag: "데이터베이스 + 현황 페이지", desc: "측정기·시험기(AFT/VBT/EOL/리크 마스터 오리피스)의 교정 주기와 AIAG MSA 4th (%GRR < 10%, ndc ≥ 5) · Red Rabbit 마스터 시편을 관리합니다.",
     db: () => ({ dateField: "next", titleField: "name", asOfField: "", fields: [
       { key: "no", label: "관리번호", type: "text", auto: "GA-" }, { key: "name", label: "측정기명", type: "text", req: true },
-      { key: "kind", label: "구분", type: "select", options: ["버니어 캘리퍼스", "마이크로미터", "하이트 게이지", "다이얼 게이지", "토크 렌치", "기타"] },
+      { key: "kind", label: "구분", type: "select", options: ["인라인 에어 마이크로미터 / LVDT", "3차원 측정기 (CMM) / 기어 측정기", "전동 너트러너 (토크+각도 센서)", "서보 프레스 (하중-변위 로드셀)", "차압식 에어 리크 테스터 / 마스터 오리피스", "AFT / VBT / EOL 다이나모 시험기", "청정도 분석기 (ISO 16232) / 가우스메터", "경도계 / 나이탈 에칭·바크하우젠 검사기", "Poka-Yoke 마스터 불량 시편 (Red Rabbit)", "일반 계측기 (마이크로미터·캘리퍼스·게이지)"] },
       ...(dsById("lines") ? [{ key: "line", label: "사용 라인", type: "ref", ref: "lines" }] : []), ...(dsById("people") ? [{ key: "owner", label: "담당", type: "ref", ref: "people" }] : [{ key: "owner", label: "담당", type: "text" }]),
+      { key: "grr", label: "Gage R&R (%GRR)", type: "number" }, { key: "ndc", label: "식별 범주 수 (ndc)", type: "number" },
+      { key: "msa_judge", label: "MSA 판정 (AIAG 4th)", type: "select", options: ["우수 (%GRR < 10%, ndc ≥ 5)", "조건부 수용 (10~30%, SQE 승인)", "부적합 (%GRR > 30% 또는 ndc < 5)", "마스터 시편 (일일 검증)"] },
       { key: "last", label: "최근 교정일", type: "date" }, { key: "next", label: "차기 교정일", type: "date", req: true },
       { key: "status", label: "상태", type: "select", options: ["사용중", "교정중", "폐기"], badge: true }, { key: "note", label: "비고", type: "longtext" }] }),
     build: ds => [...buildDataWidgets(ds).filter(w => w.type !== "bar"),
-      { type: "alerts", span: 6, title: "교정 알림", limit: 6, rules: [{ ds: ds.id, label: "교정 기한 지남", level: "critical", filter: [{ f: "next", op: "<", v: "today" }, { f: "status", op: "!=", v: "폐기" }] }, { ds: ds.id, label: "30일 안에 교정", level: "warning", filter: [{ f: "next", op: ">=", v: "today" }, { f: "next", op: "<=", v: "today+30" }, { f: "status", op: "!=", v: "폐기" }] }] },
+      { type: "alerts", span: 6, title: "교정 · MSA 알림", limit: 6, rules: [{ ds: ds.id, label: "교정 기한 지남", level: "critical", filter: [{ f: "next", op: "<", v: "today" }, { f: "status", op: "!=", v: "폐기" }] }, { ds: ds.id, label: "30일 안에 교정", level: "warning", filter: [{ f: "next", op: ">=", v: "today" }, { f: "next", op: "<=", v: "today+30" }, { f: "status", op: "!=", v: "폐기" }] }, { ds: ds.id, label: "MSA 부적합 (%GRR > 30% 또는 ndc < 5)", level: "critical", filter: [{ f: "msa_judge", op: "=", v: "부적합 (%GRR > 30% 또는 ndc < 5)" }] }] },
       mkW("calendar", ds, { title: "교정 일정", src: { date: "next", title: "name", color: "kind" } })] },
-  auditfind: { lv: 3, sec: "db", name: "고객 심사 지적사항", tag: "데이터베이스 + 현황 페이지", desc: "고객·인증 심사에서 받은 지적을 등급·기한·조치 상태로 관리하고, 단계 보드로 조치 진행을 봅니다.",
+  auditfind: { lv: 3, sec: "db", name: "고객 심사 지적사항", tag: "데이터베이스 + 현황 페이지", desc: "7대 고객사 심사(현대·기아/트랜시스 5스타·SQ, 다임러 VDA 6.3 *-질문, 포드 Q1, 스텔란티스 PCPA, 보그워너) 지적을 등급·기한·상태로 관리합니다.",
     db: () => ({ dateField: "date", titleField: "content", fields: [
       { key: "no", label: "지적번호", type: "text", auto: "AU-{YY}-" }, { key: "date", label: "심사일", type: "date", req: true },
       ...(dsById("customers") ? [{ key: "customer", label: "고객사", type: "ref", ref: "customers" }] : [{ key: "customer", label: "고객사", type: "text" }]),
+      { key: "audit_type", label: "심사 종류", type: "select", options: ["현대·기아/트랜시스 5스타 · SQ", "다임러/유럽 VDA 6.3 공정심사", "포드 Q1 · 스텔란티스 PCPA · 보그워너", "AIAG CQI-9(열처리) · CQI-27(주조)", "IATF 16949 인증심사"] },
+      { key: "star_q", label: "VDA 6.3 별표(*-질문) / 강등 위험", type: "select", options: ["일반 항목", "별표(*-질문) 4점 이하 (B등급 강등 위험)", "별표(*-질문) 0점 (C등급 강등 위험)"] },
       { key: "content", label: "지적 내용", type: "text", req: true }, { key: "level", label: "등급", type: "select", options: ["중결함", "경결함", "관찰"] },
       ...(dsById("people") ? [{ key: "owner", label: "담당", type: "ref", ref: "people" }] : [{ key: "owner", label: "담당", type: "text" }]),
       { key: "due", label: "조치 기한", type: "date" }, { key: "status", label: "상태", type: "select", options: ["접수", "조치중", "완료"], badge: true },
       { key: "closed", label: "완료일", type: "date", closes: true }, { key: "lead", label: "처리 기간(일)", type: "days", from: "date", to: "closed" }] }),
     build: ds => [...buildDataWidgets(ds), mkW("kanban", ds, { span: 12, title: "조치 단계 보드", src: { col: "status", filter: [] } }), { type: "alerts", span: 6, title: "기한 알림", limit: 5, rules: rulesFor(ds) }] },
-  change4m: { lv: 3, sec: "db", name: "변경점 (4M) 관리", tag: "데이터베이스 + 현황 페이지", desc: "사람·설비·재료·방법(4M) 변경을 부품별로 기록하고, 고객 승인과 적용 진행을 관리합니다.",
+  change4m: { lv: 3, sec: "db", name: "변경점 (4M) 관리", tag: "데이터베이스 + 현황 페이지", desc: "4M/5M+1E 변경을 기록하고, 고객 사전 신고·승인(4M+ISIR / e-SREA / MBST 14 / Forever Req.) 및 7대 유효성 검증·초도 3로트 식별을 관리합니다.",
     db: () => ({ dateField: "date", titleField: "content", fields: [
       { key: "no", label: "변경번호", type: "text", auto: "CH-{YY}-" }, { key: "date", label: "접수일", type: "date", req: true },
       { key: "kind", label: "구분 (4M)", type: "select", options: ["Man (사람)", "Machine (설비)", "Material (재료)", "Method (방법)"] },
+      ...(dsById("customers") ? [{ key: "customer", label: "대상 고객사", type: "ref", ref: "customers" }] : []),
       ...(dsById("parts") ? [{ key: "part", label: "부품", type: "ref", ref: "parts" }] : [{ key: "part", label: "부품", type: "text" }]),
-      { key: "content", label: "변경 내용", type: "text", req: true }, { key: "approval", label: "고객 승인", type: "select", options: ["불필요", "신청", "승인", "반려"] },
+      { key: "content", label: "변경 내용", type: "text", req: true },
+      { key: "form_type", label: "고객 신고 양식", type: "select", options: ["4M 변경 신고서 + ISIR (현대·기아/트랜시스)", "e-SREA + Phased PPAP (포드)", "MBST 14 변경통보 + VDA 2 PPA (다임러/벤츠)", "Supplier Change Request + PPAP Lv.3 (스텔란티스/보그워너)", "5M+1E 변경 사전신고 (미쓰비시)"] },
+      { key: "val_check", label: "7대 사전 유효성 검증", type: "select", options: ["전수치수+Ppk(≥1.67)/Cmk(≥2.0)+MSA+재질/비파괴+청정도(Lmax)+AFT/내구+R@R 완료", "검증 시험 진행중", "검증 전"] },
+      { key: "approval", label: "고객 승인", type: "select", options: ["사전 검토중 (양산 선적용 금지)", "신청", "승인", "반려"] },
+      { key: "lot_mark", label: "초도 3로트 식별표 · Safe Launch", type: "select", options: ["초도 3로트 식별라벨 부착 + Safe Launch 완료", "초도 출하 대기", "해당 없음"] },
       { key: "apply", label: "적용일", type: "date" }, { key: "status", label: "상태", type: "select", options: ["검토", "진행중", "완료"], badge: true }] }),
     build: ds => [...buildDataWidgets(ds), mkW("donut", ds, { title: "4M 구분 비중", unit: "건", src: { by: "kind", period: "all" } }), mkW("kanban", ds, { title: "진행 보드", src: { col: "status", filter: [] } })] },
   training: { lv: 2, sec: "db", name: "교육 · 자격 이력", tag: "데이터베이스 + 현황 페이지", desc: "담당자별 교육·자격 이력과 만료일을 관리하고, 만료가 다가오는 자격을 알림으로 보여 줍니다.",
@@ -4480,27 +4527,79 @@ Object.assign(TPL, {
       { key: "kind", label: "구분", type: "select", options: ["반품", "특채", "선별"] }, { key: "qty", label: "수량", type: "number" }, { key: "cost", label: "비용(만원)", type: "number" }, { key: "reason", label: "사유", type: "text", req: true },
       { key: "status", label: "상태", type: "select", options: ["접수", "처리중", "완료"], badge: true }, { key: "closed", label: "완료일", type: "date", closes: true }, { key: "lead", label: "처리 기간(일)", type: "days", from: "date", to: "closed" }] }),
     build: ds => [...buildDataWidgets(ds), mkW("pareto", ds, { title: "부품별 반품 수량", unit: "개", src: { agg: "sum", field: "qty", by: "part", period: "last12m" } }), mkW("donut", ds, { title: "구분 비중", unit: "건", src: { by: "kind", period: "last12m" } })] },
-  csr: { lv: 2, sec: "db", name: "고객 요구사항 (CSR)", tag: "데이터베이스 + 보드 페이지", desc: "고객사별 특별 요구사항(CSR)을 조항·적용 부서·반영 상태로 관리합니다.",
+  csr: { lv: 2, sec: "db", name: "고객 요구사항 (CSR)", tag: "데이터베이스 + 보드 페이지", desc: "7대 고객사별 특별 요구사항(CSR — 특별특성·공정능력·승인·보관연한·4M)을 조항·적용 부서·반영 상태로 관리합니다.",
     db: () => ({ dateField: "review", titleField: "req", asOfField: "", fields: [...(dsById("customers") ? [{ key: "customer", label: "고객사", type: "ref", ref: "customers", req: true }] : [{ key: "customer", label: "고객사", type: "text", req: true }]),
-      { key: "doc", label: "문서명", type: "text" }, { key: "clause", label: "조항", type: "text" }, { key: "req", label: "요구사항", type: "text", req: true }, { key: "dept", label: "적용 부서", type: "select", options: ["품질보증", "생산", "구매", "개발", "물류"] },
+      { key: "doc", label: "CSR 규격 · 문서명", type: "text" }, { key: "clause", label: "조항", type: "text" }, { key: "req", label: "핵심 요구사항", type: "text", req: true },
+      { key: "retention", label: "기록 보관 연한", type: "select", options: ["15년 보관 (다임러 DS/DZ · 현대기아 보안 Ⓢ)", "10년 보관", "생산종료(EOP) + 15년", "일반 (3~5년)"] },
+      { key: "dept", label: "적용 부서", type: "select", options: ["품질보증", "생산", "구매", "개발", "물류"] },
       { key: "status", label: "반영 상태", type: "select", options: ["검토 전", "반영중", "완료"], badge: true }, { key: "review", label: "차기 검토일", type: "date" }] }),
     build: ds => [mkW("kanban", ds, { span: 12, title: "반영 단계 보드", src: { col: "status", filter: [] } }), mkW("donut", ds, { title: "고객사별", unit: "건", src: { by: "customer", period: "all" } }), mkW("calendar", ds, { title: "검토 일정" }), ...buildDataWidgets(ds).filter(w => w.type === "table")] },
-  fmea: { lv: 3, sec: "db", name: "FMEA 관리", tag: "데이터베이스 + 위험 우선순위 페이지", desc: "공정 FMEA의 고장 모드별 심각도·발생도·검출도와 조치 우선순위(AP)를 관리하고 개선 조치를 추적합니다.",
-    db: () => ({ dateField: "due", titleField: "mode", asOfField: "", fields: [{ key: "step", label: "공정 단계", type: "text", req: true }, { key: "mode", label: "고장 모드", type: "text", req: true }, { key: "effect", label: "고장 영향", type: "text" },
-      { key: "s", label: "심각도 (S)", type: "number" }, { key: "o", label: "발생도 (O)", type: "number" }, { key: "d", label: "검출도 (D)", type: "number" }, { key: "rpn", label: "RPN (S×O×D)", type: "formula", expr: "{심각도 (S)} * {발생도 (O)} * {검출도 (D)}" },
-      { key: "ap", label: "조치 우선순위 (AP)", type: "select", options: ["H", "M", "L"], colors: { H: "red", M: "orange", L: "gray" } }, { key: "action", label: "개선 조치", type: "text" },
+  fmea: { lv: 3, sec: "db", name: "PFMEA 관리 (AIAG-VDA 1st Ed.)", tag: "데이터베이스 + AP 우선순위 페이지", desc: "AIAG-VDA PFMEA 1st Ed. 7단계 접근법 기반 고장 사슬(FE←FM←FC), 4M 요소, 예방/검출 Poka-Yoke, 심각도 최우선 AP(H/M/L) 자동 판정 및 개선 조치를 관리합니다.",
+    db: () => ({ dateField: "due", titleField: "mode", asOfField: "", fields: [
+      { key: "step", label: "공정 단계 · 기능", type: "text", req: true },
+      { key: "m4", label: "4M 작업요소", type: "select", options: ["Machine (설비·공구·지그)", "Man (작업자)", "Material (부품·부자재)", "Method/Env (방법·청정도)"] },
+      { key: "mode", label: "고장 형태 (FM)", type: "text", req: true },
+      { key: "effect", label: "고장 영향 (FE)", type: "text" },
+      { key: "cause", label: "고장 원인 (FC)", type: "text" },
+      { key: "special", label: "특별특성", type: "select", options: ["보안 Ⓢ / CC ▽ / DS·DZ / <S> / Critical KPC", "중요 / SC / CSE / <D> / KPC·KCC", "일반"] },
+      { key: "pc", label: "현재 예방관리 (PC)", type: "text" },
+      { key: "dc", label: "현재 검출관리 (DC · Poka-Yoke)", type: "text" },
+      { key: "s", label: "심각도 (S)", type: "number" }, { key: "o", label: "발생도 (O)", type: "number" }, { key: "d", label: "검출도 (D)", type: "number" },
+      { key: "ap_calc", label: "AIAG-VDA AP (자동판정)", type: "formula", expr: "if({심각도 (S)} >= 9, if({발생도 (O)} >= 6, \"H\", if({발생도 (O)} >= 4, if({검출도 (D)} >= 2, \"H\", \"M\"), if({발생도 (O)} >= 2, if({검출도 (D)} >= 7, \"H\", if({검출도 (D)} >= 5, \"M\", \"L\")), \"L\"))), if({심각도 (S)} >= 7, if({발생도 (O)} >= 8, \"H\", if({발생도 (O)} >= 6, if({검출도 (D)} >= 2, \"H\", \"M\"), if({발생도 (O)} >= 4, if({검출도 (D)} >= 7, \"H\", \"M\"), if({발생도 (O)} >= 2, if({검출도 (D)} >= 5, \"M\", \"L\"), \"L\")))), if({심각도 (S)} >= 4, if({발생도 (O)} >= 8, if({검출도 (D)} >= 5, \"H\", \"M\"), if({발생도 (O)} >= 6, if({검출도 (D)} >= 2, \"M\", \"L\"), if({발생도 (O)} >= 4, if({검출도 (D)} >= 7, \"M\", \"L\"), \"L\"))), if({발생도 (O)} >= 8, if({검출도 (D)} >= 5, \"M\", \"L\"), \"L\"))))" },
+      { key: "ap", label: "조치 우선순위 (AP)", type: "select", options: ["H", "M", "L"], colors: { H: "red", M: "orange", L: "gray" } },
+      { key: "action", label: "Poka-Yoke 개선 조치 (교육 단독 금지)", type: "text" },
       ...(dsById("people") ? [{ key: "owner", label: "담당", type: "ref", ref: "people", single: true }] : []), { key: "due", label: "기한", type: "date" }, { key: "status", label: "상태", type: "select", options: ["미착수", "진행중", "완료"], badge: true }] }),
-    build: ds => [{ type: "kpi", items: [{ label: "AP = H 미완료", unit: "건", goal: 0, lowerIsBetter: true, status: "auto", src: { ds: ds.id, agg: "count", period: "all", filter: [{ f: "ap", op: "=", v: "H" }, { f: "status", op: "!=", v: "완료" }] } }, { label: "전체 고장 모드", unit: "건", src: { ds: ds.id, agg: "count", period: "all", filter: [] } }, { label: "평균 RPN", unit: "", src: { ds: ds.id, agg: "avg", field: "rpn", period: "all", filter: [] } }] },
-      { type: "table", span: 12, title: "RPN 높은 순", src: { ds: ds.id, period: "all", filter: [], cols: ["step", "mode", "s", "o", "d", "rpn", "ap", "status"], sort: "rpn", asc: false, limit: 10 } },
+    build: ds => [{ type: "kpi", items: [{ label: "AP = H 미완료", unit: "건", goal: 0, lowerIsBetter: true, status: "auto", src: { ds: ds.id, agg: "count", period: "all", filter: [{ f: "ap", op: "=", v: "H" }, { f: "status", op: "!=", v: "완료" }] } }, { label: "전체 고장 모드", unit: "건", src: { ds: ds.id, agg: "count", period: "all", filter: [] } }, { label: "심각도 S≥9 고위험", unit: "건", src: { ds: ds.id, agg: "count", period: "all", filter: [{ f: "s", op: ">=", v: "9" }] } }] },
+      { type: "table", span: 12, title: "AIAG-VDA PFMEA 목록 (심각도 S 높은 순)", src: { ds: ds.id, period: "all", filter: [], cols: ["step", "mode", "effect", "cause", "special", "s", "o", "d", "ap_calc", "ap", "action", "status"], sort: "s", asc: false, limit: 15 } },
       mkW("donut", ds, { title: "AP 비중", unit: "건", src: { by: "ap", period: "all" } }), mkW("kanban", ds, { title: "개선 조치 보드", src: { col: "status", filter: [] } }),
-      { type: "alerts", span: 12, title: "우선 조치", limit: 6, rules: [{ ds: ds.id, label: "AP = H 미완료", level: "critical", filter: [{ f: "ap", op: "=", v: "H" }, { f: "status", op: "!=", v: "완료" }] }, { ds: ds.id, label: "기한 지난 조치", level: "serious", filter: [{ f: "due", op: "<", v: "today" }, { f: "status", op: "!=", v: "완료" }] }] }] },
-  controlplan: { lv: 3, sec: "db", name: "관리계획서 (Control Plan)", tag: "데이터베이스 + 특성 관리 페이지", desc: "공정별 제품·공정 특성과 특별 특성(CC/SC), 측정 방법, 샘플·주기, 관리 방법, 대응 계획을 한 표로 관리합니다.",
-    db: () => ({ dateField: "", titleField: "proc", asOfField: "", fields: [{ key: "no", label: "공정 번호", type: "text" }, { key: "proc", label: "공정명", type: "text", req: true }, { key: "prod", label: "제품 특성", type: "text" }, { key: "pchar", label: "공정 특성", type: "text" },
-      { key: "special", label: "특별 특성", type: "select", options: ["CC", "SC", "일반"], colors: { CC: "red", SC: "orange", 일반: "gray" } }, { key: "spec", label: "규격 · 공차", type: "text" }, { key: "method", label: "측정 방법", type: "text" },
-      { key: "size", label: "샘플 크기", type: "text" }, { key: "freq", label: "주기", type: "select", options: ["매 로트", "시간당", "교대당", "일", "주"] }, { key: "ctrl", label: "관리 방법", type: "select", options: ["SPC", "체크시트", "육안", "자동 검사", "에러 프루프"] },
-      { key: "react", label: "대응 계획", type: "text" }] }),
-    build: ds => [{ type: "table", span: 12, title: "관리계획서", src: { ds: ds.id, period: "all", filter: [], cols: ["no", "proc", "prod", "pchar", "special", "spec", "method", "size", "freq", "ctrl"], sort: "no", asc: true, limit: 50 } },
-      mkW("donut", ds, { title: "특별 특성 비중", unit: "개", src: { by: "special", period: "all" } }), mkW("hbar", ds, { title: "관리 방법별", unit: "개", src: { by: "ctrl", period: "all" } })] }
+      { type: "alerts", span: 12, title: "AP=H 및 S=9~10 우선 조치 알림", limit: 6, rules: [{ ds: ds.id, label: "AP = H 미완료 (필수 공학적 개선)", level: "critical", filter: [{ f: "ap", op: "=", v: "H" }, { f: "status", op: "!=", v: "완료" }] }, { ds: ds.id, label: "기한 지난 조치", level: "serious", filter: [{ f: "due", op: "<", v: "today" }, { f: "status", op: "!=", v: "완료" }] }] }] },
+  controlplan: { lv: 3, sec: "db", name: "관리계획서 (Control Plan 1st Ed.)", tag: "데이터베이스 + 특성 관리 페이지", desc: "AIAG Control Plan 1st Ed.(2024) 기준 단계(Prototype/Pre-Launch/Production), 특별특성/PTC, 측정·관리 방법, Red Rabbit 마스터 시편 검증 주기, 구체적 조치계획(Reaction Plan)을 관리합니다.",
+    db: () => ({ dateField: "", titleField: "proc", asOfField: "", fields: [
+      { key: "phase", label: "적용 단계", type: "select", options: ["Production (양산)", "Pre-Launch (Safe Launch / EPC)", "Prototype (시작)"] },
+      { key: "no", label: "공정 번호", type: "text" }, { key: "proc", label: "공정명", type: "text", req: true }, { key: "prod", label: "제품 특성", type: "text" }, { key: "pchar", label: "공정 특성", type: "text" },
+      { key: "special", label: "특별 특성 · PTC", type: "select", options: ["보안 Ⓢ / CC ▽ / DS·DZ / <S> / Critical KPC", "중요 / SC / CSE / <D> / KPC·KCC", "PTC (Pass-Through 관통특성)", "일반"], colors: { "보안 Ⓢ / CC ▽ / DS·DZ / <S> / Critical KPC": "red", "중요 / SC / CSE / <D> / KPC·KCC": "orange", "PTC (Pass-Through 관통특성)": "purple", 일반: "gray" } },
+      { key: "spec", label: "규격 · 공차", type: "text" }, { key: "method", label: "평가 · 측정 시스템", type: "text" },
+      { key: "size", label: "샘플 크기", type: "text" }, { key: "freq", label: "주기", type: "select", options: ["100% 전수", "초·중·종품 (교대당)", "매 로트", "시간당", "일 1회", "주 1회"] },
+      { key: "ctrl", label: "관리 방법", type: "select", options: ["예방 Poka-Yoke (물리적 원천차단)", "검출 Poka-Yoke (서보/토크·각도/센서 인터락)", "AFT / VBT / EOL 자동 판정", "Xbar-R / I-MR 관리도 (SPC)", "체크시트 · 초중종 검사"] },
+      { key: "red_rabbit", label: "Poka-Yoke 검증 (Red Rabbit)", type: "select", options: ["작업 시작 전 · 교대 시 마스터 불량시편 1회", "일 1회 마스터 오리피스/시편 검증", "해당 없음"] },
+      { key: "react", label: "조치계획 (Reaction Plan)", type: "text", req: true }] }),
+    build: ds => [{ type: "table", span: 12, title: "관리계획서 (Control Plan 1st Ed.)", src: { ds: ds.id, period: "all", filter: [], cols: ["phase", "no", "proc", "prod", "pchar", "special", "spec", "method", "size", "freq", "ctrl", "red_rabbit", "react"], sort: "no", asc: true, limit: 50 } },
+      mkW("donut", ds, { title: "특별 특성 · PTC 비중", unit: "개", src: { by: "special", period: "all" } }), mkW("hbar", ds, { title: "관리 방법별", unit: "개", src: { by: "ctrl", period: "all" } })] },
+  cleanliness: { lv: 3, sec: "db", name: "기술적 청정도 (ISO 16232 / VDA 19.1)", tag: "데이터베이스 + 청정도 관리도·알림", desc: "오일펌프 · 6속 변속기 밸브바디/VFS 부품의 추출 청정도(금속 최대입자 Lmax ≤ 200µm, 총중량 mg, Blank ≤ 10%) 및 잔류 자성(≤ 3 Gauss)을 관리합니다.",
+    db: () => ({ dateField: "date", titleField: "lot", fields: [
+      { key: "date", label: "시험일", type: "date", req: true },
+      { key: "lot", label: "로트 번호", type: "text", req: true },
+      ...(dsById("parts") ? [{ key: "part", label: "부품", type: "ref", ref: "parts", single: true }] : [{ key: "part", label: "부품", type: "text" }]),
+      ...(dsById("lines") ? [{ key: "line", label: "세척 · 조립 라인", type: "ref", ref: "lines", single: true }] : []),
+      { key: "blank_pct", label: "Blank Value 비율 (≤10%)", type: "number" },
+      { key: "mass_mg", label: "이물 총중량 (mg)", type: "number" },
+      { key: "lmax_metal", label: "최대 금속입자 Lmax (µm, ≤200)", type: "number", req: true },
+      { key: "ccc_code", label: "입자 크기 분포 (CCC 코드)", type: "text" },
+      { key: "gauss", label: "잔류 자성 (Gauss, ≤3.0)", type: "number" },
+      { key: "auto_judge", label: "자동 판정", type: "formula", expr: "if({최대 금속입자 Lmax (µm, ≤200)} > 200, \"불합격 (Lmax 초과)\", if({Blank Value 비율 (≤10%)} > 10, \"무효 (Blank 10% 초과)\", if({잔류 자성 (Gauss, ≤3.0)} > 3, \"불합격 (잔류자성 초과)\", \"합격\")))" },
+      { key: "judge", label: "최종 판정", type: "select", options: ["정상", "주의", "심각"], badge: true },
+      { key: "action", label: "조치 (세척액 교체·탈자기 점검·로트 재세척)", type: "text" }] }),
+    build: ds => [...buildDataWidgets(ds).filter(w => w.type === "kpi" || w.type === "table"),
+      mkW("control", ds, { span: 6, title: "최대 금속입자 Lmax (µm) 추이", usl: 200, src: { agg: "avg", field: "lmax_metal" } }),
+      { type: "alerts", span: 6, title: "청정도 · 잔류자성 규격 이탈 알림", limit: 6, rules: [
+        { ds: ds.id, label: "금속 최대입자 Lmax > 200 µm (스풀/밸브 고착 위험)", level: "critical", filter: [{ f: "lmax_metal", op: ">", v: "200" }] },
+        { ds: ds.id, label: "Blank Value > 10% (시험 무효 · 장비 세정 필요)", level: "warning", filter: [{ f: "blank_pct", op: ">", v: "10" }] },
+        { ds: ds.id, label: "잔류 자성 > 3.0 Gauss (탈자기 점검 필요)", level: "serious", filter: [{ f: "gauss", op: ">", v: "3" }] }] }] },
+  cqi: { lv: 3, sec: "db", name: "특수공정 · 공정심사 (CQI-9/27 · VDA 6.3 · SQ)", tag: "데이터베이스 + 심사 현황 페이지", desc: "침탄 열처리(AIAG CQI-9), 알루미늄 다이캐스팅·주조(CQI-27), 다임러 VDA 6.3 공정심사(*-질문 강등 관리), 현대·기아/트랜시스 5스타·SQ 심사를 관리합니다.",
+    db: () => ({ dateField: "date", titleField: "target", fields: [
+      { key: "date", label: "심사일", type: "date", req: true },
+      { key: "std", label: "심사 규격", type: "select", options: ["AIAG CQI-9 (열처리 시스템 4th)", "AIAG CQI-27 (주조 시스템)", "VDA 6.3 공정심사 (P2~P7)", "현대·기아/트랜시스 SQ 마크 (열처리/주조/표면처리)", "현대·기아/트랜시스 품질 5스타", "포드 Q1 / 스텔란티스 PCPA"] },
+      { key: "target", label: "대상 라인 · 협력사", type: "text", req: true },
+      { key: "score", label: "점수 · 달성률 (%)", type: "number" },
+      { key: "grade", label: "등급 · 판정", type: "select", options: ["A (≥90% / 적합)", "B (80~89% / 조건부)", "C (<80% / 부적합)", "불만족 (즉시 출하중지·개선)"], colors: { "A (≥90% / 적합)": "green", "B (80~89% / 조건부)": "orange", "C (<80% / 부적합)": "red", "불만족 (즉시 출하중지·개선)": "red" } },
+      { key: "key_check", label: "핵심 점검 (TUS·SAT·CHD·함침·*-질문)", type: "text" },
+      { key: "next_due", label: "차기 심사 기한 (연 1회)", type: "date" },
+      { key: "status", label: "시정조치 상태", type: "select", options: ["진행중", "지연", "완료"], badge: true }] }),
+    build: ds => [...buildDataWidgets(ds).filter(w => w.type !== "hbar"),
+      mkW("donut", ds, { title: "심사 등급 비중", unit: "건", src: { by: "grade", period: "all" } }),
+      { type: "alerts", span: 6, title: "특수공정 · VDA 6.3 주의 알림", limit: 6, rules: [
+        { ds: ds.id, label: "C등급 또는 불만족 판정", level: "critical", filter: [{ f: "score", op: "<", v: "80" }] },
+        { ds: ds.id, label: "연간 재심사 30일 이내 도래", level: "warning", filter: [{ f: "next_due", op: "<=", v: "today+30" }] }] }] }
 });
 const KLV = { tasks: 2, data: 2 };
 const lvOf = k => TPL[k]?.lv ?? KLV[k] ?? 2;
@@ -4593,8 +4692,8 @@ function renderDrawer(keepMsg) {
     dr.innerHTML = `<header><h2>설정 · 데이터 저장</h2><button class="btn ghost" data-a="close" type="button">닫기</button></header>
       <div class="body">
         <div class="sec"><h5>데이터 파일</h5>
-          <div class="hint">모든 데이터(기록 ${nrec.toLocaleString()}건)는 데이터마다 <code>data/registers/&lt;데이터&gt;.json</code>, 화면 구성은 <code>data/app.json</code> 파일에 저장되고, 화면은 이 파일들을 불러와 보여 줍니다. 대시보드 폴더째 옮기면 다른 PC에서도 같은 내용이 보입니다.<br>지금 상태: <b>${esc({ ok: projDir && dirReady ? "파일과 맞춰져 있음" : "파일에서 불러옴 (저장하려면 폴더 연결)", saving: "저장 중", pending: "파일 저장 대기 (폴더 연결 필요)", off: "폴더 연결 전", error: "저장 실패", init: "확인 중" }[store.state] || "")}</b>${store.at ? ` · 마지막 ${store.at}` : ""}</div>
-          <div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn primary" data-a="st-save" type="button">${projDir && dirReady ? "지금 파일에 저장" : "데이터 폴더 연결하고 저장"}</button><button class="btn" data-a="st-reload" type="button">파일에서 다시 불러오기</button></div></div>
+          <div class="hint">모든 데이터(기록 ${nrec.toLocaleString()}건)는 데이터마다 <code>data/registers/&lt;데이터&gt;.json</code>, 화면 구성은 <code>data/app.json</code> 파일에 저장되고, 화면은 이 파일들을 불러와 보여 줍니다. 대시보드 폴더째 옮기면 다른 PC에서도 같은 내용이 보입니다.<br>지금 상태: <b>${esc({ ok: (projDir && dirReady) || store.api ? "파일과 맞춰져 있음" : "파일에서 불러옴 (저장하려면 폴더 연결)", saving: "저장 중", pending: "파일 저장 대기 (폴더 연결 필요)", off: "폴더 연결 전", error: "저장 실패", init: "확인 중" }[store.state] || "")}</b>${store.at ? ` · 마지막 ${store.at}` : ""}</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn primary" data-a="st-save" type="button">${(projDir && dirReady) || store.api ? "지금 파일에 저장" : "데이터 폴더 연결하고 저장"}</button><button class="btn" data-a="st-reload" type="button">파일에서 다시 불러오기</button></div></div>
         <div class="sec"><h5>백업 파일로 내보내기</h5>
           <div class="hint">전체 내용을 하나의 <code>pages.config.js</code>로 받아 둘 수 있습니다. 데이터 파일을 읽을 수 없을 때 처음 화면으로도 쓰입니다.</div>
           <div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn" data-a="save-proj" type="button">pages.config.js로 폴더에 저장</button><button class="btn" data-a="dl-config" type="button">pages.config.js 다운로드</button><button class="btn" data-a="copy" type="button">내용 복사</button></div></div>
@@ -4610,6 +4709,9 @@ function renderDrawer(keepMsg) {
         <div class="sec"><h5>내 이름</h5>
           <div class="hint">변경 내역에 ‘누가’로 표시됩니다. 이 브라우저에만 저장됩니다.</div>
           <input class="f" id="meName" value="${esc(myName())}" placeholder="예: 김민수" aria-label="내 이름"></div>
+        <div class="sec"><h5>표준 기준정보 (마스터) 기본값 채우기</h5>
+          <div class="hint">샘플 거래 기록 없이 7대 타겟 고객사(현대·기아, 현대트랜시스, 스텔란티스, 다임러, 포드, 보그워너, 미쓰비시), 8대 제조 라인, 3대 핵심 제품군(오일펌프·워터펌프·6속 변속기), 고장물리 불량 유형 기준정보만 각 데이터베이스의 표준 템플릿에서 한 번에 채웁니다. (이미 있는 항목은 중복 추가하지 않습니다.)</div>
+          <div><button class="btn" data-a="seed-master-std" type="button">표준 기준정보 기본값 채우기</button></div></div>
         <div class="sec"><h5>기록 비우기</h5>
           <div class="hint">모든 데이터의 기록(${nrec.toLocaleString()}건)을 지웁니다. 화면 구성과 데이터의 입력 항목은 그대로 남습니다. 필요하면 먼저 위에서 파일로 저장해 두세요.</div>
           <div><button class="btn danger" data-a="wipe" type="button" ${nrec ? "" : "disabled"}>모든 기록 비우기</button></div></div>
@@ -4843,6 +4945,24 @@ $("#drawerWrap").addEventListener("click", e => {
       if (!arm(btn, "한 번 더 누르면 삭제합니다")) return;
       const i = ed.wi; lay.draft = ed.draft; lay.draft.widgets.splice(i, 1); closeDrawer(true); renderBoard(lay.draft); toast("위젯을 삭제했습니다."); return;
     }
+    case "seed-master-std": {
+      let added = 0;
+      ["customers", "lines", "parts", "defecttypes"].forEach(id => {
+        const ds = dsById(id); if (!ds || !Array.isArray(ds.tpls)) return;
+        const tk = titleKeyOf(ds) || "name";
+        const have = new Set((ds.records || []).map(r => String(r[tk] || "").trim()).filter(Boolean));
+        ds.tpls.forEach(t => {
+          const v = String(t.vals?.[tk] || "").trim();
+          if (!v || have.has(v)) return;
+          have.add(v);
+          (ds.records ||= []).push({ id: newId(), ...structuredClone(t.vals) });
+          added++;
+        });
+      });
+      if (added) { persist(); render(); renderDrawer(); msg(`표준 기준정보 ${added}건(7대 고객사 · 8대 라인 · 핵심 부품 · 고장물리 불량 유형)을 채웠습니다.`, true); }
+      else msg("표준 기준정보가 이미 모두 등록되어 있습니다.", true);
+      return;
+    }
     case "wipe":
       if (!arm(btn, "한 번 더 누르면 모두 지웁니다")) return;
       (cfg.datasets || []).forEach(d => { d.records = []; });
@@ -4902,7 +5022,7 @@ $("#drawerWrap").addEventListener("click", e => {
       reloadFromFiles().then(ok => { if (ok) toast("데이터 파일 기준으로 되돌렸습니다."); else msg("데이터 파일을 읽을 수 없습니다. 먼저 데이터 폴더를 연결하세요.", false); });
       return;
     case "st-save":
-      if (projDir && dirReady) flushStore().then(() => { renderDrawer(); msg(store.state === "ok" ? "데이터 파일에 저장했습니다." : `저장하지 못했습니다: ${store.err || ""}`, store.state === "ok"); });
+      if ((projDir && dirReady) || store.api) flushStore().then(() => { renderDrawer(); msg(store.state === "ok" ? "데이터 파일에 저장했습니다." : `저장하지 못했습니다: ${store.err || ""}`, store.state === "ok"); });
       else connectStore().then(() => renderDrawer());
       return;
     case "st-reload": {
@@ -6031,29 +6151,35 @@ function scheduleStore() {
   setPending(true);
   clearTimeout(store.timer);
   store.timer = setTimeout(flushStore, 350);
-  if (!(projDir && dirReady)) { store.state = "pending"; renderStoreChip(); if (!store.warned && store.src) { store.warned = true; toast("고친 내용을 데이터 파일에 저장하려면 왼쪽 아래 ‘데이터 폴더 연결’을 한 번 눌러 주세요. 그 전까지는 브라우저에 보관됩니다."); } }
+  if (!(projDir && dirReady) && !store.api) { store.state = "pending"; renderStoreChip(); if (!store.warned && store.src) { store.warned = true; toast("고친 내용을 데이터 파일에 저장하려면 왼쪽 아래 ‘데이터 폴더 연결’을 한 번 눌러 주세요. 그 전까지는 브라우저에 보관됩니다."); } }
 }
 /* 고르는 중에 창을 닫거나 새로 고쳐도 고른 값은 브라우저에 남김 (다음에 열 때 파일로 저장) */
 addEventListener("pagehide", () => { if (tp.after) { tp.after = null; try { persist(); } catch (e) {} } });
 const pickerOpen = () => !!document.querySelector("#tagpop, #ssel, #dvfpop, #proppop, #xmenu.xq");
 async function flushStore() {
-  if (!(projDir && dirReady)) return;
+  if (!(projDir && dirReady) && !store.api) return;
   if (pickerOpen()) { clearTimeout(store.timer); store.timer = setTimeout(flushStore, 600); return; }   /* 고르는 창이 닫힌 뒤에 저장 */
   if (store.busy) { await store.busy; return flushStore(); }
   store.state = "saving"; renderStoreChip();
   store.busy = (async () => {
     try {
       (cfg.migr ||= {}).fileStore1 = true;
-      try { await autoBackup(projDir); } catch (e) {}          /* 하루 한 번 data/ → backup/날짜/ */
-      await writeAll(projDir, cfg);
-      markWrite(); cacheOnly(); setPending(false); store.state = "ok"; store.at = nowHM(); store.src ||= "dir";
+      if (projDir && dirReady) {
+        try { await autoBackup(projDir); } catch (e) {}          /* 하루 한 번 data/ → backup/날짜/ */
+        await writeAll(projDir, cfg);
+        markWrite(); cacheOnly(); setPending(false); store.state = "ok"; store.at = nowHM(); store.src ||= "dir";
+      } else if (store.api) {
+        const r = await fetch("/api/store", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(splitCfg(cfg)) });
+        if (!r.ok) throw new Error(`서버 저장 응답 오류 (${r.status})`);
+        cacheOnly(); setPending(false); store.state = "ok"; store.at = nowHM(); store.src = "api";
+      }
     } catch (e) {
       if (e.name === "ExternalChange") {                     /* 최신 파일을 다시 불러옴 (이 창의 저장 안 된 변경은 버림) */
         const fc = await readFromDir(projDir).catch(() => null);
         if (fc) { store.busy = null; adopt(fc, "dir"); toast("데이터 파일이 다른 곳(다른 창·PC)에서 바뀌어 최신 내용을 다시 불러왔습니다. 방금 고친 내용은 저장되지 않았습니다."); return; }
       }
       if (e.name === "NotAllowedError") dirReady = false;
-      store.state = dirReady ? "error" : "pending"; store.err = e.message;
+      store.state = (dirReady || store.api) ? "error" : "pending"; store.err = e.message;
     }
   })();
   await store.busy; store.busy = null; renderStoreChip();
@@ -6074,22 +6200,24 @@ async function syncWithFolder() {
   if (store.state === "ok") toast(fc ? "브라우저에 보관 중이던 내용을 데이터 파일에 저장했습니다." : `데이터 ${cfg.datasets.length}개를 data 폴더에 JSON 파일로 만들었습니다.`);
 }
 function connectStore() {
+  if (store.api) return flushStore();
   store.state = "saving"; renderStoreChip();
   return connectProjDir().then(syncWithFolder).catch(e => { store.state = isPending() ? "pending" : store.src ? "ok" : "off"; renderStoreChip(); if (e.name !== "AbortError") toast(fsErr(e)); });
 }
 /* 파일에서 다시 불러오기 (브라우저 사본 버림) */
 async function reloadFromFiles() {
-  let fc = await readFromHTTP().catch(() => null), src = "http";
+  let fc = await readFromHTTP().catch(() => null), src = store.api ? "api" : "http";
   if (!fc && projDir && dirReady) { fc = await readFromDir(projDir).catch(() => null); src = "dir"; }
   if (!fc) return false;
   adopt(fc, src); return true;
 }
 function renderStoreChip() {
   let el = $("#storeChip");
-  if (!el) { el = document.createElement("button"); el.type = "button"; el.id = "storeChip"; el.className = "store-chip"; $("#btnNew").parentElement.prepend(el); el.addEventListener("click", () => { if (projDir && dirReady) flushStore().then(() => toast(store.state === "ok" ? "데이터 파일에 저장했습니다." : `저장하지 못했습니다: ${store.err || ""}`)); else connectStore(); }); }
+  if (!el) { el = document.createElement("button"); el.type = "button"; el.id = "storeChip"; el.className = "store-chip"; $("#btnNew").parentElement.prepend(el); el.addEventListener("click", () => { if ((projDir && dirReady) || store.api) flushStore().then(() => toast(store.state === "ok" ? "데이터 파일에 저장했습니다." : `저장하지 못했습니다: ${store.err || ""}`)); else connectStore(); }); }
+  const writable = (projDir && dirReady) || store.api;
   const S = {
     init: ["wait", "데이터 파일 확인 중…", ""],
-    ok: ["ok", `데이터 파일 ${store.src === "http" && !(projDir && dirReady) ? "불러옴" : "저장됨"}${store.at ? " · " + store.at : ""}`, projDir && dirReady ? "data 폴더의 JSON 파일과 맞춰져 있습니다. 누르면 지금 다시 저장합니다." : "data 폴더의 JSON 파일을 불러와 보여 주는 중입니다. 고치려면 폴더 연결이 필요합니다."],
+    ok: ["ok", `데이터 파일 ${!writable ? "불러옴" : "저장됨"}${store.at ? " · " + store.at : ""}`, writable ? "data 폴더의 JSON 파일과 맞춰져 있습니다. 누르면 지금 다시 저장합니다." : "data 폴더의 JSON 파일을 불러와 보여 주는 중입니다. 고치려면 폴더 연결이 필요합니다."],
     saving: ["wait", "파일에 저장 중…", ""],
     pending: ["warn", "파일 저장 대기 · 폴더 연결", "고친 내용이 아직 브라우저에만 있습니다. 눌러서 대시보드 폴더를 연결하면 data 폴더의 JSON 파일에 저장됩니다."],
     off: ["warn", "데이터 폴더 연결", "data 폴더의 JSON 파일을 읽고 쓰려면 눌러서 대시보드 폴더를 연결하세요."],
@@ -6101,15 +6229,18 @@ function renderStoreChip() {
 async function bootStore() {
   renderStoreChip();
   await dirInit;
+  if (location.protocol !== "file:") {
+    try { const h = await fetch("/api/health", { cache: "no-store" }); if (h.ok) store.api = true; } catch (e) {}
+  }
   const legacy = store.bootCache && !cfg.migr?.fileStore1, pending = isPending();
   let fc = null, src = "";
   if (projDir && dirReady) { fc = await readFromDir(projDir).catch(() => null); if (fc) src = "dir"; }   /* 쓸 수 있는 폴더가 있으면 그 폴더가 기준 */
-  if (!fc) { try { fc = await readFromHTTP(); if (fc) src = "http"; } catch (e) {} }
+  if (!fc) { try { fc = await readFromHTTP(); if (fc) src = store.api ? "api" : "http"; } catch (e) {} }
   if (store.state !== "init") return;                  /* 읽는 사이 사용자가 이미 폴더를 연결해 맞췄으면 그대로 둠 */
-  if (fc && !legacy && !(pending && cfg.migr?.fileStore1)) { adopt(fc, src); if (src === "http") store.written = {}; return; }
+  if (fc && !legacy && !(pending && cfg.migr?.fileStore1)) { adopt(fc, src); if (src !== "dir") store.written = {}; return; }
   store.written = src === "dir" ? (rememberWritten(fc), store.written) : {};
   if (fc) store.src = src;
-  if (projDir && dirReady) { await flushStore(); if (!fc && store.state === "ok") toast(`데이터 ${cfg.datasets.length}개를 data 폴더에 JSON 파일로 만들었습니다.`); return; }
+  if ((projDir && dirReady) || store.api) { await flushStore(); if (!fc && store.state === "ok") toast(`데이터 ${cfg.datasets.length}개를 data 폴더에 JSON 파일로 만들었습니다.`); return; }
   store.state = legacy || pending ? "pending" : "off"; renderStoreChip();
 }
 

@@ -1,7 +1,7 @@
 {
   "id": "auditfind",
   "name": "고객 심사 지적사항",
-  "desc": "고객·인증 심사에서 받은 지적을 등급·기한·조치 상태로 관리합니다.",
+  "desc": "7대 고객사 공정·품질 심사 지적사항 (현대·기아/트랜시스 5스타·SQ, 다임러 VDA 6.3 *-질문, 포드 Q1, 스텔란티스 PCPA, 보그워너)",
   "dateField": "date",
   "titleField": "content",
   "fields": [
@@ -22,6 +22,33 @@
       "label": "고객사",
       "type": "ref",
       "ref": "customers"
+    },
+    {
+      "key": "audit_type",
+      "label": "심사 종류",
+      "type": "select",
+      "options": [
+        "현대·기아/트랜시스 5스타 · SQ",
+        "다임러/유럽 VDA 6.3 공정심사",
+        "포드 Q1 · 스텔란티스 PCPA · 보그워너",
+        "AIAG CQI-9(열처리) · CQI-27(주조)",
+        "IATF 16949 인증심사"
+      ]
+    },
+    {
+      "key": "star_q",
+      "label": "VDA 6.3 별표(*-질문) / 강등 위험",
+      "type": "select",
+      "options": [
+        "일반 항목",
+        "별표(*-질문) 4점 이하 (B등급 강등 위험)",
+        "별표(*-질문) 0점 (C등급 강등 위험)"
+      ],
+      "colors": {
+        "일반 항목": "gray",
+        "별표(*-질문) 4점 이하 (B등급 강등 위험)": "orange",
+        "별표(*-질문) 0점 (C등급 강등 위험)": "red"
+      }
     },
     {
       "key": "content",
@@ -80,32 +107,5 @@
       "to": "closed"
     }
   ],
-  "records": [
-    {"id":"r10h7k","no":"AU-25-001","date":"2025-09-05","customer":"K사","content":"출하 검사 성적서 서명 누락","level":"중결함","owner":"정하늘","due":"2025-09-25","status":"완료","closed":"2025-10-03"},
-    {"id":"r10h7h","no":"AU-25-002","date":"2025-10-08","customer":"G사","content":"변경점 고객 통보 지연","level":"관찰","owner":"최유진","due":"2025-11-20","status":"완료","closed":"2025-10-28"},
-    {"id":"r10h77","no":"AU-25-003","date":"2025-10-18","customer":"G사","content":"변경점 고객 통보 지연","level":"관찰","owner":"김민수","due":"2025-11-20","status":"완료","closed":"2025-11-09"},
-    {"id":"r10h75","no":"AU-25-004","date":"2025-11-22","customer":"S모빌리티","content":"관리계획서와 현장 검사 주기 불일치","level":"경결함","owner":"최유진","due":"2025-12-13","status":"완료","closed":"2025-12-02"},
-    {"id":"r10h7i","no":"AU-25-005","date":"2025-12-06","customer":"H사","content":"출하 검사 성적서 서명 누락","level":"경결함","owner":"김민수","due":"2026-01-20","status":"완료","closed":"2025-12-21"},
-    {"id":"r10h76","no":"AU-26-001","date":"2026-02-05","customer":"H사","content":"에러 프루프 점검 기록 누락","level":"중결함","owner":"김민수","due":"2026-03-10","status":"완료","closed":"2026-02-12"},
-    {"id":"r10h79","no":"AU-26-002","date":"2026-02-14","customer":"H사","content":"출하 검사 성적서 서명 누락","level":"관찰","owner":"김민수","due":"2026-03-09","status":"완료","closed":"2026-03-05"},
-    {"id":"r10h73","no":"AU-26-003","date":"2026-03-12","customer":"H사","content":"변경점 고객 통보 지연","level":"중결함","owner":"김민수","due":"2026-04-09","status":"완료","closed":"2026-04-19"},
-    {"id":"r10h7l","no":"AU-26-004","date":"2026-03-19","customer":"S모빌리티","content":"출하 검사 성적서 서명 누락","level":"중결함","owner":"최유진","due":"2026-04-09","status":"완료","closed":"2026-04-18"},
-    {"id":"r10h7g","no":"AU-26-005","date":"2026-05-19","customer":"K사","content":"출하 검사 성적서 서명 누락","level":"경결함","owner":"김민수","due":"2026-06-16","status":"완료","closed":"2026-06-14"},
-    {"id":"r10h7b","no":"AU-26-006","date":"2026-05-27","customer":"H사","content":"작업표준서 최신본 미게시","level":"중결함","owner":"정하늘","due":"2026-07-07","status":"완료","closed":"2026-06-21"},
-    {"id":"r10h7a","no":"AU-26-007","date":"2026-05-31","customer":"H사","content":"출하 검사 성적서 서명 누락","level":"관찰","owner":"최유진","due":"2026-06-20","status":"완료","closed":"2026-07-06"},
-    {"id":"r10h7e","no":"AU-26-008","date":"2026-06-04","customer":"R사","content":"출하 검사 성적서 서명 누락","level":"경결함","owner":"최유진","due":"2026-06-27","status":"완료","closed":"2026-07-05"},
-    {"id":"r10h7c","no":"AU-26-009","date":"2026-06-09","customer":"K사","content":"초품 검사 기록 누락","level":"경결함","owner":"김민수","due":"2026-07-03","status":"완료","closed":"2026-07-03"},
-    {"id":"r10h7f","no":"AU-26-010","date":"2026-07-30","customer":"G사","content":"에러 프루프 점검 기록 누락","level":"경결함","owner":"김민수","due":"2026-09-01","status":"완료","closed":"2026-08-21"},
-    {"id":"r10h7d","no":"AU-26-011","date":"2026-08-04","customer":"R사","content":"측정기 교정 라벨 훼손","level":"관찰","owner":"최유진","due":"2026-09-08","status":"완료","closed":"2026-09-03"},
-    {"id":"r10h78","no":"AU-26-012","date":"2026-08-10","customer":"G사","content":"변경점 고객 통보 지연","level":"중결함","owner":"정하늘","due":"2026-09-08","status":"완료","closed":"2026-08-31"},
-    {"id":"r10h7j","no":"AU-26-013","date":"2026-08-18","customer":"H사","content":"관리계획서와 현장 검사 주기 불일치","level":"경결함","owner":"최유진","due":"2026-09-25","status":"완료","closed":"2026-09-18"},
-    {"id":"r10h72","no":"AU-26-014","date":"2026-08-31","customer":"H사","content":"변경점 고객 통보 지연","level":"경결함","owner":"최유진","due":"2026-10-12","status":"완료","closed":"2026-09-15"},
-    {"id":"r10h71","no":"AU-26-015","date":"2026-09-07","customer":"K사","content":"출하 검사 성적서 서명 누락","level":"경결함","owner":"정하늘","due":"2026-09-23","status":"조치중","closed":""},
-    {"id":"r10h6y","no":"AU-26-016","date":"2026-09-10","customer":"K사","content":"초품 검사 기록 누락","level":"관찰","owner":"정하늘","due":"2026-10-24","status":"완료","closed":"2026-10-02"},
-    {"id":"r10h6w","no":"AU-26-017","date":"2026-09-18","customer":"S모빌리티","content":"측정기 교정 라벨 훼손","level":"경결함","owner":"김민수","due":"2026-11-01","status":"조치중","closed":""},
-    {"id":"r10h6z","no":"AU-26-018","date":"2026-09-21","customer":"K사","content":"작업표준서 최신본 미게시","level":"경결함","owner":"정하늘","due":"2026-10-25","status":"조치중","closed":""},
-    {"id":"r10h6x","no":"AU-26-019","date":"2026-09-29","customer":"G사","content":"작업표준서 최신본 미게시","level":"경결함","owner":"정하늘","due":"2026-10-17","status":"조치중","closed":""},
-    {"id":"r10h74","no":"AU-26-020","date":"2026-09-29","customer":"H사","content":"작업자 자격 인증 기록 미비","level":"경결함","owner":"김민수","due":"2026-10-31","status":"조치중","closed":""},
-    {"id":"r10h70","no":"AU-26-021","date":"2026-10-05","customer":"G사","content":"에러 프루프 점검 기록 누락","level":"경결함","owner":"정하늘","due":"2026-11-12","status":"조치중","closed":""}
-  ]
+  "records": []
 }

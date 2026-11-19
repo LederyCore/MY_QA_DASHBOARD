@@ -1,7 +1,7 @@
 {
   "id": "change4m",
   "name": "변경점 (4M) 관리",
-  "desc": "사람·설비·재료·방법(4M) 변경을 부품별로 기록하고 고객 승인과 적용을 관리합니다.",
+  "desc": "4M / 5M+1E 변경점 관리 — 고객 사전 신고·서면 승인(4M+ISIR / e-SREA / MBST 14 / Forever Req.) 없이 양산 선적용 절대 금지 · 7대 사전 유효성 검증 · 초도 3로트 식별",
   "dateField": "date",
   "titleField": "content",
   "fields": [
@@ -35,6 +35,12 @@
       }
     },
     {
+      "key": "customer",
+      "label": "대상 고객사",
+      "type": "ref",
+      "ref": "customers"
+    },
+    {
       "key": "part",
       "label": "부품",
       "type": "ref",
@@ -47,14 +53,52 @@
       "req": true
     },
     {
+      "key": "form_type",
+      "label": "고객 신고 양식",
+      "type": "select",
+      "options": [
+        "4M 변경 신고서 + ISIR (현대·기아/트랜시스)",
+        "e-SREA + Phased PPAP (포드)",
+        "MBST 14 변경통보 + VDA 2 PPA (다임러/벤츠)",
+        "Supplier Change Request + PPAP Lv.3 (스텔란티스/보그워너)",
+        "5M+1E 변경 사전신고 (미쓰비시)"
+      ]
+    },
+    {
+      "key": "val_check",
+      "label": "7대 사전 유효성 검증",
+      "type": "select",
+      "options": [
+        "전수치수+Ppk(≥1.67)/Cmk(≥2.0)+MSA+재질/비파괴+청정도(Lmax)+AFT/내구+R@R 완료",
+        "검증 시험 진행중",
+        "검증 전"
+      ]
+    },
+    {
       "key": "approval",
       "label": "고객 승인",
       "type": "select",
       "options": [
-        "불필요",
+        "사전 검토중 (양산 선적용 금지)",
         "신청",
         "승인",
         "반려"
+      ],
+      "colors": {
+        "사전 검토중 (양산 선적용 금지)": "orange",
+        "신청": "blue",
+        "승인": "green",
+        "반려": "red"
+      }
+    },
+    {
+      "key": "lot_mark",
+      "label": "초도 3로트 식별표 · Safe Launch",
+      "type": "select",
+      "options": [
+        "초도 3로트 식별라벨 부착 + Safe Launch 완료",
+        "초도 출하 대기",
+        "해당 없음"
       ]
     },
     {
@@ -74,36 +118,5 @@
       "badge": true
     }
   ],
-  "records": [
-    {"id":"r10h81","no":"CH-25-001","date":"2025-11-23","kind":"Material (재료)","part":"배터리 트레이","content":"배터리 트레이 수지 그레이드 변경","approval":"승인","apply":"2025-12-06","status":"완료"},
-    {"id":"r10h7w","no":"CH-25-002","date":"2025-12-28","kind":"Material (재료)","part":"범퍼 빔","content":"범퍼 빔 원소재 공급사 변경","approval":"승인","apply":"2026-01-22","status":"완료"},
-    {"id":"r10h8a","no":"CH-26-001","date":"2026-01-21","kind":"Man (사람)","part":"글로브박스","content":"글로브박스 교대조 변경","approval":"불필요","apply":"2026-02-27","status":"완료"},
-    {"id":"r10h8f","no":"CH-26-002","date":"2026-02-01","kind":"Method (방법)","part":"테일게이트 힌지","content":"테일게이트 힌지 검사 방법 변경","approval":"승인","apply":"2026-02-09","status":"완료"},
-    {"id":"r10h88","no":"CH-26-003","date":"2026-02-04","kind":"Man (사람)","part":"도어 트림","content":"도어 트림 교대조 변경","approval":"불필요","apply":"2026-02-16","status":"완료"},
-    {"id":"r10h8d","no":"CH-26-004","date":"2026-02-04","kind":"Method (방법)","part":"시트프레임","content":"시트프레임 검사 방법 변경","approval":"승인","apply":"2026-02-23","status":"완료"},
-    {"id":"r10h7r","no":"CH-26-005","date":"2026-03-05","kind":"Machine (설비)","part":"리어 브라켓","content":"리어 브라켓 용접 로봇 교체","approval":"신청","apply":"2026-04-05","status":"완료"},
-    {"id":"r10h7n","no":"CH-26-006","date":"2026-03-06","kind":"Method (방법)","part":"글로브박스","content":"글로브박스 작업 순서 변경","approval":"승인","apply":"2026-04-07","status":"완료"},
-    {"id":"r10h7t","no":"CH-26-007","date":"2026-03-06","kind":"Machine (설비)","part":"리어 브라켓","content":"리어 브라켓 용접 로봇 교체","approval":"승인","apply":"2026-03-28","status":"완료"},
-    {"id":"r10h7x","no":"CH-26-008","date":"2026-04-07","kind":"Method (방법)","part":"브라켓 BRK-1830","content":"브라켓 BRK-1830 검사 방법 변경","approval":"신청","apply":"2026-04-16","status":"완료"},
-    {"id":"r10h86","no":"CH-26-009","date":"2026-04-21","kind":"Machine (설비)","part":"암레스트","content":"암레스트 용접 로봇 교체","approval":"승인","apply":"2026-04-29","status":"완료"},
-    {"id":"r10h7q","no":"CH-26-010","date":"2026-04-23","kind":"Method (방법)","part":"글로브박스","content":"글로브박스 검사 방법 변경","approval":"승인","apply":"2026-06-01","status":"완료"},
-    {"id":"r10h82","no":"CH-26-011","date":"2026-04-23","kind":"Material (재료)","part":"스티어링 브라켓","content":"스티어링 브라켓 수지 그레이드 변경","approval":"승인","apply":"2026-05-19","status":"완료"},
-    {"id":"r10h87","no":"CH-26-012","date":"2026-05-27","kind":"Material (재료)","part":"콘솔 커버","content":"콘솔 커버 원소재 공급사 변경","approval":"신청","apply":"2026-06-19","status":"완료"},
-    {"id":"r10h7z","no":"CH-26-013","date":"2026-06-12","kind":"Method (방법)","part":"콘솔 커버","content":"콘솔 커버 포장 사양 변경","approval":"승인","apply":"2026-06-30","status":"완료"},
-    {"id":"r10h83","no":"CH-26-014","date":"2026-06-19","kind":"Man (사람)","part":"스티어링 브라켓","content":"스티어링 브라켓 신규 작업자 투입","approval":"불필요","apply":"2026-07-09","status":"완료"},
-    {"id":"r10h89","no":"CH-26-015","date":"2026-06-30","kind":"Man (사람)","part":"글로브박스","content":"글로브박스 검사원 교체","approval":"불필요","apply":"2026-07-13","status":"완료"},
-    {"id":"r10h7u","no":"CH-26-016","date":"2026-07-21","kind":"Method (방법)","part":"글로브박스","content":"글로브박스 작업 순서 변경","approval":"승인","apply":"2026-08-11","status":"완료"},
-    {"id":"r10h80","no":"CH-26-017","date":"2026-07-23","kind":"Method (방법)","part":"시트프레임","content":"시트프레임 포장 사양 변경","approval":"신청","apply":"2026-08-01","status":"완료"},
-    {"id":"r10h7s","no":"CH-26-018","date":"2026-07-26","kind":"Machine (설비)","part":"테일게이트 힌지","content":"테일게이트 힌지 용접 로봇 교체","approval":"승인","apply":"2026-08-29","status":"완료"},
-    {"id":"r10h7y","no":"CH-26-019","date":"2026-07-30","kind":"Machine (설비)","part":"도어 트림","content":"도어 트림 금형 수리 후 재가동","approval":"승인","apply":"2026-09-06","status":"완료"},
-    {"id":"r10h8e","no":"CH-26-020","date":"2026-08-11","kind":"Machine (설비)","part":"도어래치 ASSY","content":"도어래치 ASSY 용접 로봇 교체","approval":"승인","apply":"2026-09-01","status":"완료"},
-    {"id":"r10h84","no":"CH-26-021","date":"2026-08-15","kind":"Material (재료)","part":"브라켓 BRK-1830","content":"브라켓 BRK-1830 원소재 공급사 변경","approval":"승인","apply":"2026-09-07","status":"완료"},
-    {"id":"r10h85","no":"CH-26-022","date":"2026-09-20","kind":"Man (사람)","part":"범퍼 빔","content":"범퍼 빔 검사원 교체","approval":"불필요","apply":"2026-10-09","status":"진행중"},
-    {"id":"r10h8b","no":"CH-26-023","date":"2026-09-20","kind":"Method (방법)","part":"글로브박스","content":"글로브박스 검사 방법 변경","approval":"승인","apply":"2026-10-01","status":"검토"},
-    {"id":"r10h7p","no":"CH-26-024","date":"2026-09-24","kind":"Material (재료)","part":"글로브박스","content":"글로브박스 도료 사양 변경","approval":"승인","apply":"2026-10-07","status":"진행중"},
-    {"id":"r10h7o","no":"CH-26-025","date":"2026-09-25","kind":"Method (방법)","part":"스티어링 브라켓","content":"스티어링 브라켓 포장 사양 변경","approval":"신청","apply":"2026-10-24","status":"진행중"},
-    {"id":"r10h7m","no":"CH-26-026","date":"2026-10-06","kind":"Man (사람)","part":"글로브박스","content":"글로브박스 교대조 변경","approval":"불필요","apply":"2026-10-29","status":"검토"},
-    {"id":"r10h8c","no":"CH-26-027","date":"2026-10-06","kind":"Method (방법)","part":"암레스트","content":"암레스트 검사 방법 변경","approval":"승인","apply":"2026-10-16","status":"진행중"},
-    {"id":"r10h7v","no":"CH-26-028","date":"2026-10-07","kind":"Machine (설비)","part":"리어 브라켓","content":"리어 브라켓 사출기 이설","approval":"승인","apply":"2026-10-27","status":"진행중"}
-  ]
+  "records": []
 }

@@ -2,7 +2,7 @@
   "id": "vendors",
   "name": "협력사",
   "master": true,
-  "desc": "부품 협력사 목록입니다. 협력사 평가·수입검사에서 골라 씁니다.",
+  "desc": "다이캐스팅·열처리(CQI-9/27)·정밀가공·소결·씰·베어링·솔레노이드 외주 협력사 및 SQ/VDA 등급 관리",
   "dateField": "",
   "titleField": "name",
   "asOfField": "",
@@ -18,16 +18,21 @@
       "label": "공정",
       "type": "select",
       "options": [
-        "프레스",
-        "사출",
-        "용접",
-        "도금",
-        "도장",
-        "고무",
-        "전장",
-        "가공",
-        "조립"
+        "알루미늄 다이캐스팅·주조 (SQ/CQI-27)",
+        "침탄·열처리 (SQ/CQI-9)",
+        "정밀 가공·연삭·호닝",
+        "소결·단조 (로터/기어)",
+        "메커니컬 씰·오링·개스킷",
+        "베어링·부시·스냅링",
+        "솔레노이드·전장 (EOP/EWP/VFS)",
+        "표면처리·함침 (SQ/CQI-11·12)",
+        "세척·디버링·조립"
       ]
+    },
+    {
+      "key": "sq_cert",
+      "label": "SQ / CQI / VDA 6.3 인증·등급",
+      "type": "text"
     },
     {
       "key": "owner",
@@ -62,22 +67,5 @@
       "field": "score"
     }
   ],
-  "records": [
-    {"id":"r10frf","name":"대성정밀","process":"프레스","owner":"윤재호","note":""},
-    {"id":"r10frg","name":"삼진프레스","process":"프레스","owner":"박지훈","note":""},
-    {"id":"r10frh","name":"세화테크","process":"사출","owner":"박지훈","note":""},
-    {"id":"r10fri","name":"성원전자","process":"전장","owner":"윤재호","note":""},
-    {"id":"r10frj","name":"동양도금","process":"도금","owner":"박지훈","note":""},
-    {"id":"r10frk","name":"한빛고무","process":"고무","owner":"박지훈","note":""},
-    {"id":"r10frl","name":"미래사출","process":"사출","owner":"윤재호","note":""},
-    {"id":"r10frm","name":"우진금속","process":"프레스","owner":"박지훈","note":""},
-    {"id":"r10frn","name":"태광산업","process":"용접","owner":"박지훈","note":""},
-    {"id":"r10fro","name":"신흥정공","process":"가공","owner":"윤재호","note":""},
-    {"id":"r10frp","name":"해성화학","process":"사출","owner":"박지훈","note":""},
-    {"id":"r10frq","name":"진영테크","process":"조립","owner":"박지훈","note":""},
-    {"id":"r10frr","name":"대명오토","process":"조립","owner":"윤재호","note":""},
-    {"id":"r10frs","name":"경일산업","process":"도장","owner":"박지훈","note":""},
-    {"id":"r10frt","name":"유성정밀","process":"가공","owner":"박지훈","note":""},
-    {"id":"r10fru","name":"한라부품","process":"용접","owner":"윤재호","note":""}
-  ]
+  "records": []
 }

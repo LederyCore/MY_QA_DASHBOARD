@@ -1,19 +1,68 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 560" width="1000" height="560" font-family="Malgun Gothic, Apple SD Gothic Neo, sans-serif">
-<rect width="1000" height="560" fill="#f4f6f9"/>
-<rect x="20" y="20" width="960" height="520" rx="10" fill="none" stroke="#7b8594" stroke-width="3"/>
-<rect x="30" y="250" width="940" height="0" />
-<path d="M100 250 H950" stroke="#c9d0da" stroke-width="34"/><text x="525" y="255" text-anchor="middle" font-size="12" fill="#7b8594" letter-spacing="6">주 통로 →</text>
-<rect x="30" y="30" width="62" height="500" fill="#e9edf2" stroke="#b9c1cc"/><text x="61" y="280" font-size="14" fill="#5b6574" text-anchor="middle" transform="rotate(-90 61 280)">원자재 창고</text>
-<g><rect x="105" y="98" width="170" height="124" rx="8" fill="#ffffff" stroke="#9aa4b2" stroke-width="2"/><text x="190" y="120" text-anchor="middle" font-size="15" font-weight="700" fill="#4a5563">프레스 1</text><rect x="130" y="166" width="32" height="26" rx="3" fill="#e6eaf0" stroke="#b9c1cc"/><rect x="172" y="166" width="32" height="26" rx="3" fill="#e6eaf0" stroke="#b9c1cc"/><rect x="214" y="166" width="32" height="26" rx="3" fill="#e6eaf0" stroke="#b9c1cc"/></g>
-<g><rect x="105" y="278" width="170" height="124" rx="8" fill="#ffffff" stroke="#9aa4b2" stroke-width="2"/><text x="190" y="300" text-anchor="middle" font-size="15" font-weight="700" fill="#4a5563">프레스 2</text><rect x="130" y="346" width="32" height="26" rx="3" fill="#e6eaf0" stroke="#b9c1cc"/><rect x="172" y="346" width="32" height="26" rx="3" fill="#e6eaf0" stroke="#b9c1cc"/><rect x="214" y="346" width="32" height="26" rx="3" fill="#e6eaf0" stroke="#b9c1cc"/></g>
-<g><rect x="315" y="98" width="170" height="124" rx="8" fill="#ffffff" stroke="#9aa4b2" stroke-width="2"/><text x="400" y="120" text-anchor="middle" font-size="15" font-weight="700" fill="#4a5563">용접 1</text><rect x="340" y="166" width="32" height="26" rx="3" fill="#e6eaf0" stroke="#b9c1cc"/><rect x="382" y="166" width="32" height="26" rx="3" fill="#e6eaf0" stroke="#b9c1cc"/><rect x="424" y="166" width="32" height="26" rx="3" fill="#e6eaf0" stroke="#b9c1cc"/></g>
-<g><rect x="315" y="278" width="170" height="124" rx="8" fill="#ffffff" stroke="#9aa4b2" stroke-width="2"/><text x="400" y="300" text-anchor="middle" font-size="15" font-weight="700" fill="#4a5563">용접 2</text><rect x="340" y="346" width="32" height="26" rx="3" fill="#e6eaf0" stroke="#b9c1cc"/><rect x="382" y="346" width="32" height="26" rx="3" fill="#e6eaf0" stroke="#b9c1cc"/><rect x="424" y="346" width="32" height="26" rx="3" fill="#e6eaf0" stroke="#b9c1cc"/></g>
-<g><rect x="525" y="98" width="170" height="124" rx="8" fill="#ffffff" stroke="#9aa4b2" stroke-width="2"/><text x="610" y="120" text-anchor="middle" font-size="15" font-weight="700" fill="#4a5563">사출 1</text><rect x="550" y="166" width="32" height="26" rx="3" fill="#e6eaf0" stroke="#b9c1cc"/><rect x="592" y="166" width="32" height="26" rx="3" fill="#e6eaf0" stroke="#b9c1cc"/><rect x="634" y="166" width="32" height="26" rx="3" fill="#e6eaf0" stroke="#b9c1cc"/></g>
-<g><rect x="525" y="278" width="170" height="124" rx="8" fill="#ffffff" stroke="#9aa4b2" stroke-width="2"/><text x="610" y="300" text-anchor="middle" font-size="15" font-weight="700" fill="#4a5563">도장</text><rect x="550" y="346" width="32" height="26" rx="3" fill="#e6eaf0" stroke="#b9c1cc"/><rect x="592" y="346" width="32" height="26" rx="3" fill="#e6eaf0" stroke="#b9c1cc"/><rect x="634" y="346" width="32" height="26" rx="3" fill="#e6eaf0" stroke="#b9c1cc"/></g>
-<g><rect x="735" y="98" width="170" height="124" rx="8" fill="#ffffff" stroke="#9aa4b2" stroke-width="2"/><text x="820" y="120" text-anchor="middle" font-size="15" font-weight="700" fill="#4a5563">조립 1</text><rect x="760" y="166" width="32" height="26" rx="3" fill="#e6eaf0" stroke="#b9c1cc"/><rect x="802" y="166" width="32" height="26" rx="3" fill="#e6eaf0" stroke="#b9c1cc"/><rect x="844" y="166" width="32" height="26" rx="3" fill="#e6eaf0" stroke="#b9c1cc"/></g>
-<g><rect x="735" y="278" width="170" height="124" rx="8" fill="#ffffff" stroke="#9aa4b2" stroke-width="2"/><text x="820" y="300" text-anchor="middle" font-size="15" font-weight="700" fill="#4a5563">조립 2</text><rect x="760" y="346" width="32" height="26" rx="3" fill="#e6eaf0" stroke="#b9c1cc"/><rect x="802" y="346" width="32" height="26" rx="3" fill="#e6eaf0" stroke="#b9c1cc"/><rect x="844" y="346" width="32" height="26" rx="3" fill="#e6eaf0" stroke="#b9c1cc"/></g>
-<rect x="110" y="440" width="300" height="80" rx="8" fill="#eef3ff" stroke="#9db0d8"/><text x="260" y="486" text-anchor="middle" font-size="15" fill="#4b5d86">품질 검사실 · 측정실</text>
-<rect x="440" y="440" width="250" height="80" rx="8" fill="#fff5ea" stroke="#d9b48a"/><text x="565" y="486" text-anchor="middle" font-size="15" fill="#86613a">부적합품 보관 구역</text>
-<rect x="720" y="440" width="250" height="80" rx="8" fill="#ecf7ef" stroke="#9cc9a8"/><text x="845" y="486" text-anchor="middle" font-size="15" fill="#3f7350">완성품 · 출하장</text>
-<text x="970" y="554" text-anchor="end" font-size="11" fill="#9aa4b2">제1공장 배치도 · 2026</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" font-family="Pretendard,-apple-system,sans-serif">
+  <rect width="900" height="520" fill="#f8f9fc"/>
+  <rect x="20" y="20" width="860" height="480" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="44" y="54" font-size="16" font-weight="800" fill="#1e293b">파워트레인 · 열관리 부품 제조 라인 배치도 — 오일펌프 · 워터펌프 · 6속 변속기 (1층 ~ 클린룸)</text>
+  <text x="856" y="54" text-anchor="end" font-size="12" font-weight="600" fill="#64748b">CQI-9 · CQI-27 · ISO 16232 청정도 · Poka-Yoke 인터락 적용 공장</text>
+  <line x1="20" y1="72" x2="880" y2="72" stroke="#e2e8f0"/>
+
+  <!-- 소재 · 기초 공정 (주조/함침/가공) -->
+  <g stroke="#94a3b8" stroke-width="1.5" fill="#f1f5f9">
+    <rect x="44" y="96" width="250" height="140" rx="8"/>
+    <rect x="44" y="262" width="250" height="140" rx="8"/>
+  </g>
+  <text x="60" y="122" font-size="13" font-weight="800" fill="#334155">다이캐스팅 · 함침 (CQI-27)</text>
+  <text x="60" y="142" font-size="11" fill="#64748b">알루미늄 HPDC · 진공 함침 · X-Ray 기공 검사</text>
+
+  <text x="60" y="288" font-size="13" font-weight="800" fill="#334155">정밀 가공 (CNC·연삭·호닝)</text>
+  <text x="60" y="308" font-size="11" fill="#64748b">하우징 평면도 · 밸브바디 보어 호닝 · 기어 치면 연삭</text>
+
+  <!-- 열처리 · 세척 공정 (CQI-9 / 청정도) -->
+  <g stroke="#94a3b8" stroke-width="1.5" fill="#fef3c7" fill-opacity="0.45">
+    <rect x="318" y="96" width="250" height="140" rx="8"/>
+    <rect x="318" y="262" width="250" height="140" rx="8"/>
+  </g>
+  <text x="334" y="122" font-size="13" font-weight="800" fill="#334155">침탄 열처리 (CQI-9)</text>
+  <text x="334" y="142" font-size="11" fill="#64748b">유효경화깊이(CHD) · 표면경도(58~62 HRC) · 나이탈 에칭</text>
+
+  <text x="334" y="288" font-size="13" font-weight="800" fill="#334155">디버링 · 초음파 세척 (청정도)</text>
+  <text x="334" y="308" font-size="11" fill="#64748b">고압 디버링 · 진공건조 · 탈자(≤3G) · ISO 16232(Lmax≤200µm)</text>
+
+  <!-- 단품 조립 · 기능/리크 시험 (오일펌프 / 워터펌프) -->
+  <g stroke="#94a3b8" stroke-width="1.5" fill="#e0f2fe" fill-opacity="0.5">
+    <rect x="592" y="96" width="126" height="140" rx="8"/>
+    <rect x="592" y="262" width="126" height="140" rx="8"/>
+  </g>
+  <text x="604" y="122" font-size="12.5" font-weight="800" fill="#334155">오일펌프 조립 · AFT</text>
+  <text x="604" y="140" font-size="10.5" fill="#64748b">로터 3대 간극 · 릴리프 밸브</text>
+  <text x="604" y="154" font-size="10.5" fill="#64748b">유온보정 유량/압력/토크 전수</text>
+
+  <text x="604" y="288" font-size="12.5" font-weight="800" fill="#334155">워터펌프 조립 · 리크</text>
+  <text x="604" y="306" font-size="10.5" fill="#64748b">메커니컬 씰 서보 프레스 선도</text>
+  <text x="604" y="320" font-size="10.5" fill="#64748b">베어링 압입 · 차압 에어리크</text>
+
+  <!-- 변속기 클린룸 · EOL 다이나모 -->
+  <g stroke="#94a3b8" stroke-width="1.5" fill="#dcfce7" fill-opacity="0.5">
+    <rect x="734" y="96" width="126" height="140" rx="8"/>
+    <rect x="734" y="262" width="126" height="140" rx="8"/>
+  </g>
+  <text x="744" y="122" font-size="12" font-weight="800" fill="#334155">밸브바디 클린룸 · VBT</text>
+  <text x="744" y="140" font-size="10.5" fill="#64748b">스풀 간극(15~35µm) · 양압실</text>
+  <text x="744" y="154" font-size="10.5" fill="#64748b">VFS 히스테리시스 전수 유압</text>
+
+  <text x="744" y="288" font-size="12" font-weight="800" fill="#334155">6속 변속기 조립 · EOL</text>
+  <text x="744" y="306" font-size="10.5" fill="#64748b">클러치 심 선정 · 너트러너</text>
+  <text x="744" y="320" font-size="10.5" fill="#64748b">EOL 다이나모 · NVH 차수분석</text>
+
+  <!-- 하단 품질보증 · 방화벽 구역 -->
+  <rect x="44" y="424" width="260" height="56" rx="6" fill="#eef2ff" stroke="#a5b4fc" stroke-dasharray="4 3"/>
+  <text x="174" y="449" text-anchor="middle" font-size="11.5" font-weight="700" fill="#4338ca">정밀측정실 · 청정도 시험실 (CMM / 기어측정기 / ISO 16232)</text>
+  <text x="174" y="466" text-anchor="middle" font-size="10" fill="#6366f1">항온항습 (20±1℃) · MSA %GRR &lt; 10% · Red Rabbit 마스터 시편 관리</text>
+
+  <rect x="322" y="424" width="250" height="56" rx="6" fill="#fef2f2" stroke="#fca5a5" stroke-dasharray="4 3"/>
+  <text x="447" y="449" text-anchor="middle" font-size="11.5" font-weight="700" fill="#b91c1c">부적합품 격리 구역 (Lock-Box) · NTF 분해/내구 분석실</text>
+  <text x="447" y="466" text-anchor="middle" font-size="10" fill="#dc2626">비파괴 선행 검증(외관→리크→실부동액 내구→분해) · 임의 재투입 금지</text>
+
+  <rect x="590" y="424" width="270" height="56" rx="6" fill="#ecfdf5" stroke="#6ee7b7" stroke-dasharray="4 3"/>
+  <text x="725" y="449" text-anchor="middle" font-size="11.5" font-weight="700" fill="#047857">Safe Launch / EPC 방화벽 (100% 2차 검사) · 출하장</text>
+  <text x="725" y="466" text-anchor="middle" font-size="10" fill="#059669">2D 바코드 양방향 추적성 인터락 · 초도품/선별 완료 인증 마킹 확인</text>
 </svg>

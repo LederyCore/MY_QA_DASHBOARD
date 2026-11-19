@@ -1,7 +1,7 @@
 {
   "id": "auditplan",
   "name": "내부심사 계획",
-  "desc": "2026년 부서별 내부심사 일정과 진행률입니다.",
+  "desc": "연간 시스템(IATF 16949) · 공정(VDA 6.3 / 5스타 / SQ) · 특수공정(CQI-9 열처리 / CQI-27 주조) 심사 일정",
   "dateField": "date",
   "titleField": "dept",
   "asOfField": "",
@@ -46,18 +46,37 @@
       "badge": true
     }
   ],
-  "records": [
-    {"id":"r10h2o","dept":"품질보증","date":"2026-01-20","auditor":"최유진","scope":"프로세스 심사 (IATF 16949)","progress":100,"status":"완료"},
-    {"id":"r10h2p","dept":"생산 1팀","date":"2026-02-17","auditor":"정하늘","scope":"공정 심사 (VDA 6.3)","progress":100,"status":"완료"},
-    {"id":"r10h2q","dept":"생산 2팀","date":"2026-03-12","auditor":"윤재호","scope":"프로세스 심사 (IATF 16949)","progress":100,"status":"완료"},
-    {"id":"r10h2r","dept":"구매","date":"2026-04-20","auditor":"정하늘","scope":"프로세스 심사 (IATF 16949)","progress":100,"status":"완료"},
-    {"id":"r10h2s","dept":"개발","date":"2026-05-15","auditor":"정하늘","scope":"프로세스 심사 (IATF 16949)","progress":100,"status":"완료"},
-    {"id":"r10h2t","dept":"설비","date":"2026-06-23","auditor":"정하늘","scope":"제품 심사","progress":100,"status":"완료"},
-    {"id":"r10h2u","dept":"물류","date":"2026-07-15","auditor":"정하늘","scope":"공정 심사 (VDA 6.3)","progress":100,"status":"완료"},
-    {"id":"r10h2v","dept":"영업","date":"2026-08-23","auditor":"정하늘","scope":"프로세스 심사 (IATF 16949)","progress":100,"status":"완료"},
-    {"id":"r10h2w","dept":"인사·교육","date":"2026-09-20","auditor":"최유진","scope":"공정 심사 (VDA 6.3)","progress":100,"status":"완료"},
-    {"id":"r10h2x","dept":"경영기획","date":"2026-10-09","auditor":"최유진","scope":"프로세스 심사 (IATF 16949)","progress":40,"status":"진행중"},
-    {"id":"r10h2y","dept":"금형","date":"2026-11-10","auditor":"최유진","scope":"공정 심사 (VDA 6.3)","progress":0,"status":"예정"},
-    {"id":"r10h2z","dept":"IT","date":"2026-12-22","auditor":"정하늘","scope":"프로세스 심사 (IATF 16949)","progress":0,"status":"예정"}
+  "records": [],
+  "tpls": [
+    {
+      "id": "tpl-ap-vda",
+      "name": "VDA 6.3 공정심사 (P2~P7)",
+      "vals": {
+        "dept": "오일펌프·워터펌프·변속기 제조팀",
+        "scope": "VDA 6.3 P2~P7 (*-질문 강등 위험 및 Poka-Yoke 집중 점검)",
+        "progress": 0,
+        "status": "예정"
+      }
+    },
+    {
+      "id": "tpl-ap-cqi9",
+      "name": "AIAG CQI-9 열처리 시스템 심사 (연 1회)",
+      "vals": {
+        "dept": "침탄 열처리 라인 · 열처리 협력사",
+        "scope": "CQI-9 4th Ed. 피로메트리(TUS/SAT) · 유효경화깊이(CHD) · IGO 관리",
+        "progress": 0,
+        "status": "예정"
+      }
+    },
+    {
+      "id": "tpl-ap-cqi27",
+      "name": "AIAG CQI-27 주조 시스템 심사 (연 1회)",
+      "vals": {
+        "dept": "다이캐스팅 · 함침 라인",
+        "scope": "CQI-27 알루미늄 HPDC 용탕·금형온도·진공함침·기공 리크 관리",
+        "progress": 0,
+        "status": "예정"
+      }
+    }
   ]
 }

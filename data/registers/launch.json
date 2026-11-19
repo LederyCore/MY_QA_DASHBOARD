@@ -1,7 +1,7 @@
 {
   "id": "launch",
   "name": "초기유동관리",
-  "desc": "신규 양산 부품의 SOP 이후 90일 초기유동 관리입니다.",
+  "desc": "신차·4M 변경 SOP 초기유동관리 — Safe Launch / 보그워너 EPC(90일 방화벽·불량 시 리셋) / 스텔란티스 SLP",
   "dateField": "sop",
   "titleField": "part",
   "asOfField": "",
@@ -20,6 +20,18 @@
       "ref": "customers"
     },
     {
+      "key": "regime",
+      "label": "관리 체계",
+      "type": "select",
+      "options": [
+        "Safe Launch (APQP 3rd)",
+        "EPC (보그워너 90일 방화벽 · 불량 시 리셋)",
+        "SLP (스텔란티스 Safe Launch Plan)",
+        "초기유동관리 (현대·기아/트랜시스/미쓰비시 3개월)",
+        "4M 변경 초도품 관리 (3로트)"
+      ]
+    },
+    {
       "key": "sop",
       "label": "SOP",
       "type": "date",
@@ -34,6 +46,11 @@
       "key": "defects",
       "label": "누적 불량",
       "type": "number"
+    },
+    {
+      "key": "exit_crit",
+      "label": "Exit Criteria (해제 조건)",
+      "type": "text"
     },
     {
       "key": "elapsed",
@@ -53,14 +70,5 @@
       "badge": true
     }
   ],
-  "records": [
-    {"id":"r10h30","part":"배터리 트레이","customer":"S모빌리티","sop":"2026-03-16","end":"2026-06-14","defects":16,"status":"종료"},
-    {"id":"r10h31","part":"커넥터 하우징","customer":"S모빌리티","sop":"2026-05-11","end":"2026-08-09","defects":36,"status":"종료"},
-    {"id":"r10h32","part":"범퍼 빔","customer":"H사","sop":"2026-06-22","end":"2026-09-20","defects":22,"status":"종료"},
-    {"id":"r10h33","part":"도어 트림","customer":"K사","sop":"2026-08-03","end":"2026-11-01","defects":6,"status":"관리중"},
-    {"id":"r10h34","part":"스티어링 브라켓","customer":"G사","sop":"2026-09-07","end":"2026-12-06","defects":11,"status":"관리중"},
-    {"id":"r10h35","part":"테일게이트 힌지","customer":"R사","sop":"2026-10-26","end":"2027-01-24","defects":0,"status":"관리중"},
-    {"id":"r10h36","part":"콘솔 커버","customer":"H사","sop":"2026-11-16","end":"2027-02-14","defects":0,"status":"관리중"},
-    {"id":"r10h37","part":"암레스트","customer":"K사","sop":"2025-11-10","end":"2026-02-08","defects":21,"status":"종료"}
-  ]
+  "records": []
 }

@@ -1,0 +1,15 @@
+{
+  "name": "my-qa-dashboard",
+  "version": "1.0.0",
+  "description": "Automotive Powertrain & Thermal QA Dashboard (Oil Pump, Water Pump, 6-Speed Transmission)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "build": "node -e \"console.log('Static + Node.js server ready')\""
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {}
+}

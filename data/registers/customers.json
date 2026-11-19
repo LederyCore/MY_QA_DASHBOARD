@@ -2,7 +2,7 @@
   "id": "customers",
   "name": "고객사",
   "master": true,
-  "desc": "완성차·전기차 고객사 목록입니다. 클레임·PPAP·심사에서 골라 씁니다.",
+  "desc": "7대 타겟 고객사 (현대·기아, 현대트랜시스, 스텔란티스, 다임러, 포드, 보그워너, 미쓰비시) 및 CSR 특별특성·공정능력·4M 승인 기준",
   "dateField": "",
   "titleField": "name",
   "asOfField": "",
@@ -18,20 +18,46 @@
       "label": "구분",
       "type": "select",
       "options": [
-        "완성차",
-        "전기차",
-        "1차 협력사",
+        "국내 완성차 (OEM)",
+        "국내 1차사 (Tier-1)",
+        "글로벌 완성차 (OEM)",
+        "글로벌 1차사 (Tier-1)",
         "기타"
       ]
     },
     {
+      "key": "safety_sym",
+      "label": "안전·법규 특별특성",
+      "type": "text"
+    },
+    {
+      "key": "func_sym",
+      "label": "기능·공정 특별특성",
+      "type": "text"
+    },
+    {
+      "key": "cap_req",
+      "label": "공정능력 기준 (Cmk/Ppk/Cpk)",
+      "type": "text"
+    },
+    {
+      "key": "appr_sys",
+      "label": "초도승인 · 핵심 심사 체계",
+      "type": "text"
+    },
+    {
+      "key": "change_sys",
+      "label": "4M 변경 신고 양식",
+      "type": "text"
+    },
+    {
       "key": "contact",
-      "label": "고객 품질 담당",
+      "label": "고객 품질 담당 (SQE)",
       "type": "text"
     },
     {
       "key": "note",
-      "label": "비고",
+      "label": "CSR 핵심 요구사항 · 비고",
       "type": "text"
     },
     {
@@ -62,13 +88,105 @@
       "field": "cost"
     }
   ],
-  "tpls": [],
-  "records": [
-    {"id":"r10fqh","name":"H사","kind":"완성차","contact":"H사 품질팀 이과장","note":""},
-    {"id":"r10fqi","name":"K사","kind":"완성차","contact":"K사 SQ팀","note":""},
-    {"id":"r10fqj","name":"G사","kind":"완성차","contact":"G사 협력사품질","note":""},
-    {"id":"r10fqk","name":"R사","kind":"완성차","contact":"R사 품질보증","note":""},
-    {"id":"r10fql","name":"S모빌리티","kind":"전기차","contact":"S모빌리티 부품품질","note":""},
-    {"id":"r10fqm","name":"기타","kind":"기타","contact":"","note":""}
-  ]
+  "tpls": [
+    {
+      "id": "tpl-hmc",
+      "name": "현대·기아 (HMC/KIA)",
+      "vals": {
+        "name": "현대·기아 (HMC/KIA)",
+        "kind": "국내 완성차 (OEM)",
+        "safety_sym": "보안 (Ⓢ)",
+        "func_sym": "중요",
+        "cap_req": "초기 Ppk ≥ 1.67 / 양산 Cpk ≥ 1.33 (보안 1.67)",
+        "appr_sys": "ISIR / 품질 5스타 · SQ 마크",
+        "change_sys": "4M 변경 사전신고서 + ISIR",
+        "note": "SQ 마크(열처리/주조/표면처리) 필수, 초도 3로트 식별 라벨 부착"
+      }
+    },
+    {
+      "id": "tpl-transys",
+      "name": "현대트랜시스 (HYUNDAI TRANSYS)",
+      "vals": {
+        "name": "현대트랜시스",
+        "kind": "국내 1차사 (Tier-1)",
+        "safety_sym": "보안 (Ⓢ)",
+        "func_sym": "중요 / CTQ",
+        "cap_req": "초기 Ppk ≥ 1.67 / 양산 Cpk ≥ 1.33 (보안·CTQ 1.67)",
+        "appr_sys": "ISIR · PPAP / 5스타 · SQ",
+        "change_sys": "4M 변경 사전승인 + ISIR",
+        "note": "체결 토크+각도 인터락, 2D 바코드 양방향 추적성, 청정도(Lmax≤200µm), AFT 유온 보정"
+      }
+    },
+    {
+      "id": "tpl-stellantis",
+      "name": "스텔란티스 (Stellantis)",
+      "vals": {
+        "name": "스텔란티스 (Stellantis)",
+        "kind": "글로벌 완성차 (OEM)",
+        "safety_sym": "Shield <S> / CSR",
+        "func_sym": "Diamond <D> / CSE / CTF",
+        "cap_req": "설비 Cmk ≥ 1.67 / 초기·양산 Ppk·Cpk ≥ 1.67",
+        "appr_sys": "PPAP 4th + SLP (Safe Launch Plan) / PCPA 심사",
+        "change_sys": "Forever Requirements 사전신고 + PPAP",
+        "note": "과거 리콜/유사 불량 Read-Across PFMEA 반영 필수"
+      }
+    },
+    {
+      "id": "tpl-daimler",
+      "name": "다임러 / 메르세데스-벤츠 (Mercedes-Benz)",
+      "vals": {
+        "name": "다임러 (Mercedes-Benz)",
+        "kind": "글로벌 완성차 (OEM)",
+        "safety_sym": "DS (안전) / DZ (법규) [D-Merkmale]",
+        "func_sym": "기능 중요특성",
+        "cap_req": "설비 Cmk ≥ 2.00 / 양산 Cpk ≥ 1.67",
+        "appr_sys": "VDA 2 (PPA) + RGA (ML0~ML7) / VDA 6.3 공정심사",
+        "change_sys": "MBST 14 변경 사전 통보 + VDA 2 PPA",
+        "note": "DS/DZ 기록 15년 보관(MBST 27), VDA 6.3 *-질문 강등 규칙 및 VDA 19.1 청정도 준수"
+      }
+    },
+    {
+      "id": "tpl-ford",
+      "name": "포드 (Ford)",
+      "vals": {
+        "name": "포드 (Ford)",
+        "kind": "글로벌 완성차 (OEM)",
+        "safety_sym": "CC (▽, S=9~10)",
+        "func_sym": "SC (S=5~8, O≥4) / HI / OS",
+        "cap_req": "초기 Ppk ≥ 1.67 / 양산 Cpk ≥ 1.33 (CC/SC 지속감시)",
+        "appr_sys": "Phased PPAP (Phase 0~3) + SCCAF / Ford Q1",
+        "change_sys": "e-SREA 승인 + Phased PPAP",
+        "note": "CC(▽) 공정은 물리적 예방 Poka-Yoke 필수 (육안검사 불인정), CQI-9/27 연 1회 심사"
+      }
+    },
+    {
+      "id": "tpl-borgwarner",
+      "name": "보그워너 (BorgWarner)",
+      "vals": {
+        "name": "보그워너 (BorgWarner)",
+        "kind": "글로벌 1차사 (Tier-1)",
+        "safety_sym": "Critical KPC",
+        "func_sym": "KPC (제품) / KCC (공정)",
+        "cap_req": "설비 Cmk ≥ 1.67 / 초기 Ppk ≥ 1.67 / 양산 Cpk ≥ 1.33 (Critical 1.67)",
+        "appr_sys": "PPAP Level 3 + Run@Rate + EPC (90일 방화벽)",
+        "change_sys": "Supplier Change Request (사전 서면승인) + PPAP Lv.3",
+        "note": "SOP 후 90일간 100% EPC 방화벽 (불량 1건 발생 시 90일 리셋), QMN 8D (24h D3 / 7d D4 / 14d D6)"
+      }
+    },
+    {
+      "id": "tpl-mitsubishi",
+      "name": "미쓰비시 (Mitsubishi)",
+      "vals": {
+        "name": "미쓰비시 (Mitsubishi)",
+        "kind": "글로벌 완성차 (OEM)",
+        "safety_sym": "중요보안 (△ / Ⓢ)",
+        "func_sym": "주요 기능특성",
+        "cap_req": "초기 Ppk ≥ 1.67 / 양산 Cpk ≥ 1.33",
+        "appr_sys": "ISIR / PPAP + 초기유동관리 (3개월)",
+        "change_sys": "5M+1E 변화점 사전승인 신청서",
+        "note": "3현주의(현장·현물·현실) 양품 vs 불량품 정량 비교, 변경 전·후 초·종품 5개 정밀측정"
+      }
+    }
+  ],
+  "records": []
 }

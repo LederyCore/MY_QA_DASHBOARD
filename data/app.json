@@ -321,7 +321,8 @@
             "top": 7
           }
         }
-      ]
+      ],
+      "sub": "오일펌프 · 워터펌프 · 6속 변속기 — 7대 고객사 클레임 · 공정 불량 · Cpk · 8D · 심사 종합"
     },
     {
       "id": "weekly",
@@ -500,7 +501,8 @@
             "days": 60
           }
         }
-      ]
+      ],
+      "sub": "정기 점검 (Red Rabbit 마스터 시편 · 청정도 Blank · CQI-9/27) · 다가오는 마감 · 최근 회의록"
     },
     {
       "id": "claims-pg",
@@ -695,7 +697,7 @@
         {
           "type": "goaltable",
           "span": 6,
-          "title": "2026년 클레임 건수 목표 대비 실적",
+          "title": "연간 클레임 건수 목표 대비 실적",
           "unit": "건",
           "goal": 13,
           "lowerIsBetter": true,
@@ -795,7 +797,8 @@
             }
           ]
         }
-      ]
+      ],
+      "sub": "0-km(고객 라인) · 필드 보증 클레임 접수 · 비파괴 NTF 재현 검증 · 2D 로트 추적"
     },
     {
       "id": "capa-pg",
@@ -992,7 +995,8 @@
             "top": 6
           }
         }
-      ]
+      ],
+      "sub": "D3 24시간 5대 영역 재고 봉쇄 · D4 불량 재현 및 3-Legged 5-Why · D5 공학적 Poka-Yoke(교육/육안 단독 금지) · D7 표준화"
     },
     {
       "id": "ppap-pg",
@@ -1215,7 +1219,8 @@
             "limit": 10
           }
         }
-      ]
+      ],
+      "sub": "초기유동관리 (Safe Launch / 보그워너 90일 EPC 방화벽 / 스텔란티스 SLP) · ISIR / PPAP / Phased PPAP / VDA 2 PPA"
     },
     {
       "id": "defects-pg",
@@ -1446,7 +1451,7 @@
         {
           "type": "goaltable",
           "span": 6,
-          "title": "2026년 불량 수량 목표 대비 실적",
+          "title": "연간 불량 수량 목표 대비 실적",
           "unit": "개",
           "goal": 450,
           "lowerIsBetter": true,
@@ -1512,7 +1517,8 @@
             "by2": "type"
           }
         }
-      ]
+      ],
+      "sub": "공정 · 입고 · 출하 부적합 격리(Lock-Box) · 의심 로트 소급 선별 · Poka-Yoke 대책"
     },
     {
       "id": "spc-pg",
@@ -1699,7 +1705,8 @@
             "limit": 300
           }
         }
-      ]
+      ],
+      "sub": "오일펌프(간극·유압) · 워터펌프(씰 압입·리크) · 6속 변속기(스풀 간극·청정도 Lmax·침탄 CHD) X-R 관리도"
     },
     {
       "id": "cpk-pg",
@@ -1860,7 +1867,8 @@
             "bins": 0
           }
         }
-      ]
+      ],
+      "sub": "설비 Cmk ≥ 2.00 · 초기 Ppk ≥ 1.67 · 양산 Cpk ≥ 1.33 (보안 Ⓢ / CC ▽ / DS·DZ / <S> / KPC 특별특성 ≥ 1.67)"
     },
     {
       "id": "calib-pg",
@@ -2100,7 +2108,8 @@
             "agg": "count"
           }
         }
-      ]
+      ],
+      "sub": "측정기 · AFT/VBT/EOL/리크 마스터 오리피스 교정 · AIAG MSA 4th (%GRR < 10%, ndc ≥ 5) · Red Rabbit 마스터 시편"
     },
     {
       "id": "supplier-pg",
@@ -2132,7 +2141,7 @@
         {
           "type": "donut",
           "span": 6,
-          "title": "등급 분포 (2026년 3분기)",
+          "title": "등급 분포 (연간 3분기)",
           "unit": "곳",
           "src": {
             "ds": "suppliers",
@@ -2219,7 +2228,7 @@
         {
           "type": "goaltable",
           "span": 6,
-          "title": "2026년 협력사 종합 점수 (평균)",
+          "title": "연간 협력사 종합 점수 (평균)",
           "unit": "점",
           "goal": 85,
           "src": {
@@ -2266,7 +2275,8 @@
             "bins": 10
           }
         }
-      ]
+      ],
+      "sub": "다이캐스팅·열처리(CQI-9/27)·가공·소결·씰·베어링·솔레노이드 협력사 평가 등급 · 입고 불량"
     },
     {
       "id": "incoming-pg",
@@ -2584,7 +2594,8 @@
             "top": 6
           }
         }
-      ]
+      ],
+      "sub": "4M / 5M+1E 변경점 관리 — 고객 사전 승인(4M+ISIR / e-SREA / MBST 14 / Forever Req.) 없이 양산 선적용 절대 금지"
     },
     {
       "id": "audit-pg",
@@ -2788,7 +2799,8 @@
             "by2": "level"
           }
         }
-      ]
+      ],
+      "sub": "IATF 16949 · VDA 6.3 · 현대·기아/트랜시스 5스타·SQ · 포드 Q1 · AIAG CQI-9(열처리)/CQI-27(주조) 심사"
     },
     {
       "id": "auditfind-pg",
@@ -2971,7 +2983,8 @@
             "top": 6
           }
         }
-      ]
+      ],
+      "sub": "7대 고객사 심사 지적사항 (현대·기아/트랜시스 5스타·SQ, 다임러 VDA 6.3 *-질문, 포드 Q1, 스텔란티스 PCPA, 보그워너)"
     },
     {
       "id": "training-pg",
@@ -3118,7 +3131,7 @@
         {
           "type": "goaltable",
           "span": 6,
-          "title": "2026년 교육 시간 목표 대비 실적",
+          "title": "연간 교육 시간 목표 대비 실적",
           "unit": "시간",
           "goal": 30,
           "src": {
@@ -3145,7 +3158,8 @@
             "top": 8
           }
         }
-      ]
+      ],
+      "sub": "품질·검사원·심사원 자격 (ISO 16232 청정도 · 나이탈 에칭 ISO 14104 · VDA 6.3 · CQI-9/27 · AIAG-VDA PFMEA)"
     },
     {
       "id": "copq-pg",
@@ -3287,7 +3301,7 @@
         {
           "type": "goaltable",
           "span": 6,
-          "title": "2026년 품질 비용 목표 대비 실적",
+          "title": "연간 품질 비용 목표 대비 실적",
           "unit": "만원",
           "goal": 3000,
           "lowerIsBetter": true,
@@ -3330,7 +3344,8 @@
             "top": 8
           }
         }
-      ]
+      ],
+      "sub": "외부 실패(0-km/필드) · 내부 실패(폐기/재작업) · 평가(AFT/청정도/교정) · 예방(Poka-Yoke) 품질 비용"
     },
     {
       "id": "tasks-pg",
@@ -3445,890 +3460,13 @@
     "data"
   ],
   "migr": {
-    "fileStore1": true,
+    "upg1": true,
     "attachReset1": true,
-    "upg1": true
+    "fileStore1": true,
+    "prodClean1": true
   },
-  "fileRefs": {
-    "files/parts/261008-r10fqn-도어래치 ASSY 도면.svg": 1,
-    "files/parts/261008-r10fqo-시트프레임 도면.svg": 1,
-    "files/parts/261008-r10fqp-콘솔 커버 도면.svg": 1,
-    "files/parts/261008-r10fqq-브라켓 BRK-1830 도면.svg": 1,
-    "files/parts/261008-r10fqr-힌지 ASSY 도면.svg": 1,
-    "files/parts/261008-r10fqs-글로브박스 도면.svg": 2,
-    "files/claims/260519-r10fyn-도어래치 ASSY 외관 (스크래치·찍힘).svg": 1,
-    "files/claims/260526-r10fyp-리어 브라켓 용접 스패터.svg": 1,
-    "files/claims/260604-r10fz5-범퍼 빔 치수 불량.svg": 1,
-    "files/claims/260607-r10fz2-도어 트림 작동 불량.svg": 1,
-    "files/claims/260615-r10fyu-콘솔 커버 치수 불량.svg": 1,
-    "files/claims/260702-r10fz8-힌지 ASSY 외관 (스크래치·찍힘).svg": 1,
-    "files/claims/260709-r10fzb-범퍼 빔 치수 불량.svg": 1,
-    "files/claims/260718-r10fzd-도어 트림 체결 불량.svg": 1,
-    "files/claims/260802-r10fzv-시트프레임 소음·진동.svg": 1,
-    "files/claims/260810-r10fzi-시트프레임 소음·진동.svg": 1,
-    "files/claims/260819-r10fzs-배터리 트레이 사출 수축.svg": 1,
-    "files/claims/260831-r10fzr-힌지 ASSY 도장 핀홀·이물.svg": 1,
-    "files/claims/260906-r10g04-도어래치 ASSY 치수 불량.svg": 1,
-    "files/claims/260916-r10fzz-범퍼 빔 작동 불량.svg": 1,
-    "files/claims/261002-r10g08-도어래치 ASSY 용접 스패터.svg": 2,
-    "files/defects/260406-r10gdb-커넥터 하우징 외관 (스크래치·찍힘).svg": 1,
-    "files/defects/260503-r10gdi-커넥터 하우징 외관 (스크래치·찍힘).svg": 1,
-    "files/defects/260512-r10gdp-브라켓 BRK-1830 외관 (스크래치·찍힘).svg": 1,
-    "files/defects/260501-r10gdw-배터리 트레이 외관 (스크래치·찍힘).svg": 1,
-    "files/defects/260628-r10ge3-배터리 트레이 용접 강도 미달.svg": 1,
-    "files/defects/260607-r10gea-글로브박스 외관 (스크래치·찍힘).svg": 1,
-    "files/defects/260630-r10geh-배터리 트레이 용접 스패터.svg": 1,
-    "files/defects/260619-r10geo-콘솔 커버 외관 (스크래치·찍힘).svg": 1,
-    "files/defects/260722-r10gev-힌지 ASSY 외관 (스크래치·찍힘).svg": 1,
-    "files/defects/260714-r10gf2-글로브박스 사출 미성형.svg": 1,
-    "files/defects/260728-r10gf9-도어 트림 사출 수축.svg": 1,
-    "files/defects/260807-r10gfg-브라켓 BRK-1830 오조립·누락.svg": 1,
-    "files/defects/260810-r10gfn-도어 트림 외관 (스크래치·찍힘).svg": 1,
-    "files/defects/260809-r10gfu-브라켓 BRK-1830 외관 (스크래치·찍힘).svg": 1,
-    "files/defects/260926-r10gg1-글로브박스 외관 (스크래치·찍힘).svg": 1,
-    "files/defects/260927-r10gg8-범퍼 빔 용접 스패터.svg": 1,
-    "files/defects/260910-r10ggf-배터리 트레이 용접 강도 미달.svg": 1,
-    "files/defects/261006-r10ggm-도어 트림 사출 수축.svg": 1,
-    "files/layout/공장 배치도.svg": 2
-  },
-  "changelog": [
-    {
-      "at": "2026-10-08T07:34:32.295Z",
-      "who": "품질보증팀",
-      "ds": "change4m",
-      "rid": "r10h8c",
-      "title": "암레스트 검사 방법 변경",
-      "kind": "comment",
-      "text": "ㅔㅔㅔ"
-    },
-    {
-      "at": "2026-10-08T07:09:47.686Z",
-      "who": "품질보증팀",
-      "ds": "nc",
-      "rid": "r10h24",
-      "title": "8.4.2.4 공급자 모니터링",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "상태",
-          "from": "접수",
-          "to": "조치중"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T07:09:44.455Z",
-      "who": "품질보증팀",
-      "ds": "nc",
-      "rid": "r10h24",
-      "title": "8.4.2.4 공급자 모니터링",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "상태",
-          "from": "조치중",
-          "to": "접수"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:41:10.468Z",
-      "who": "품질보증팀",
-      "ds": "defects",
-      "rid": "r10gg9",
-      "title": [
-        "배터리 트레이",
-        "리어 브라켓"
-      ],
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "부품",
-          "from": "배터리 트레이",
-          "to": "배터리 트레이, 리어 브라켓"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:40:29.771Z",
-      "who": "품질보증팀",
-      "ds": "defects",
-      "rid": "r10ggi",
-      "title": [
-        "배터리 트레이",
-        "도어래치 ASSY"
-      ],
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "부품",
-          "from": "배터리 트레이",
-          "to": "배터리 트레이, 도어래치 ASSY"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:40:18.987Z",
-      "who": "품질보증팀",
-      "ds": "inspections",
-      "rid": "r10gtm",
-      "title": "커넥터 하우징",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "협력사",
-          "from": "삼진프레스",
-          "to": "삼진프레스, 세화테크"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:37:20.514Z",
-      "who": "품질보증팀",
-      "ds": "cpk",
-      "rid": "r10gyd",
-      "title": "용접 너겟 직경",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "라인",
-          "from": "용접 1, 프레스 1",
-          "to": "용접 1"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:37:14.473Z",
-      "who": "품질보증팀",
-      "ds": "cpk",
-      "rid": "r10gyd",
-      "title": "용접 너겟 직경",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "라인",
-          "from": "용접 1",
-          "to": "용접 1, 프레스 1"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:36:09.633Z",
-      "who": "품질보증팀",
-      "ds": "cpk",
-      "rid": "r10gvw",
-      "title": "도장 막두께",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "부품",
-          "from": "콘솔 커버",
-          "to": "콘솔 커버, 도어래치 ASSY"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:35:54.545Z",
-      "who": "품질보증팀",
-      "ds": "cpk",
-      "rid": "r10gyc",
-      "title": "도장 막두께",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "라인",
-          "from": "도장, 프레스 1, 프레스 2",
-          "to": "도장"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:35:46.721Z",
-      "who": "품질보증팀",
-      "ds": "cpk",
-      "rid": "r10gyc",
-      "title": "도장 막두께",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "라인",
-          "from": "도장",
-          "to": "도장, 프레스 1, 프레스 2"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:33:10.575Z",
-      "who": "품질보증팀",
-      "ds": "tasks",
-      "rid": "r10h4k",
-      "title": "G사 PPAP Level 3 제출",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "담당",
-          "from": "윤재호, 김민수",
-          "to": "윤재호"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:33:06.855Z",
-      "who": "품질보증팀",
-      "ds": "tasks",
-      "rid": "r10h4k",
-      "title": "G사 PPAP Level 3 제출",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "담당",
-          "from": "윤재호",
-          "to": "윤재호, 김민수"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:32:13.127Z",
-      "who": "품질보증팀",
-      "ds": "inspections",
-      "rid": "r10gtj",
-      "title": "암레스트",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "협력사",
-          "from": "미래사출",
-          "to": "비어 있음"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:32:10.831Z",
-      "who": "품질보증팀",
-      "ds": "inspections",
-      "rid": "r10gtj",
-      "title": "암레스트",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "협력사",
-          "from": "비어 있음",
-          "to": "미래사출"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:30:36.430Z",
-      "who": "품질보증팀",
-      "ds": "inspections",
-      "rid": "r10gtj",
-      "title": "암레스트",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "협력사",
-          "from": "미래사출",
-          "to": "비어 있음"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:30:34.158Z",
-      "who": "품질보증팀",
-      "ds": "inspections",
-      "rid": "r10gtj",
-      "title": "암레스트",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "협력사",
-          "from": "비어 있음",
-          "to": "미래사출"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:27:38.356Z",
-      "who": "품질보증팀",
-      "ds": "ppap",
-      "rid": "r10h43",
-      "title": "리어 브라켓 (금형 이관)",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "고객사",
-          "from": "H사, K사",
-          "to": "H사"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:27:36.013Z",
-      "who": "품질보증팀",
-      "ds": "ppap",
-      "rid": "r10h43",
-      "title": "리어 브라켓 (금형 이관)",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "고객사",
-          "from": "H사",
-          "to": "H사, K사"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:27:34.637Z",
-      "who": "품질보증팀",
-      "ds": "ppap",
-      "rid": "r10h43",
-      "title": "리어 브라켓 (금형 이관)",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "제출 레벨",
-          "from": "Level 1",
-          "to": "Level 3"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:27:32.076Z",
-      "who": "품질보증팀",
-      "ds": "ppap",
-      "rid": "r10h43",
-      "title": "리어 브라켓 (금형 이관)",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "제출 레벨",
-          "from": "Level 3",
-          "to": "Level 1"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:26:16.684Z",
-      "who": "품질보증팀",
-      "ds": "ppap",
-      "rid": "r10h43",
-      "title": "리어 브라켓 (금형 이관)",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "고객사",
-          "from": "H사, K사",
-          "to": "H사"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:26:02.219Z",
-      "who": "품질보증팀",
-      "ds": "ppap",
-      "rid": "r10h43",
-      "title": "리어 브라켓 (금형 이관)",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "고객사",
-          "from": "H사",
-          "to": "H사, K사"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:25:58.011Z",
-      "who": "품질보증팀",
-      "ds": "ppap",
-      "rid": "r10h43",
-      "title": "리어 브라켓 (금형 이관)",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "고객사",
-          "from": "H사, K사",
-          "to": "H사"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:25:55.211Z",
-      "who": "품질보증팀",
-      "ds": "ppap",
-      "rid": "r10h43",
-      "title": "리어 브라켓 (금형 이관)",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "고객사",
-          "from": "H사",
-          "to": "H사, K사"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:25:05.323Z",
-      "who": "품질보증팀",
-      "ds": "cpk",
-      "rid": "r10gyc",
-      "title": "도장 막두께",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "부품",
-          "from": "콘솔 커버, 도어래치 ASSY",
-          "to": "콘솔 커버"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:25:02.915Z",
-      "who": "품질보증팀",
-      "ds": "cpk",
-      "rid": "r10gyc",
-      "title": "도장 막두께",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "부품",
-          "from": "콘솔 커버",
-          "to": "콘솔 커버, 도어래치 ASSY"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:24:14.491Z",
-      "who": "품질보증팀",
-      "ds": "cpk",
-      "rid": "r10gyc",
-      "title": "도장 막두께",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "부품",
-          "from": "콘솔 커버, 도어래치 ASSY",
-          "to": "콘솔 커버"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:24:11.882Z",
-      "who": "품질보증팀",
-      "ds": "cpk",
-      "rid": "r10gyc",
-      "title": "도장 막두께",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "부품",
-          "from": "콘솔 커버",
-          "to": "콘솔 커버, 도어래치 ASSY"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:23:42.522Z",
-      "who": "품질보증팀",
-      "ds": "people",
-      "rid": "r10fq9",
-      "title": "김민수",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "소속",
-          "from": "협력사품질",
-          "to": "고객품질"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:23:40.042Z",
-      "who": "품질보증팀",
-      "ds": "people",
-      "rid": "r10fq9",
-      "title": "김민수",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "소속",
-          "from": "고객품질",
-          "to": "협력사품질"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:22:42.938Z",
-      "who": "품질보증팀",
-      "ds": "tasks",
-      "rid": "r10h4k",
-      "title": "G사 PPAP Level 3 제출",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "담당",
-          "from": "윤재호, 김민수",
-          "to": "윤재호"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:22:39.674Z",
-      "who": "품질보증팀",
-      "ds": "tasks",
-      "rid": "r10h4k",
-      "title": "G사 PPAP Level 3 제출",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "담당",
-          "from": "윤재호, 김민수, 이서연",
-          "to": "윤재호, 김민수"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:22:34.706Z",
-      "who": "품질보증팀",
-      "ds": "tasks",
-      "rid": "r10h4k",
-      "title": "G사 PPAP Level 3 제출",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "담당",
-          "from": "윤재호, 김민수",
-          "to": "윤재호, 김민수, 이서연"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:22:29.809Z",
-      "who": "품질보증팀",
-      "ds": "tasks",
-      "rid": "r10h4k",
-      "title": "G사 PPAP Level 3 제출",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "담당",
-          "from": "윤재호",
-          "to": "윤재호, 김민수"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:19:37.777Z",
-      "who": "품질보증팀",
-      "ds": "defects",
-      "rid": "r10ggi",
-      "title": "배터리 트레이",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "라인",
-          "from": "용접 2, 용접 1",
-          "to": "용접 2"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:19:35.322Z",
-      "who": "품질보증팀",
-      "ds": "defects",
-      "rid": "r10ggi",
-      "title": "배터리 트레이",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "라인",
-          "from": "용접 2",
-          "to": "용접 2, 용접 1"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:19:30.496Z",
-      "who": "품질보증팀",
-      "ds": "defects",
-      "rid": "r10ggi",
-      "title": "배터리 트레이",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "불량 유형",
-          "from": "용접 스패터, 도장 핀홀·이물",
-          "to": "용접 스패터"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:19:27.264Z",
-      "who": "품질보증팀",
-      "ds": "defects",
-      "rid": "r10ggi",
-      "title": "배터리 트레이",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "불량 유형",
-          "from": "용접 스패터",
-          "to": "용접 스패터, 도장 핀홀·이물"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:17:55.383Z",
-      "who": "품질보증팀",
-      "ds": "ppap",
-      "rid": "r10h43",
-      "title": "리어 브라켓 (금형 이관)",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "고객사",
-          "from": "K사",
-          "to": "H사"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:17:53.336Z",
-      "who": "품질보증팀",
-      "ds": "ppap",
-      "rid": "r10h43",
-      "title": "리어 브라켓 (금형 이관)",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "고객사",
-          "from": "H사",
-          "to": "K사"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:16:35.790Z",
-      "who": "품질보증팀",
-      "ds": "capa",
-      "rid": "r10g2y",
-      "title": "도어래치 ASSY 외관 (스크래치·찍힘)",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "관련 협력사",
-          "from": "대성정밀",
-          "to": "삼진프레스"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T06:16:33.822Z",
-      "who": "품질보증팀",
-      "ds": "capa",
-      "rid": "r10g2y",
-      "title": "도어래치 ASSY 외관 (스크래치·찍힘)",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "관련 협력사",
-          "from": "비어 있음",
-          "to": "대성정밀"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T05:24:37.940Z",
-      "who": "품질보증팀",
-      "ds": "suppliers",
-      "rid": "r10gyq",
-      "title": "대성정밀",
-      "kind": "del"
-    },
-    {
-      "at": "2026-10-08T05:24:34.255Z",
-      "who": "품질보증팀",
-      "ds": "suppliers",
-      "rid": "r10gyp",
-      "title": "대성정밀",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "상태",
-          "from": "개선요구",
-          "to": "평가완료"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T05:24:26.999Z",
-      "who": "품질보증팀",
-      "ds": "suppliers",
-      "rid": "r10gyp",
-      "title": "대성정밀",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "상태",
-          "from": "평가완료",
-          "to": "개선요구"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-08T00:12:00.000Z",
-      "who": "김민수",
-      "ds": "claims",
-      "rid": "r10g07",
-      "title": "CL-26-127",
-      "kind": "add"
-    },
-    {
-      "at": "2026-10-07T23:40:00.000Z",
-      "who": "최유진",
-      "ds": "capa",
-      "rid": "r10g32",
-      "title": "배터리 트레이 도장 핀홀·이물",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "진행 단계",
-          "from": "D3",
-          "to": "D1~D2"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-07T08:05:00.000Z",
-      "who": "이서연",
-      "ds": "claims",
-      "rid": "r10g09",
-      "title": "CL-26-126",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "상태",
-          "from": "접수",
-          "to": "접수"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-07T06:22:00.000Z",
-      "who": "오세린",
-      "ds": "calib",
-      "rid": "r10h65",
-      "title": "버니어 캘리퍼스 D",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "최근 교정일",
-          "from": "2025-10-02",
-          "to": "2026-05-19"
-        },
-        {
-          "l": "차기 교정일",
-          "from": "2026-10-02",
-          "to": "2027-05-19"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-07T02:03:00.000Z",
-      "who": "박지훈",
-      "ds": "suppliers",
-      "rid": "r10h1n",
-      "title": "한라부품",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "상태",
-          "from": "평가완료",
-          "to": "평가완료"
-        }
-      ],
-      "more": 0
-    },
-    {
-      "at": "2026-10-06T07:48:00.000Z",
-      "who": "정하늘",
-      "ds": "nc",
-      "rid": "r10h24",
-      "title": "8.4.2.4 공급자 모니터링",
-      "kind": "add"
-    },
-    {
-      "at": "2026-10-06T01:30:00.000Z",
-      "who": "윤재호",
-      "ds": "copq",
-      "rid": "r10hf4",
-      "title": "예방 (교육·개선)",
-      "kind": "add"
-    },
-    {
-      "at": "2026-10-05T05:15:00.000Z",
-      "who": "한도윤",
-      "ds": "launch",
-      "rid": "r10h34",
-      "title": "스티어링 브라켓",
-      "kind": "edit",
-      "fields": [
-        {
-          "l": "누적 불량",
-          "from": "3",
-          "to": "11"
-        }
-      ],
-      "more": 0
-    }
-  ],
+  "fileRefs": {},
+  "changelog": [],
   "registers": [
     "people",
     "customers",
@@ -4354,5 +3492,8 @@
     "change4m",
     "training",
     "copq"
-  ]
+  ],
+  "title": "품질보증 대시보드",
+  "subtitle": "오일펌프 · 워터펌프 · 6속 변속기 | IATF 16949 · AIAG-VDA · 7대 고객사 CSR",
+  "trash": []
 }

@@ -2,11 +2,26 @@
   "id": "parts",
   "name": "부품",
   "master": true,
-  "desc": "관리 대상 부품(품번·품명)과 도면입니다.",
+  "desc": "3대 핵심 제품군 (오일펌프 · 워터펌프 · 6속 변속기) 품번 · 고객사 · 특별특성 · 핵심 CTQ 기준 목록",
   "dateField": "",
   "titleField": "name",
   "asOfField": "",
   "fields": [
+    {
+      "key": "category",
+      "label": "제품군",
+      "type": "select",
+      "options": [
+        "오일펌프 (Oil Pump)",
+        "워터펌프 (Water Pump)",
+        "6속 변속기 (6-Speed Transmission)"
+      ],
+      "colors": {
+        "오일펌프 (Oil Pump)": "blue",
+        "워터펌프 (Water Pump)": "cyan",
+        "6속 변속기 (6-Speed Transmission)": "purple"
+      }
+    },
     {
       "key": "name",
       "label": "품명",
@@ -25,15 +40,38 @@
       "ref": "customers"
     },
     {
+      "key": "special",
+      "label": "특별특성 기호",
+      "type": "select",
+      "options": [
+        "Ⓢ (보안특성 - 현대·기아/트랜시스)",
+        "CC ▽ / SC (포드)",
+        "DS / DZ (다임러 15년보관)",
+        "<S> / <D> / CSE (스텔란티스)",
+        "Critical KPC / KCC (보그워너)",
+        "△ / Ⓢ (미쓰비시)",
+        "중요특성 / CTQ",
+        "일반"
+      ]
+    },
+    {
+      "key": "ctq",
+      "label": "핵심 CTQ · 관리 공차",
+      "type": "text"
+    },
+    {
       "key": "process",
       "label": "주 공정",
       "type": "select",
       "options": [
-        "프레스",
-        "용접",
-        "사출",
-        "도장",
-        "조립"
+        "다이캐스팅 · 함침 (CQI-27)",
+        "정밀 가공 (CNC·연삭·호닝)",
+        "침탄 열처리 (CQI-9)",
+        "디버링 · 초음파 세척 (청정도)",
+        "오일펌프 조립 · AFT",
+        "워터펌프 조립 · 리크",
+        "밸브바디 클린룸 · VBT",
+        "6속 변속기 조립 · EOL"
       ]
     },
     {
@@ -57,20 +95,67 @@
       "field": "qty"
     }
   ],
-  "records": [
-    {"id":"r10fqn","name":"도어래치 ASSY","partno":"LAT-3290","customer":"H사","process":"조립","files":[{"name":"도어래치 ASSY 도면.svg","path":"files/parts/261008-r10fqn-도어래치 ASSY 도면.svg","type":"image/svg+xml","size":1607,"at":"2026-10-08"}]},
-    {"id":"r10fqo","name":"시트프레임","partno":"SF-1150","customer":"K사","process":"용접","files":[{"name":"시트프레임 도면.svg","path":"files/parts/261008-r10fqo-시트프레임 도면.svg","type":"image/svg+xml","size":1604,"at":"2026-10-08"}]},
-    {"id":"r10fqp","name":"콘솔 커버","partno":"CV-4400","customer":"H사","process":"사출","files":[{"name":"콘솔 커버 도면.svg","path":"files/parts/261008-r10fqp-콘솔 커버 도면.svg","type":"image/svg+xml","size":1602,"at":"2026-10-08"}]},
-    {"id":"r10fqq","name":"브라켓 BRK-1830","partno":"BRK-1830","customer":"G사","process":"프레스","files":[{"name":"브라켓 BRK-1830 도면.svg","path":"files/parts/261008-r10fqq-브라켓 BRK-1830 도면.svg","type":"image/svg+xml","size":1608,"at":"2026-10-08"}]},
-    {"id":"r10fqr","name":"힌지 ASSY","partno":"HG-0920","customer":"R사","process":"조립","files":[{"name":"힌지 ASSY 도면.svg","path":"files/parts/261008-r10fqr-힌지 ASSY 도면.svg","type":"image/svg+xml","size":1600,"at":"2026-10-08"}]},
-    {"id":"r10fqs","name":"글로브박스","partno":"GB-2200","customer":"G사","process":"사출","files":[{"name":"글로브박스 도면.svg","path":"files/parts/261008-r10fqs-글로브박스 도면.svg","type":"image/svg+xml","size":1604,"at":"2026-10-08"}]},
-    {"id":"r10fqt","name":"리어 브라켓","partno":"BRK-2041","customer":"H사","process":"프레스","files":[]},
-    {"id":"r10fqu","name":"암레스트","partno":"AR-1100","customer":"K사","process":"사출","files":[]},
-    {"id":"r10fqv","name":"배터리 트레이","partno":"BT-5100","customer":"S모빌리티","process":"용접","files":[]},
-    {"id":"r10fqw","name":"범퍼 빔","partno":"BB-3300","customer":"H사","process":"용접","files":[]},
-    {"id":"r10fqx","name":"도어 트림","partno":"DT-7710","customer":"K사","process":"사출","files":[]},
-    {"id":"r10fqy","name":"커넥터 하우징","partno":"CH-0451","customer":"S모빌리티","process":"사출","files":[]},
-    {"id":"r10fqz","name":"스티어링 브라켓","partno":"SB-6620","customer":"G사","process":"프레스","files":[]},
-    {"id":"r10fr0","name":"테일게이트 힌지","partno":"TH-0880","customer":"R사","process":"프레스","files":[]}
+  "records": [],
+  "tpls": [
+    {
+      "id": "tpl-op-assy",
+      "name": "오일펌프 ASSY (Gerotor/Vane)",
+      "vals": {
+        "category": "오일펌프 (Oil Pump)",
+        "name": "오일펌프 ASSY",
+        "partno": "OP-21310-2G000",
+        "special": "Ⓢ (보안특성 - 현대·기아/트랜시스)",
+        "ctq": "로터 측면간극 0.020~0.050mm / 팁간극 0.04~0.12mm / 릴리프 개변압 / AFT 유량·토크",
+        "process": "오일펌프 조립 · AFT"
+      }
+    },
+    {
+      "id": "tpl-wp-assy",
+      "name": "워터펌프 ASSY (MWP/EWP)",
+      "vals": {
+        "category": "워터펌프 (Water Pump)",
+        "name": "워터펌프 ASSY",
+        "partno": "WP-25100-2G000",
+        "special": "중요특성 / CTQ",
+        "ctq": "메커니컬 씰 압입 깊이 ±0.05mm (서보선도) / 베어링 압입간섭량 0.025~0.055mm / 임펠러 간극 0.5~0.9mm",
+        "process": "워터펌프 조립 · 리크"
+      }
+    },
+    {
+      "id": "tpl-6at-vb",
+      "name": "6속 변속기 밸브바디 & VFS ASSY",
+      "vals": {
+        "category": "6속 변속기 (6-Speed Transmission)",
+        "name": "6속 변속기 밸브바디 ASSY",
+        "partno": "VB-46210-3B000",
+        "special": "Ⓢ (보안특성 - 현대·기아/트랜시스)",
+        "ctq": "스풀 간극 15~35µm / 접합면 평면도 ≤0.03mm / 청정도 금속 Lmax ≤200µm / 잔류자성 ≤3G",
+        "process": "밸브바디 클린룸 · VBT"
+      }
+    },
+    {
+      "id": "tpl-6at-gear",
+      "name": "6속 변속기 헬리컬/유성기어 & 클러치 팩",
+      "vals": {
+        "category": "6속 변속기 (6-Speed Transmission)",
+        "name": "6속 변속기 유성기어·클러치 ASSY",
+        "partno": "GT-45700-3B000",
+        "special": "Critical KPC / KCC (보그워너)",
+        "ctq": "침탄 표면경도 58~62 HRC / CHD 0.6~1.1mm / 연삭소결 무결함 / 클러치 팩 간극·심 선정",
+        "process": "침탄 열처리 (CQI-9)"
+      }
+    },
+    {
+      "id": "tpl-6at-assy",
+      "name": "6속 자동변속기 ASSY",
+      "vals": {
+        "category": "6속 변속기 (6-Speed Transmission)",
+        "name": "6속 자동변속기 ASSY",
+        "partno": "TM-45000-3B000",
+        "special": "Ⓢ (보안특성 - 현대·기아/트랜시스)",
+        "ctq": "하우징 리크 ≤3cc/min / 체결 토크+각도 인터락 / EOL 변속 응답·NVH 차수 분석",
+        "process": "6속 변속기 조립 · EOL"
+      }
+    }
   ]
 }
