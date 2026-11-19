@@ -10,7 +10,7 @@ const DATA_DIR = path.join(ROOT, "data");
 const REG_DIR = path.join(DATA_DIR, "registers");
 const FILES_DIR = path.join(ROOT, "files");
 const BACKUP_DIR = path.join(ROOT, "backup");
-const PORT = Number(process.env.PORT) || 8080;
+const PORT = Number(process.env.PORT) || 3000;
 const HOST = process.env.HOST || "0.0.0.0";
 
 const MIME = {
@@ -140,7 +140,7 @@ const server = http.createServer(async (req, res) => {
     const pathname = decodeURIComponent(u.pathname);
 
     // 1. Health / capability check
-    if (pathname === "/api/health" && req.method === "GET") {
+    if ((pathname === "/api/health" || pathname === "/healthz") && (req.method === "GET" || req.method === "HEAD")) {
       return sendJSON(res, 200, { ok: true, mode: "server" });
     }
 
